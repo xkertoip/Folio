@@ -1,16 +1,29 @@
-html,
-body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+@font-face {
+  font-family: "NothingYouCouldDo";
+  font-display: fallback;
+  src: local('NothingYouCouldDo'), url("../fonts/NothingYouCouldDo.ttf") format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "RedHatText";
+  font-display: fallback;
+  src: local('RedHatText'), url("../fonts/RedHatText.ttf") format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "BebasNeue";
+  font-display: fallback;
+  src: local('BebasNeue'), url("../fonts/BebasNeue.ttf") format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "BodoniModa";
+  font-display: fallback;
+  src: local('BodoniModa'), url("../fonts/BodoniModa.ttf") format('truetype');
+  font-weight: normal;
+  font-style: normal;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-* {
-  box-sizing: border-box;
-}
