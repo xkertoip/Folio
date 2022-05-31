@@ -3,8 +3,9 @@ import { AppProps } from 'next/app';
 import '../styles/globals.css';
 import GlobalStyles from '../styles/globalStyles';
 import { ThemeProvider } from 'next-themes';
+import { appWithTranslation } from 'next-i18next';
 
-export default function Folio({ Component, pageProps }: AppProps) {
+function Folio({ Component, pageProps }: AppProps) {
   return (
     <ThemeProvider>
       <GlobalStyles />
@@ -14,3 +15,5 @@ export default function Folio({ Component, pageProps }: AppProps) {
     </ThemeProvider>
   );
 }
+
+export default appWithTranslation(Folio);
