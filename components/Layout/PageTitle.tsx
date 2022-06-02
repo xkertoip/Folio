@@ -10,6 +10,7 @@ export default function PageTitle({ title, subtitle }: Props) {
   /*const widthWindow = typeof window !== 'undefined' && window.innerWidth;
   const x = useMotionValue(widthWindow);
   console.log(widthWindow);*/
+  console.log('title');
   return <Wrapper> siema </Wrapper>;
 }
 

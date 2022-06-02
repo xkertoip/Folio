@@ -3,20 +3,20 @@ import { NextPage } from 'next';
 import { useTranslation } from 'next-i18next';
 import Layout from '../components/Layout/Layout';
 
-const title = 'Home';
-const description = 'descri';
+import AnimatedTitle from '../components/AnimatedTitle';
+
+const title = "Hello, I'm Piotr 👋";
+const subtitle = "I'm a frontend developer from Poland";
 
 const Home: NextPage = () => {
-  const { t } = useTranslation('home');
-
-  console.log('witam');
-  /*const title = 'Home';
-  const description = `${t('title')} - ${t('description')}`;*/
   return (
-    <div>{t('title')}</div>
-    /* <Layout title={title} description={description}>
-      {t('title')}
-    </Layout>*/
+    <Layout title={title} description={subtitle}>
+      <AnimatedTitle
+        title="Piotr Szczypka,"
+        subtitle="Frontend developer"
+        content="Web Developer"
+      />
+    </Layout>
   );
 };
 
