@@ -2,14 +2,15 @@ import { NextPage } from 'next';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Layout from '../components/Layout/Layout';
+import Title from '../components/AnimatedTitle/Title';
+
+const title = 'About';
+const subtitle = 'Creative, stubborn, inquisitive - It`s me ';
 
 const About: NextPage = () => {
-  const { t } = useTranslation('about');
-  const title = 'Home';
-  const description = `${t('title')} - ${t('description')}`;
   return (
-    <Layout title={title} description={description}>
-      {t('about')}
+    <Layout title={title} description={subtitle}>
+      <Title title="O mieniu" />
     </Layout>
   );
 };

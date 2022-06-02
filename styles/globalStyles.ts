@@ -45,7 +45,7 @@ const GlobalStyles = createGlobalStyle`
   h1 {
     font-size: 16vw;
     font-weight: normal;
-    line-height: 1;
+    line-height: 1.3;
     margin: 0;
   }
   h2 {

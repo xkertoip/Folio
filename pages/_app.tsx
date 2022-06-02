@@ -6,7 +6,7 @@ import GlobalStyles from '../styles/globalStyles';
 import { ThemeProvider } from 'next-themes';
 import { appWithTranslation } from 'next-i18next';
 import { DefaultSeo } from 'next-seo';
-import Header from '../components/Header/Header';
+import Header from '../components/Header';
 import { AnimatePresence } from 'framer-motion';
 
 declare const window: any;

@@ -34,7 +34,7 @@ const variants = {
 
 function Layout({ children, title, description }: Props) {
   return (
-    <>
+    <div>
       <NextSeo
         title={title}
         description={description}
@@ -47,10 +47,9 @@ function Layout({ children, title, description }: Props) {
         exit="hidden"
         transition={{ type: 'linear' }}
       >
-        <PageTitle title="siema" subtitle="x2" />
         {children}
       </motion.main>
-    </>
+    </div>
   );
 }
 
