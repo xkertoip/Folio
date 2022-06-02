@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { useTheme } from 'next-themes';
 import { useRouter } from 'next/router';
 
-const Header = (): JSX.Element => {
+function Header() {
   const { theme, setTheme } = useTheme();
   const router = useRouter();
 
@@ -22,6 +22,6 @@ const Header = (): JSX.Element => {
       </nav>
     </header>
   );
-};
+}
 
 export default Header;
