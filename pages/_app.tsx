@@ -7,6 +7,8 @@ import { DefaultSeo } from 'next-seo';
 import Header from '../components/Header';
 import { AnimatePresence } from 'framer-motion';
 import CustomCursor from '../components/CustomCursor';
+import HeaderManager from '../components/Header/HeaderManager';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 declare const window: any;
 
@@ -28,14 +30,16 @@ function Folio({ Component, pageProps, router }: AppProps) {
       />
       <ThemeProvider>
         <GlobalStyles />
-        <CustomCursor />
-        <Header />
-        <AnimatePresence
-          exitBeforeEnter
-          onExitComplete={() => window.scrollTo(0, 0)}
-        >
-          <Component {...pageProps} cannonical={url} key={url} />
-        </AnimatePresence>
+        <HeaderManager>
+          <CustomCursor />
+          <Header />
+          <AnimatePresence
+            exitBeforeEnter
+            onExitComplete={() => window.scrollTo(0, 0)}
+          >
+            <Component {...pageProps} cannonical={url} key={url} />
+          </AnimatePresence>
+        </HeaderManager>
       </ThemeProvider>
     </>
   );

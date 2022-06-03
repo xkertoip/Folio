@@ -1,7 +1,7 @@
 import { NextPage } from 'next';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import Layout from '../components/Layout/Layout';
+import Index from '../components/Layout';
 import Title from '../components/AnimatedTitle/Title';
 
 const title = 'About';
@@ -9,9 +9,9 @@ const subtitle = 'Creative, stubborn, inquisitive - It`s me ';
 
 const About: NextPage = () => {
   return (
-    <Layout title={title} description={subtitle}>
+    <Index title={title} description={subtitle}>
       <Title title="O mieniu" />
-    </Layout>
+    </Index>
   );
 };
 

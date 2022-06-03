@@ -24,7 +24,8 @@ const CustomCursor = ({ speed = 0.1 }) => {
         if (
           e.target instanceof HTMLAnchorElement ||
           e.target instanceof HTMLHeadingElement ||
-          e.target instanceof HTMLImageElement
+          e.target instanceof HTMLImageElement ||
+          e.target instanceof HTMLButtonElement
         ) {
           mainCursor.current.style.width = `125px`;
           mainCursor.current.style.height = `125px`;
@@ -108,4 +109,5 @@ export const Content = styled.div`
   height: 75px;
   border-radius: 50%;
   transition: 2s cubic-bezier(0.075, 0.82, 0.165, 1);
+  z-index: 1000;
 `;
