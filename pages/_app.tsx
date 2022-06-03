@@ -1,5 +1,3 @@
-import Head from 'next/head';
-import Layout from '../components/Layout/Layout';
 import { AppProps } from 'next/app';
 import '../styles/globals.css';
 import GlobalStyles from '../styles/globalStyles';
@@ -8,6 +6,7 @@ import { appWithTranslation } from 'next-i18next';
 import { DefaultSeo } from 'next-seo';
 import Header from '../components/Header';
 import { AnimatePresence } from 'framer-motion';
+import CustomCursor from '../components/CustomCursor';
 
 declare const window: any;
 
@@ -29,6 +28,7 @@ function Folio({ Component, pageProps, router }: AppProps) {
       />
       <ThemeProvider>
         <GlobalStyles />
+        <CustomCursor />
         <Header />
         <AnimatePresence
           exitBeforeEnter

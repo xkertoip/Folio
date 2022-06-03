@@ -34,9 +34,11 @@ const GlobalStyles = createGlobalStyle`
     overflow-x: hidden;
     scroll-behavior: smooth;
     background-color: var(--background);
-    cursor: none;
   }
   main {
+  }
+  body, a {
+    cursor: none;
   }
   a {
     color: var(--mainColor);
@@ -83,9 +85,6 @@ const GlobalStyles = createGlobalStyle`
     @media only screen and ${device.tablet} {
       font-size: 2rem;
     }
-  }
-  button, a, input {
-    cursor: pointer;
   }
   code {
     color: #fff;
