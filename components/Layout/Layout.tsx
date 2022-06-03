@@ -1,7 +1,6 @@
 import React, { ReactNode } from 'react';
 import { NextSeo } from 'next-seo';
 import { motion } from 'framer-motion';
-import PageTitle from './PageTitle';
 
 const widthWindow = typeof window !== 'undefined' && window.innerWidth;
 

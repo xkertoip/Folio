@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useRef, useState } from 'react';
+import React, { ReactNode, useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
 
@@ -20,19 +20,22 @@ function getWindowDimensions() {
     };
 }
 
-export default function PerspectiveContainer({ children }: Props) {
+export default function Perspective({ children }: Props) {
   const [windowDemensions, setWindowDemensions] = useState(
     getWindowDimensions()
   );
+
   const x = useMotionValue(windowDemensions.width / 2);
   const y = useMotionValue(windowDemensions.height / 2);
 
   const rotateX = useTransform(y, [0, windowDemensions.height], [10, -10]);
   const rotateY = useTransform(x, [0, windowDemensions.width], [10, -10]);
 
-  const handleEnter = (e: React.MouseEvent<HTMLDivElement>): void => {
-    x.set(e.pageX);
-    y.set(e.pageY);
+  const handlePosition = (e: React.MouseEvent<HTMLDivElement>) => {
+    window.requestAnimationFrame(() => handlePosition);
+    const rect = e.currentTarget.getBoundingClientRect();
+    x.set(e.clientX - rect.left);
+    y.set(e.clientY - rect.top);
   };
   const handleLeave = (): void => {
     x.set(windowDemensions.width / 2);
@@ -43,19 +46,21 @@ export default function PerspectiveContainer({ children }: Props) {
     function handleResize() {
       setWindowDemensions(getWindowDimensions());
     }
+
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
   return (
-    <Wrapper onMouseMove={handleEnter} onMouseLeave={handleLeave}>
+    <Wrapper onMouseMove={handlePosition} onMouseLeave={handleLeave}>
       <Content>
         <Container
           style={{
-            willChange: 'transform',
             rotateX: rotateX,
             rotateY: rotateY,
+            transitionDuration: '0.8s',
+            transitionTimingFunction: 'linear',
           }}
-          transition={{ duration: 1 }}
         >
           {children}
         </Container>
@@ -64,7 +69,7 @@ export default function PerspectiveContainer({ children }: Props) {
   );
 }
 
-const Wrapper = styled.div`
+const Wrapper = styled(motion.div)`
   mix-blend-mode: difference;
 `;
 const Content = styled(motion.div)`
@@ -81,7 +86,5 @@ const Content = styled(motion.div)`
 `;
 
 const Container = styled(motion.div)`
-  transition-duration: 0.8s;
-  transition-timing-function: linear;
   transform-style: preserve-3d;
 `;

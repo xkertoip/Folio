@@ -1,5 +1,5 @@
 import Title from './Title';
-import PerspectiveContainer from './PerspectiveContainer';
+import Perspective from './Perspective';
 
 type Props = {
   title: string;
@@ -13,9 +13,9 @@ export default function AnimatedTitle({
   content = '',
 }: Props) {
   return (
-    <PerspectiveContainer>
+    <Perspective>
       <Title title={title} />
       <Title title={subtitle} content={content} />
-    </PerspectiveContainer>
+    </Perspective>
   );
 }
