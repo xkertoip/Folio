@@ -1,6 +1,7 @@
 {
-    "home": "Home",
-    "about": "About",
-    "projects": "Projects",
+    "Home": "Home",
+    "About": "About",
+    "Projects": "Projects",
+    "Contact": "Contact",
     "title": "Random WebPage"
 }

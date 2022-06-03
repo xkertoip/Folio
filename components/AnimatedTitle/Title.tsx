@@ -32,7 +32,12 @@ const variants = {
 
 export default function Title({ title, content = '' }: Props) {
   return (
-    <Wrapper whileHover="hover" initial="hidden" animate="show">
+    <Wrapper
+      whileHover="hover"
+      initial="hidden"
+      animate="show"
+      whileTap="hover"
+    >
       <Content variants={variants} content={content !== '' ? content : title}>
         {title}
       </Content>

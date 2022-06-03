@@ -1,7 +1,8 @@
 {
-  "home": "Home",
+  "Home": "Home",
   "meta": "Portfolio - Piotr Szczypka, frontend developer.",
-  "about": "O mnie",
-  "projects": "Projekty",
+  "About": "O mnie",
+  "Projects": "Projekty",
+  "Contact": "Kontakt",
   "title": "Randomowa strona"
 }

@@ -5,9 +5,11 @@ const GlobalStyles = createGlobalStyle`
   * {
     margin:0;
     font-family: RedHatText, serif;
+    cursor: none;
   }
   *, *:before, *:after {
     box-sizing: border-box;
+    cursor: none
     
   }
   :root {
@@ -24,7 +26,7 @@ const GlobalStyles = createGlobalStyle`
     --main: rgba(255, 255, 255, .3);
     --mainColor: #fff;
     --secondary: #363434;
-    --secondaryColor: #27201e;
+    --secondaryColor: #000;
   }
   html {
     
@@ -36,9 +38,6 @@ const GlobalStyles = createGlobalStyle`
     background-color: var(--background);
   }
   main {
-  }
-  body, a {
-    cursor: none;
   }
   a {
     color: var(--mainColor);
@@ -89,7 +88,7 @@ const GlobalStyles = createGlobalStyle`
   code {
     color: #fff;
   }
-  p, button, a, input {
+  p, button, input {
     font-family: BodoniModa, serif;
     color: var(--mainColor)
   }

@@ -1,6 +1,6 @@
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { NextPage } from 'next';
-import Layout from '../components/Layout/Layout';
+import Layout from '../components/Layout';
 
 import AnimatedTitle from '../components/AnimatedTitle';
 
