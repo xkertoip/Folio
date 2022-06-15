@@ -6,6 +6,7 @@ function lerp(start: number, end: number, amt: number) {
 }
 const CustomCursor = ({ speed = 0.1 }) => {
   const mainCursor = useRef<HTMLDivElement>(null);
+  const secondCursor = useRef<HTMLDivElement>(null);
   const positionRef = useRef({
     mouseX: 0,
     mouseY: 0,
@@ -20,23 +21,9 @@ const CustomCursor = ({ speed = 0.1 }) => {
 
   useEffect(() => {
     const handlePosition = (e: MouseEvent) => {
+      const { clientX, clientY } = e;
       if (positionRef.current && mainCursor.current) {
-        if (
-          e.target instanceof HTMLAnchorElement ||
-          e.target instanceof HTMLHeadingElement ||
-          e.target instanceof HTMLImageElement ||
-          e.target instanceof HTMLButtonElement
-        ) {
-          mainCursor.current.style.width = `125px`;
-          mainCursor.current.style.height = `125px`;
-        } else {
-          mainCursor.current.style.width = `75px`;
-          mainCursor.current.style.height = `75px`;
-        }
-
         if (!visible) setVisibility(true);
-
-        const { clientX, clientY } = e;
 
         const mouseX = clientX;
         const mouseY = clientY;
@@ -44,6 +31,17 @@ const CustomCursor = ({ speed = 0.1 }) => {
           mouseX - mainCursor.current.clientWidth / 2;
         positionRef.current.mouseY =
           mouseY - mainCursor.current.clientHeight / 2;
+
+        if (
+          e.target instanceof HTMLAnchorElement ||
+          e.target instanceof HTMLHeadingElement ||
+          e.target instanceof HTMLImageElement ||
+          e.target instanceof HTMLButtonElement
+        ) {
+          mainCursor.current.style.transform = `translate3d(${positionRef.current.mouseX}px, ${positionRef.current.mouseY}px, 0) scale(2)`;
+        } else {
+          mainCursor.current.style.transform = `translate3d(${positionRef.current.mouseX}px, ${positionRef.current.mouseY}px, 0) scale(1.2)`;
+        }
       }
     };
     document.addEventListener('mousemove', handlePosition);
@@ -65,11 +63,11 @@ const CustomCursor = ({ speed = 0.1 }) => {
         distanceY,
       } = positionRef.current;
       if (!destinationX || !destinationY) {
-        positionRef.current.destinationX = lerp(0, mouseX, 0.2);
-        positionRef.current.destinationY = lerp(0, mouseY, 0.2);
+        positionRef.current.destinationX = lerp(0, mouseX, 0.4);
+        positionRef.current.destinationY = lerp(0, mouseY, 0.4);
       } else {
-        positionRef.current.distanceX = lerp(destinationX, mouseX, 0.2);
-        positionRef.current.distanceY = lerp(destinationY, mouseY, 0.2);
+        positionRef.current.distanceX = lerp(destinationX, mouseX, 0.4);
+        positionRef.current.distanceY = lerp(destinationY, mouseY, 0.4);
         if (
           Math.abs(positionRef.current.distanceX) +
             Math.abs(positionRef.current.distanceY) <
@@ -82,32 +80,32 @@ const CustomCursor = ({ speed = 0.1 }) => {
           positionRef.current.destinationY = distanceY;
         }
       }
-      if (mainCursor && mainCursor.current)
-        mainCursor.current.style.transform = `translate3d(${destinationX}px, ${destinationY}px, 0)`;
+      if (secondCursor && secondCursor.current) {
+        secondCursor.current.style.transform = `translate3d(${destinationX}px, ${destinationY}px, 0)`;
+      }
     };
     followMouse();
   }, [speed]);
 
   return (
-    <Wrapper>
-      <Content ref={mainCursor} />
-    </Wrapper>
+    <div>
+      <Cursor ref={mainCursor} />
+      <Cursor ref={secondCursor} />
+    </div>
   );
 };
 
 export default CustomCursor;
 
-export const Wrapper = styled.div``;
-
-export const Content = styled.div`
+export const Cursor = styled.div`
   position: fixed;
   pointer-events: none;
-  background-color: white;
-  mix-blend-mode: difference;
   left: 0;
-  width: 75px;
-  height: 75px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
+  mix-blend-mode: difference;
+  background-color: white;
   transition: 2s cubic-bezier(0.075, 0.82, 0.165, 1);
   z-index: 1000;
 `;

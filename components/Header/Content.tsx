@@ -74,14 +74,12 @@ function Content() {
   return (
     <>
       <InnerBackground
-        open={openMenu}
         variants={background}
         initial="hidden"
         animate={openMenu ? 'show' : 'hidden'}
       />
 
       <Wrapper
-        open={openMenu}
         variants={variants}
         initial="hidden"
         animate={openMenu ? 'show' : 'hidden'}
@@ -132,7 +130,7 @@ function Content() {
 
 export default Content;
 
-const Wrapper = styled(motion.nav)<{ open: boolean }>`
+const Wrapper = styled(motion.nav)`
   position: fixed;
   bottom: 0;
   left: 0;
@@ -152,7 +150,7 @@ const Wrapper = styled(motion.nav)<{ open: boolean }>`
   }
 `;
 
-const InnerBackground = styled(motion.div)<{ open: boolean }>`
+const InnerBackground = styled(motion.div)`
   position: fixed;
   bottom: 0;
   left: 0;
@@ -175,6 +173,9 @@ const Info = styled(motion.div)`
   a {
     font-size: 1.3rem;
   }
+  a {
+    padding: 0;
+  }
   @media only screen and ${device.tablet} {
     align-self: center;
     p,
@@ -187,6 +188,7 @@ const Options = styled(motion.div)`
   display: flex;
   gap: 16px;
   justify-content: flex-end;
+
   @media only screen and ${device.tablet} {
     position: absolute;
     bottom: 0;
