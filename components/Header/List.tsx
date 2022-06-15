@@ -54,6 +54,23 @@ const ListItem = styled(motion.li)<{ active: string }>`
     position: relative;
     font-family: BodoniModa, serif;
     transition: all 0.5s;
+    :before {
+      content: '';
+      min-width: 100%;
+      height: 5%;
+      position: absolute;
+      margin: auto;
+      background-color: var(--background);
+      top: 50%;
+      transform: translateX(-100%);
+      transition-duration: 0.5s;
+    }
+    :hover {
+      color: var(--secondary);
+      :before {
+        transform: translateX(0);
+      }
+    }
 
     @media only screen and ${device.tablet} {
       font-size: 4rem;

@@ -13,7 +13,6 @@ const GlobalStyles = createGlobalStyle`
     
   }
   :root {
-    /* Your default theme */
     --background: #C7B9B5;
     --main: rgba(39, 32, 30, .3);
     --mainColor: #27201e;
@@ -42,27 +41,8 @@ const GlobalStyles = createGlobalStyle`
   a {
     color: var(--mainColor);
     text-decoration: none;
-    position: relative;
-    overflow: hidden;
-    transition-duration: 0.5s;
-    padding: 1rem;
-    :before {
-      content: '';
-      min-width: 100%;
-      height: 5%;
-      position: absolute;
-      margin: auto;
-      background-color: var(--background);
-      top: 50%;
-      transform: translateX(-100%);
-      transition-duration: 0.5s;
-    }
-    :hover {
-      :before {
-        transform: translateX(0);
-      }
-     
-    }
+
+   
   }
   h1 {
     font-size: 14vw;

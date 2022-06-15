@@ -1,7 +1,7 @@
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { NextPage } from 'next';
 import Layout from '../components/Layout';
-import AnimatedTitle from '../components/AnimatedTitle';
+import AnimatedTitle from '../components/AnimateTitle';
 import styled from 'styled-components';
 import React, { useState } from 'react';
 import Link from 'next/link';
@@ -49,10 +49,10 @@ const Home: NextPage = () => {
       </OnView>
 
       <OnView setIndex={() => handleIndex(-1)}>
-        <Choose>
+        <Choice>
           <Link href="/about">Poznaj mnie!</Link>
           <Link href="/contact">Napisz do mnie!</Link>
-        </Choose>
+        </Choice>
       </OnView>
     </Layout>
   );
@@ -73,16 +73,24 @@ const Container = styled.div`
   }
 `;
 
-const Choose = styled.div`
+const Choice = styled.div`
   min-height: 100vh;
   display: flex;
   flex-direction: row;
-  width: 100%;
 
   a {
-    width: 50%;
+    width: 100%;
+    position: relative;
     text-align: center;
-    align-self: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition-duration: 0.5s;
+    font-size: 4rem;
+    :hover {
+      background-color: var(--main);
+      color: var(--secondaryColor);
+    }
   }
 `;
 

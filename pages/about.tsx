@@ -2,7 +2,7 @@ import { NextPage } from 'next';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Index from '../components/Layout';
-import Title from '../components/AnimatedTitle/Title';
+import Title from '../components/AnimateTitle/Title';
 
 const title = 'About';
 const subtitle = 'Creative, stubborn, inquisitive - It`s me ';
