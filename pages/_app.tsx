@@ -9,6 +9,7 @@ import { AnimatePresence } from 'framer-motion';
 import CustomCursor from '../components/CustomCursor';
 import HeaderManager from '../components/Header/HeaderManager';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import SmoothScroll from '../components/SmoothScroll';
 
 declare const window: any;
 
@@ -33,12 +34,15 @@ function Folio({ Component, pageProps, router }: AppProps) {
         <HeaderManager>
           <CustomCursor />
           <Header />
-          <AnimatePresence
-            exitBeforeEnter
-            onExitComplete={() => window.scrollTo(0, 0)}
-          >
-            <Component {...pageProps} cannonical={url} key={url} />
-          </AnimatePresence>
+
+          <SmoothScroll>
+            <AnimatePresence
+              exitBeforeEnter
+              onExitComplete={() => window.scrollTo(0, 0)}
+            >
+              <Component {...pageProps} cannonical={url} key={url} />
+            </AnimatePresence>
+          </SmoothScroll>
         </HeaderManager>
       </ThemeProvider>
     </>

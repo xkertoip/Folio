@@ -1,6 +1,8 @@
-import React, { ReactNode, useContext, useEffect, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
+import AnimateBackground from '../AnimateImage';
+import { device } from '../../styles/mediaQuery';
 
 type Props = {
   children: ReactNode;
@@ -52,7 +54,7 @@ export default function Perspective({ children }: Props) {
   }, []);
 
   return (
-    <Wrapper onMouseMove={handlePosition} onMouseLeave={handleLeave}>
+    <motion.div onMouseMove={handlePosition} onMouseLeave={handleLeave}>
       <Content>
         <Container
           style={{
@@ -65,24 +67,26 @@ export default function Perspective({ children }: Props) {
           {children}
         </Container>
       </Content>
-    </Wrapper>
+    </motion.div>
   );
 }
 
-const Wrapper = styled(motion.div)`
-  mix-blend-mode: difference;
-`;
 const Content = styled(motion.div)`
   min-height: 100vh;
-  padding: 5rem 10%;
+  padding: 64px 16px;
   display: flex;
   will-change: transform;
   flex-direction: column;
-  justify-content: center;
+  justify-content: end;
   align-items: stretch;
   position: relative;
   perspective: 1000px;
   mix-blend-mode: inherit;
+  z-index: 10;
+  @media only screen and ${device.tablet} {
+    padding: 0 10%;
+    justify-content: center;
+  }
 `;
 
 const Container = styled(motion.div)`

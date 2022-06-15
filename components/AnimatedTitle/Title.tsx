@@ -14,18 +14,18 @@ const variants = {
   },
   show: {
     y: 0,
-    skew: 0,
-    rotateZ: 0,
+    skew: [0, 5, 0],
+    rotateZ: [0, 5, 0],
     transition: {
-      duration: 0.8,
+      duration: 0.5,
     },
   },
   hover: {
-    y: '-100%',
-    skew: 0,
-    rotateZ: 0,
+    y: ['0%', '-100%'],
+    skew: [0, 5, 0],
+    rotateZ: [0, 5, 0],
     transition: {
-      duration: 0.8,
+      duration: 0.5,
     },
   },
 };

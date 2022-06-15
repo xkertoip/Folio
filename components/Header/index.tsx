@@ -2,10 +2,17 @@ import Link from 'next/link';
 import styled from 'styled-components';
 import Hamburger from './Hamburger';
 import Content from './Content';
+import { useContext } from 'react';
+import { MenuContext } from './HeaderManager';
 
 function Header() {
+  const { openMenu } = useContext(MenuContext);
   return (
-    <Wrapper>
+    <Wrapper
+      style={{
+        backgroundColor: openMenu ? 'var(--background)' : 'transparent',
+      }}
+    >
       <Brand>
         <Link href="/">Ps</Link>
       </Brand>
@@ -25,7 +32,8 @@ export const Wrapper = styled.header`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  z-index: 10;
+  transition: 0.3s;
+  z-index: 100;
 `;
 
 export const Brand = styled.div`

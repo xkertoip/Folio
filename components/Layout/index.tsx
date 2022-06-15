@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import { NextSeo } from 'next-seo';
 import { motion } from 'framer-motion';
-
+import styled from 'styled-components';
 type Props = {
   children: ReactNode;
   title: string;
@@ -25,13 +25,13 @@ const variants = {
 
 function Layout({ children, title, description }: Props) {
   return (
-    <div>
+    <>
       <NextSeo
         title={title}
         description={description}
         openGraph={{ title, description }}
       />
-      <motion.main
+      <Wrapper
         variants={variants}
         initial="hidden"
         animate="enter"
@@ -39,9 +39,31 @@ function Layout({ children, title, description }: Props) {
         transition={{ type: 'linear' }}
       >
         {children}
-      </motion.main>
-    </div>
+      </Wrapper>
+    </>
   );
 }
 
 export default Layout;
+
+const Wrapper = styled(motion.div)`
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+  :before,
+  :after {
+    content: '';
+    width: 0.5px;
+    min-height: 100%;
+    background-color: var(--secondary);
+    position: fixed;
+    top: 0;
+    z-index: -1;
+  }
+  :before {
+    right: 15%;
+  }
+  :after {
+    right: 45%;
+  }
+`;

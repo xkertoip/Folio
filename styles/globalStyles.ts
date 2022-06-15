@@ -42,12 +42,34 @@ const GlobalStyles = createGlobalStyle`
   a {
     color: var(--mainColor);
     text-decoration: none;
+    position: relative;
+    overflow: hidden;
+    transition-duration: 0.5s;
+    padding: 1rem;
+    :before {
+      content: '';
+      min-width: 100%;
+      height: 5%;
+      position: absolute;
+      margin: auto;
+      background-color: var(--background);
+      top: 50%;
+      transform: translateX(-100%);
+      transition-duration: 0.5s;
+    }
+    :hover {
+      :before {
+        transform: translateX(0);
+      }
+     
+    }
   }
   h1 {
-    font-size: 16vw;
-    font-weight: normal;
+    font-size: 14vw;
     line-height: 1.3;
     margin: 0;
+    font-family: BodoniModa, serif;
+    font-weight: normal;
   }
   h2 {
     font-size: 1.75rem;
@@ -57,9 +79,10 @@ const GlobalStyles = createGlobalStyle`
   }
   h4 {
     font-size: 1.25rem;
-  }
-  h1, h2, h3, h4 {
-    font-family: BodoniModa, serif;
+  }  
+  h2, h3, h4 {
+    font-family: RedHatText, serif;
+    font-weight: normal;
   }
   @media only screen and ${device.tablet} {
     h1 {
@@ -89,7 +112,7 @@ const GlobalStyles = createGlobalStyle`
     color: #fff;
   }
   p, button, input {
-    font-family: BodoniModa, serif;
+    font-family: RedHatText, serif;
     color: var(--mainColor)
   }
   ul {
@@ -98,9 +121,6 @@ const GlobalStyles = createGlobalStyle`
   }
   section{
     overflow: hidden;
-    @media only screen and ${device.tablet} {
-      margin:auto;
-    }
   }
   
 
