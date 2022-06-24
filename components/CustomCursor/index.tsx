@@ -31,16 +31,16 @@ const CustomCursor = ({ speed = 0.1 }) => {
           mouseX - mainCursor.current.clientWidth / 2;
         positionRef.current.mouseY =
           mouseY - mainCursor.current.clientHeight / 2;
-
         if (
           e.target instanceof HTMLAnchorElement ||
           e.target instanceof HTMLHeadingElement ||
           e.target instanceof HTMLImageElement ||
           e.target instanceof HTMLButtonElement
         ) {
-          mainCursor.current.style.transform = `translate3d(${positionRef.current.mouseX}px, ${positionRef.current.mouseY}px, 0) scale(2)`;
+          /* mainCursor.current.style.transform = `translate3d(${positionRef.current.mouseX}px, ${positionRef.current.mouseY}px, 0)`;*/
+          mainCursor.current.style.transform = `translate3d(${positionRef.current.mouseX}px, ${positionRef.current.mouseY}px, 0) scale(1.5)`;
         } else {
-          mainCursor.current.style.transform = `translate3d(${positionRef.current.mouseX}px, ${positionRef.current.mouseY}px, 0) scale(1.2)`;
+          mainCursor.current.style.transform = `translate3d(${positionRef.current.mouseX}px, ${positionRef.current.mouseY}px, 0) scale(1)`;
         }
       }
     };
@@ -89,15 +89,15 @@ const CustomCursor = ({ speed = 0.1 }) => {
 
   return (
     <div>
-      <Cursor ref={mainCursor} />
-      <Cursor ref={secondCursor} />
+      <MainCursor ref={mainCursor} />
+      <SecondCursor ref={secondCursor} />
     </div>
   );
 };
 
 export default CustomCursor;
 
-export const Cursor = styled.div`
+export const MainCursor = styled.div`
   position: fixed;
   pointer-events: none;
   left: 0;
@@ -106,6 +106,19 @@ export const Cursor = styled.div`
   border-radius: 50%;
   mix-blend-mode: difference;
   background-color: white;
+  transition: 0.1s linear;
+  z-index: 1000;
+`;
+
+export const SecondCursor = styled.div`
+  position: fixed;
+  pointer-events: none;
+  left: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  mix-blend-mode: saturation;
+  background-color: var(--specialColor);
   transition: 2s cubic-bezier(0.075, 0.82, 0.165, 1);
   z-index: 1000;
 `;

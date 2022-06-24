@@ -5,12 +5,17 @@ import styled from 'styled-components';
 
 type Props = {
   children: ReactNode;
-  setIndex: () => void;
+  setIndex?: () => void;
 };
 
-const item = {
-  visible: { opacity: 1, transition: { duration: 0.5 }, staggerChildren: 0.3 },
-  hidden: { opacity: 0 },
+const variants = {
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 1 },
+    staggerChildren: 0.3,
+  },
+  hidden: { opacity: 0, y: '10vh' },
 };
 
 function OnView({ children, setIndex }: Props) {
@@ -19,15 +24,17 @@ function OnView({ children, setIndex }: Props) {
 
   useEffect(() => {
     if (inView) {
-      control.start('visible');
-      setIndex();
+      control.start('show');
+      if (setIndex) {
+        setIndex();
+      }
     } else {
       control.start('hidden');
       console.log('hidden');
     }
   }, [control, inView]);
   return (
-    <Wrapper ref={ref} variants={item} initial="hidden" animate={control}>
+    <Wrapper ref={ref} variants={variants} initial="hidden" animate={control}>
       {children}
     </Wrapper>
   );
@@ -35,6 +42,7 @@ function OnView({ children, setIndex }: Props) {
 
 export default OnView;
 
-const Wrapper = styled(motion.section)`
+const Wrapper = styled(motion.div)`
   position: relative;
+  overflow: hidden;
 `;

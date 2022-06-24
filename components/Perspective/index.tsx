@@ -1,11 +1,10 @@
 import React, { ReactNode, useEffect, useState } from 'react';
-import styled from 'styled-components';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
-import AnimateBackground from '../AnimateImage';
+import styled from 'styled-components';
 import { device } from '../../styles/mediaQuery';
 
 type Props = {
-  children: ReactNode;
+  children?: ReactNode;
 };
 
 function getWindowDimensions() {
@@ -23,15 +22,15 @@ function getWindowDimensions() {
 }
 
 export default function Perspective({ children }: Props) {
-  const [windowDemensions, setWindowDemensions] = useState(
+  const [windowDimensions, setWindowDimensions] = useState(
     getWindowDimensions()
   );
 
-  const x = useMotionValue(windowDemensions.width / 2);
-  const y = useMotionValue(windowDemensions.height / 2);
+  const x = useMotionValue(windowDimensions.width / 2);
+  const y = useMotionValue(windowDimensions.height / 2);
 
-  const rotateX = useTransform(y, [0, windowDemensions.height], [10, -10]);
-  const rotateY = useTransform(x, [0, windowDemensions.width], [10, -10]);
+  const rotateX = useTransform(y, [0, windowDimensions.height], [10, -10]);
+  const rotateY = useTransform(x, [0, windowDimensions.width], [10, -10]);
 
   const handlePosition = (e: React.MouseEvent<HTMLDivElement>) => {
     window.requestAnimationFrame(() => handlePosition);
@@ -40,13 +39,13 @@ export default function Perspective({ children }: Props) {
     y.set(e.clientY - rect.top);
   };
   const handleLeave = (): void => {
-    x.set(windowDemensions.width / 2);
-    y.set(windowDemensions.height / 2);
+    x.set(windowDimensions.width / 2);
+    y.set(windowDimensions.height / 2);
   };
 
   useEffect(() => {
     function handleResize() {
-      setWindowDemensions(getWindowDimensions());
+      setWindowDimensions(getWindowDimensions());
     }
 
     window.addEventListener('resize', handleResize);
@@ -54,7 +53,7 @@ export default function Perspective({ children }: Props) {
   }, []);
 
   return (
-    <motion.div onMouseMove={handlePosition} onMouseLeave={handleLeave}>
+    <motion.section onMouseMove={handlePosition} onMouseLeave={handleLeave}>
       <Content>
         <Container
           style={{
@@ -67,28 +66,29 @@ export default function Perspective({ children }: Props) {
           {children}
         </Container>
       </Content>
-    </motion.div>
+    </motion.section>
   );
 }
 
 const Content = styled(motion.div)`
+  padding: 4rem 1rem 1rem;
   min-height: 100vh;
-  padding: 64px 16px;
-  display: flex;
   will-change: transform;
+  display: flex;
   flex-direction: column;
-  justify-content: end;
+  justify-content: flex-end;
   align-items: stretch;
   position: relative;
   perspective: 1000px;
   mix-blend-mode: inherit;
   z-index: 10;
   @media only screen and ${device.tablet} {
-    padding: 0 10%;
+    padding: 64px 10% 1rem;
     justify-content: center;
   }
 `;
 
 const Container = styled(motion.div)`
   transform-style: preserve-3d;
+  will-change: transform;
 `;
