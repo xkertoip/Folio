@@ -9,13 +9,13 @@ export default function Slider({ array }: Props) {
   return (
     <Wrapper>
       <Container>
-        {array.map((element, i) => {
+        {/*        {array.map((element, i) => {
           <Item key={i}>
             <Image src={element.src} />
             <h4>{element.type}</h4>
             <h3>{element.Title}</h3>
           </Item>;
-        })}
+        })}*/}
       </Container>
     </Wrapper>
   );
