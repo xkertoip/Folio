@@ -43,6 +43,7 @@ const Wrapper = styled(motion.div)`
   display: flex;
   justify-content: center;
   align-items: center;
+
   a {
     position: relative;
     width: 100%;

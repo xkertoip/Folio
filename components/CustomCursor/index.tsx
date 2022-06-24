@@ -1,12 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
+import useDeviceDetect from '../../utils/useDeviceDetect';
 
 function lerp(start: number, end: number, amt: number) {
   return (1 - amt) * start + amt * end;
 }
 const CustomCursor = ({ speed = 0.1 }) => {
+  const { isMobile } = useDeviceDetect();
   const mainCursor = useRef<HTMLDivElement>(null);
   const secondCursor = useRef<HTMLDivElement>(null);
+
   const positionRef = useRef({
     mouseX: 0,
     mouseY: 0,
@@ -88,10 +91,14 @@ const CustomCursor = ({ speed = 0.1 }) => {
   }, [speed]);
 
   return (
-    <div>
-      <MainCursor ref={mainCursor} />
-      <SecondCursor ref={secondCursor} />
-    </div>
+    <>
+      {!isMobile && (
+        <div>
+          <MainCursor ref={mainCursor} />
+          <SecondCursor ref={secondCursor} />
+        </div>
+      )}
+    </>
   );
 };
 

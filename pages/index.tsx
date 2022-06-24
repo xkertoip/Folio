@@ -63,7 +63,7 @@ const Home: NextPage = () => {
             </p>
           </OnView>
           <OnView>
-            <h3>Zostawiam moje CV:</h3>
+            <h4>{t(`cvText`)}</h4>
             <DownloadButton text={t(`download`)}>
               <Image
                 src={downloadImage}
@@ -111,6 +111,7 @@ export default Home;
 const Wrapper = styled.div`
   position: relative;
   display: flex;
+  gap: 2rem;
   flex-direction: column;
   z-index: 2;
   padding: 4rem 1rem;
