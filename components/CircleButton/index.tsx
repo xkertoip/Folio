@@ -9,6 +9,8 @@ import {
   useMotionValue,
 } from 'framer-motion';
 import { device } from '../../styles/mediaQuery';
+import mailImage from '/images/mail.svg';
+import Image from 'next/image';
 
 type Props = {
   href: string;
@@ -29,6 +31,24 @@ function getWindowDimensions() {
     };
 }
 
+const variants = {
+  hidden: {
+    scale: 0,
+  },
+  hover: {
+    scale: 1,
+    transition: {
+      duration: 0.3,
+    },
+  },
+  show: {
+    scale: 1,
+    transition: {
+      duration: 0.3,
+    },
+  },
+};
+
 export default function CircleButton({ children, href }: Props) {
   const [windowDimensions, setWindowDimensions] = useState(
     getWindowDimensions()
@@ -40,16 +60,16 @@ export default function CircleButton({ children, href }: Props) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const physicsOutline = { damping: 25, mass: 1, stiffness: 75 };
   const springOutline = useSpring(scrollYProgress, physicsOutline);
-  const transformOutline = useTransform(springOutline, [0, 1], ['-25%', '25']);
+  const transformOutline = useTransform(springOutline, [0, 1], ['-25%', '25%']);
   const positionX = useTransform(
     x,
     [0, windowDimensions.width],
-    ['-50%', '50%']
+    ['-25%', '25%']
   );
   const positionY = useTransform(
     y,
     [0, windowDimensions.height],
-    [-'50', '50']
+    [-'25', '25']
   );
 
   const handlePosition = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -79,12 +99,22 @@ export default function CircleButton({ children, href }: Props) {
       onMouseLeave={handleLeave}
     >
       <Link href={href}>
-        <a>
+        <motion.a whileHover="show" initial="hidden">
           <motion.div style={{ y: positionY, x: positionX }}>
             {children}
           </motion.div>
-          <CircleOutline style={{ y: transformOutline }} />
-        </a>
+          <CircleOutline />
+          <HiddenCircle variants={variants}>
+            <HiddenImage>
+              <Image
+                src={mailImage}
+                alt="mail"
+                layout="responsive"
+                objectFit="contain"
+              />
+            </HiddenImage>
+          </HiddenCircle>
+        </motion.a>
       </Link>
     </Wrapper>
   );
@@ -108,7 +138,6 @@ const Wrapper = styled(motion.div)`
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 2;
     div {
       text-align: center;
       transition-duration: 0.3s;
@@ -129,6 +158,25 @@ const Wrapper = styled(motion.div)`
     }
   }
 `;
+const HiddenCircle = styled(motion.div)`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background-color: var(--specialColor);
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+const HiddenImage = styled.div`
+  width: 40%;
+  height: 40%;
+`;
 const CircleOutline = styled(motion.div)`
   position: absolute;
   left: 0;
@@ -140,8 +188,5 @@ const CircleOutline = styled(motion.div)`
   border-width: 1px;
   border-color: var(--mainColor);
   will-change: transform;
-  :hover {
-    background-color: var(--main);
-    transition: 0.5s;
-  }
+  z-index: -1;
 `;

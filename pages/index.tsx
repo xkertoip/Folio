@@ -2,7 +2,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { NextPage } from 'next';
 import Layout from '../components/Layout';
 import styled from 'styled-components';
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import OnView from '../components/OnView';
@@ -18,6 +18,10 @@ import DownloadButton from '../components/DownloadButton';
 
 const backgroundImage = require('/images/home_background.jpg');
 const downloadImage = require('/images/download.svg');
+const prev = require('/images/prev.svg');
+const next = require('/images/next.svg');
+const aboutBackground = require('/images/pesrpsective.jpeg');
+const projectsBackground = require('/images/code.jpg');
 const title = "Hello, I'm Piotr 👋";
 const subtitle = "I'm a frontend developer from Poland";
 const array = [backgroundImage];
@@ -83,16 +87,43 @@ const Home: NextPage = () => {
           </CircleButton>
         </OnView>
       </section>
-      <Wrapper>
-        <span> a tu bedzie horyzontalna magia</span>
-      </Wrapper>
-      <section>
+      <section
+        style={{
+          position: 'relative',
+          zIndex: 2,
+        }}
+      >
         <Choice>
           <Link href="/about">
-            <a>Poznaj mnie!</a>
+            <a>
+              <BackgroundChoiceText>
+                <p>{t(`projects`)}</p> <Image src={prev} alt="prev" />
+              </BackgroundChoiceText>
+              <BackgroundChoice>
+                <Image
+                  src={projectsBackground}
+                  layout="fill"
+                  objectFit="cover"
+                  alt="about"
+                />
+              </BackgroundChoice>
+            </a>
           </Link>
           <Link href="/contact">
-            <a>Napisz do mnie!</a>
+            <a>
+              <BackgroundChoiceText>
+                <p>{t(`about`)}</p> <Image src={next} alt="next" />
+              </BackgroundChoiceText>
+
+              <BackgroundChoice>
+                <Image
+                  src={aboutBackground}
+                  layout="fill"
+                  objectFit="cover"
+                  alt="about"
+                />
+              </BackgroundChoice>
+            </a>
           </Link>
         </Choice>
       </section>
@@ -119,7 +150,28 @@ const Description = styled(Wrapper)`
     width: 50%;
   }
 `;
-
+const BackgroundChoice = styled.div`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  opacity: 0.2;
+  transition-duration: 0.8s;
+  :hover {
+    opacity: 0.6;
+  }
+`;
+const BackgroundChoiceText = styled.div`
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2rem;
+`;
 const Choice = styled.div`
   min-height: 100vh;
   display: flex;
@@ -136,10 +188,6 @@ const Choice = styled.div`
     transition-duration: 0.5s;
     font-size: 2rem;
     background-color: var(--background);
-    :hover {
-      background-color: transparent;
-      color: var(--secondaryColor);
-    }
   }
 `;
 
