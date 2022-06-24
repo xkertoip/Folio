@@ -29,7 +29,7 @@ const Wrapper = styled.a`
   align-items: center;
   max-width: 300px;
   :hover {
-    background-color: var(--main);
+    background-color: var(--specialColor);
     transition: 0.5s;
   }
   @media only screen and ${device.tablet} {

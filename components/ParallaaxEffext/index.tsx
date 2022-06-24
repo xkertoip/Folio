@@ -5,7 +5,6 @@ import {
   useTransform,
   useViewportScroll,
 } from 'framer-motion';
-import { useEffect, useRef, useState } from 'react';
 
 type Props = {
   array: string[];
