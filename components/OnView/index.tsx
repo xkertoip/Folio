@@ -45,4 +45,5 @@ export default OnView;
 const Wrapper = styled(motion.div)`
   position: relative;
   overflow: hidden;
+  z-index: 2;
 `;

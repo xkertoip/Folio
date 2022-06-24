@@ -24,7 +24,6 @@ const array = [backgroundImage];
 
 const Home: NextPage = () => {
   const { t } = useTranslation('common');
-  const [index, setIndex] = useState(0);
   const parallaxArray = [
     'React',
     'Web Development',
@@ -35,13 +34,10 @@ const Home: NextPage = () => {
     'Gatsby',
     'Worpress',
   ];
-  const handleIndex = (i: number) => {
-    setIndex(i);
-  };
 
   return (
     <Layout title={title} description={subtitle}>
-      <FollowImage index={index} array={array} />
+      <FollowImage index={0} array={array} />
       <Perspective>
         <OnView>
           <Title title="Piotr Szczypka," />
@@ -79,15 +75,13 @@ const Home: NextPage = () => {
       </section>
       <ParallaxEffect array={parallaxArray} />
       <section>
-        <Wrapper>
-          <OnView>
-            <CircleButton href="/contact">
-              <h4>{t(`mailWelcome`)}</h4>
-              <p>{t(`mailTitle`)}</p>
-              <p>{t(`mailSubtitle`)}</p>
-            </CircleButton>
-          </OnView>
-        </Wrapper>
+        <OnView>
+          <CircleButton href="/contact">
+            <h4>{t(`mailWelcome`)}</h4>
+            <p>{t(`mailTitle`)}</p>
+            <p>{t(`mailSubtitle`)}</p>
+          </CircleButton>
+        </OnView>
       </section>
       <Wrapper>
         <span> a tu bedzie horyzontalna magia</span>

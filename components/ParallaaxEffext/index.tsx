@@ -49,6 +49,8 @@ const Content = styled(motion.div)`
   display: flex;
   flex-direction: row;
   padding: 2rem;
+  will-change: transform;
+
   h1 {
     span {
       white-space: nowrap;
