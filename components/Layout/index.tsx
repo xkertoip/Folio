@@ -47,9 +47,7 @@ function Layout({ children, title, description }: Props) {
 export default Layout;
 
 const Wrapper = styled(motion.div)`
-  display: flex;
-  flex-direction: column;
-  gap: 4rem;
+  position: relative;
   :before,
   :after {
     content: '';

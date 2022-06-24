@@ -5,7 +5,6 @@ import { useRouter } from 'next/router';
 import { useContext } from 'react';
 import { MenuContext } from './HeaderManager';
 import { useTranslation } from 'next-i18next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { device } from '../../styles/mediaQuery';
 
 const menu = [

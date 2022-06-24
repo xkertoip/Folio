@@ -4,5 +4,8 @@
   "About": "O mnie",
   "Projects": "Projekty",
   "Contact": "Kontakt",
-  "title": "Randomowa strona"
+  "title": "Randomowa strona",
+  "mailWelcome": "Cześć !",
+  "mailTitle": "Zainteresowałem Cię ?",
+  "mailSubtitle": "Skontaktuj się ze mną !"
 }

@@ -3,5 +3,8 @@
     "About": "About",
     "Projects": "Projects",
     "Contact": "Contact",
-    "title": "Random WebPage"
+    "title": "Random WebPage",
+    "mailWelcome": "Hi !",
+    "mailTitle": "Have I intrested you ?",
+    "mailSubtitle": "Please contact me !"
 }

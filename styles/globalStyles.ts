@@ -18,6 +18,7 @@ const GlobalStyles = createGlobalStyle`
     --mainColor: #27201e;
     --secondary: #cfcdcc;
     --secondaryColor: #27201e;
+    --specialColor: #2596be;
   }
 
   [data-theme='dark'] {
@@ -26,6 +27,7 @@ const GlobalStyles = createGlobalStyle`
     --mainColor: #fff;
     --secondary: #363434;
     --secondaryColor: #000;
+    --specialColor: #2596be;
   }
   html {
     
@@ -52,21 +54,24 @@ const GlobalStyles = createGlobalStyle`
     font-weight: normal;
   }
   h2 {
-    font-size: 1.75rem;
+    font-size: 2.25rem;
   }
   h3 {
-    font-size: 1.5rem;
+    font-size: 2rem;
   }
   h4 {
-    font-size: 1.25rem;
+    font-size: 1.75rem;
   }  
   h2, h3, h4 {
     font-family: RedHatText, serif;
     font-weight: normal;
   }
+  p {
+    font-size: 1.25rem;
+  }
   @media only screen and ${device.tablet} {
     h1 {
-      font-size: 8vw;
+      font-size: 6vw;
     }
     h2 {
       font-size: 2.5rem;

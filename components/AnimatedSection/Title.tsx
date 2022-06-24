@@ -13,19 +13,20 @@ const variants = {
     rotateZ: 25,
   },
   show: {
+    x: 0,
     y: 0,
     skew: [0, 5, 0],
     rotateZ: [0, 5, 0],
     transition: {
-      duration: 0.5,
+      duration: 0.8,
     },
   },
   hover: {
-    y: ['0%', '-100%'],
+    x: ['0%', '100%'],
     skew: [0, 5, 0],
     rotateZ: [0, 5, 0],
     transition: {
-      duration: 0.5,
+      duration: 0.8,
     },
   },
 };
@@ -38,7 +39,7 @@ export default function Title({ title, content = '' }: Props) {
       animate="show"
       whileTap="hover"
     >
-      <Content variants={variants} content={content !== '' ? content : title}>
+      <Content variants={variants} title={title} content={content}>
         {title}
       </Content>
     </Wrapper>
@@ -49,12 +50,15 @@ const Wrapper = styled(motion.div)`
   transform-style: preserve-3d;
   overflow: hidden;
 `;
-const Content = styled(motion.h1)<{ content: string }>`
+const Content = styled(motion.h1)<Props>`
+  text-transform: uppercase;
+  color: var(${(p) => (p.content !== '' ? '--specialColor' : '--mainColor')});
   :after {
-    content: '${({ content }) => content}';
+    content: '${(p) => (p.content !== '' ? p.content : p.title)}';
+    color: var(${(p) => (p.content !== '' ? '--mainColor' : '--specialColor')});
     position: absolute;
-    top: 100%;
-    left: 0;
-    color: var(--color-secondary);
+    top: 0;
+    right: 100%;
+    width: 100%;
   }
 `;
