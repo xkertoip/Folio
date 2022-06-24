@@ -58,6 +58,7 @@ const Wrapper = styled(motion.div)`
   z-index: 1;
   transition: max-width 2s;
   min-width: 50%;
+  will-change: transform, width;
   @media only screen and ${device.tablet} {
     right: 10%;
     min-width: unset;
