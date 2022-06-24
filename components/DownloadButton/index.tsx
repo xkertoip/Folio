@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { ReactNode } from 'react';
 import { device } from '../../styles/mediaQuery';
-import Pdf from '/assets/CV21.pdf';
+import Pdf from '/CV21.pdf';
 
 type Props = {
   children: ReactNode;
@@ -10,7 +10,7 @@ type Props = {
 
 export default function DownloadButton({ children, text }: Props) {
   return (
-    <Wrapper href={Pdf} target="_blank" download="CV_Piotr_Szczypka.pdf">
+    <Wrapper href="/CV21.pdf" target="_blank" download="CV_Piotr_Szczypka.pdf">
       <Icon>{children}</Icon>
 
       <h2>{text}</h2>

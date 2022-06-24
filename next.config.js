@@ -5,10 +5,16 @@ const nextConfig = {
   reactStrictMode: false,
   i18n,
   withImages,
-  webpack: (config, options) => {
+  webpack: (config) => {
     config.module.rules.push({
-      test: /\.pdf$/i,
+      test: /\.pdf$/,
       type: 'asset/source',
+      use: {
+        loader: 'file-loader',
+        options: {
+          name: '/public/CV21.pdf',
+        },
+      },
     });
 
     return config;
