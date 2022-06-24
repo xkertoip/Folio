@@ -175,11 +175,12 @@ const BackgroundChoiceText = styled.div`
 const Choice = styled.div`
   min-height: 100vh;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   position: relative;
 
   a {
     width: 100%;
+    height: 50vh;
     position: relative;
     text-align: center;
     display: flex;
@@ -188,6 +189,12 @@ const Choice = styled.div`
     transition-duration: 0.5s;
     font-size: 2rem;
     background-color: var(--background);
+  }
+  @media only screen and ${device.tablet} {
+    flex-direction: row;
+    a {
+      height: unset;
+    }
   }
 `;
 
