@@ -2,7 +2,6 @@ import { NextPage } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Layout from '../components/Layout';
 import React, { useState } from 'react';
-import FollowImage from '../components/ParallaxImage';
 import OnView from '../components/OnView';
 import AnimatedTitle from '../components/AnimatedSection';
 import styled from 'styled-components';
@@ -18,15 +17,9 @@ const images: string[] = [
 ];
 
 const About: NextPage = () => {
-  const [index, setIndex] = useState(0);
-
-  const handleIndex = (i: number) => {
-    setIndex(i);
-  };
   return (
     <Layout title={title} description={subtitle}>
-      <FollowImage index={index} array={images} />
-      <OnView setIndex={() => handleIndex(0)}>
+      <OnView>
         <AnimatedTitle
           title="Piotr Szczypka,"
           subtitle="Frontend developer"
@@ -34,7 +27,7 @@ const About: NextPage = () => {
         />
       </OnView>
       <Container>
-        <OnView setIndex={() => handleIndex(1)}>
+        <OnView>
           <h2>Cześć, jestem Piotrek!</h2>
           <p>
             Jestem frontend developerem, obecnie koduję w React, z
@@ -46,7 +39,7 @@ const About: NextPage = () => {
       </Container>
 
       <Container>
-        <OnView setIndex={() => handleIndex(2)}>
+        <OnView>
           <h2>Cześć, jestem Piotrek!</h2>
           <p>
             Jestem frontend developerem, obecnie koduję w React, z
