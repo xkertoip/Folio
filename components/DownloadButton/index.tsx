@@ -22,18 +22,13 @@ const Wrapper = styled.a`
   border: 1px solid var(--mainColor);
   width: 100%;
   padding: 2rem;
-  margin: 2rem 0;
   display: flex;
   justify-content: center;
   gap: 1rem;
   align-items: center;
-  max-width: 300px;
   :hover {
     background-color: var(--specialColor);
     transition: 0.5s;
-  }
-  @media only screen and ${device.tablet} {
-    max-width: unset;
   }
 `;
 

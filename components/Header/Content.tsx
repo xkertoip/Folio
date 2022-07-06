@@ -132,10 +132,10 @@ export default Content;
 
 const Wrapper = styled(motion.nav)`
   position: fixed;
-  bottom: 0;
+  top: 4rem;
   left: 0;
   width: 100%;
-  min-height: calc(100vh - 64px);
+  min-height: calc(100vh - 8rem);
   transform-origin: top center;
   background-color: var(--background);
   z-index: 10;
@@ -152,12 +152,13 @@ const Wrapper = styled(motion.nav)`
 
 const InnerBackground = styled(motion.div)`
   position: fixed;
-  bottom: 0;
+  top: 0;
   left: 0;
   width: 100%;
-  min-height: calc(100vh - 64px);
+  min-height: 100vh;
+  z-index: -1;
   transform-origin: top center;
-  background-color: var(--secondary);
+  background-color: var(--secondaryColor);
 `;
 
 const Navigation = styled(motion.ul)`

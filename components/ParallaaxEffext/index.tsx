@@ -5,37 +5,73 @@ import {
   useTransform,
   useViewportScroll,
 } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
 
 type Props = {
   array: string[];
+  reverse?: boolean;
 };
 
-export default function ParallaxEffect({ array }: Props) {
-  const { scrollYProgress } = useViewportScroll();
-  const physics = { damping: 25, mass: 1, stiffness: 75 };
-  const springLeft = useSpring(scrollYProgress, physics);
-  const transformLeft = useTransform(springLeft, [0, 1], ['-50%', '10%']);
-  const transformRight = useTransform(springLeft, [0, 1], ['0', '-50%']);
+export default function ParallaxEffect({ array, reverse }: Props) {
+  const [wrapperDim, setWrapperDim] = useState({
+    width: 0,
+    height: 0,
+    top: 0,
+    bottom: 0,
+    screen: 0,
+  });
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const { scrollY } = useViewportScroll();
+
+  const initial = wrapperDim.bottom - wrapperDim.screen;
+  const finish = wrapperDim.top;
+
+  const xRange = useTransform(
+    scrollY,
+    [initial, finish],
+    [0, -wrapperDim.width]
+  );
+  const xRangeReverse = useTransform(
+    scrollY,
+    [initial, finish],
+    [-wrapperDim.width, 0]
+  );
+  const x = useSpring(reverse ? xRangeReverse : xRange, {
+    stiffness: 30,
+    damping: 50,
+  });
+
+  useEffect(() => {
+    if (wrapperRef && wrapperRef.current) {
+      const element = wrapperRef.current;
+      const onResize = () => {
+        setWrapperDim({
+          width: element.clientWidth - window.innerWidth,
+          height: element.clientHeight,
+          screen: window.innerHeight,
+          top:
+            element.getBoundingClientRect().top + window.scrollY ||
+            window.pageYOffset,
+          bottom:
+            element.getBoundingClientRect().bottom + window.scrollY ||
+            window.pageYOffset,
+        });
+      };
+      onResize();
+      window.addEventListener('resize', onResize);
+      return () => window.removeEventListener('resize', onResize);
+    }
+  }, [wrapperRef]);
 
   return (
     <Wrapper>
-      <Line />
-      <Content style={{ x: transformLeft }}>
+      <Content style={{ x }} ref={wrapperRef} initial={{ x: 0 }}>
         <h1>
           {array.map((element, i) => {
             return <span key={i}> &nbsp;-&nbsp;{element}</span>;
           })}
         </h1>
       </Content>
-      <Line />
-      <Content style={{ x: transformRight }}>
-        <h1>
-          {array.reverse().map((element, i) => {
-            return <span key={i}> &nbsp;-&nbsp;{element}</span>;
-          })}
-        </h1>
-      </Content>
-      <Line />
     </Wrapper>
   );
 }
@@ -45,7 +81,7 @@ const Wrapper = styled.div`
   z-index: 1;
 `;
 const Content = styled(motion.div)`
-  display: flex;
+  display: inline-block;
   flex-direction: row;
   padding: 2rem;
   will-change: transform;
@@ -55,9 +91,4 @@ const Content = styled(motion.div)`
       white-space: nowrap;
     }
   }
-`;
-const Line = styled.div`
-  border-width: 1px 0 0;
-  border-style: solid;
-  border-color: var(--mainColor);
 `;

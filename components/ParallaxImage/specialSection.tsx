@@ -14,7 +14,7 @@ type Props = {
   array: string[];
 };
 
-function FollowImage({ index, array }: Props) {
+function ImageSection({ index, array }: Props) {
   const { scrollY, scrollYProgress } = useViewportScroll();
   const imageRef = useRef<HTMLDivElement>(null);
   const physics = { damping: 25, mass: 1, stiffness: 75 };
@@ -44,10 +44,10 @@ function FollowImage({ index, array }: Props) {
   );
 }
 
-export default FollowImage;
+export default ImageSection;
 
 const Wrapper = styled(motion.div)`
-  position: fixed;
+  position: absolute;
   top: 64px;
   width: 100%;
   margin: auto;
@@ -55,7 +55,7 @@ const Wrapper = styled(motion.div)`
   height: 100%;
   max-height: 60vh;
   max-width: calc(100% - 2rem);
-  z-index: 1;
+  z-index: 0;
   transition: max-width 2s;
   min-width: 50%;
   will-change: transform, width;

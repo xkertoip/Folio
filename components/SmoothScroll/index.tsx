@@ -44,7 +44,7 @@ function SmoothScroll({ children }: Props) {
 
   return (
     <>
-      <Wrapper ref={scrollRef} style={{ y: spring }}>
+      <Wrapper ref={scrollRef} style={{ y: spring }} layoutScroll>
         {children}
       </Wrapper>
       <div style={{ height: pageHeight }} />

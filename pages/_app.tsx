@@ -8,7 +8,6 @@ import Header from '../components/Header';
 import { AnimatePresence } from 'framer-motion';
 import CustomCursor from '../components/CustomCursor';
 import HeaderManager from '../components/Header/HeaderManager';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import SmoothScroll from '../components/SmoothScroll';
 
 declare const window: any;

@@ -1,36 +1,22 @@
-import React, { ReactNode, useEffect, useState } from 'react';
+import React, { ReactNode } from 'react';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
 import styled from 'styled-components';
 import { device } from '../../styles/mediaQuery';
+import { useInView } from 'react-intersection-observer';
+import useWindowDimensions from '../../utils/useWindowDimensions';
 
 type Props = {
   children?: ReactNode;
 };
 
-function getWindowDimensions() {
-  if (typeof window !== `undefined`) {
-    const { innerWidth: width, innerHeight: height } = window;
-    return {
-      width,
-      height,
-    };
-  } else
-    return {
-      width: 800,
-      height: 800,
-    };
-}
-
 export default function Perspective({ children }: Props) {
-  const [windowDimensions, setWindowDimensions] = useState(
-    getWindowDimensions()
-  );
+  const { width, height } = useWindowDimensions();
+  const [ref, inView] = useInView();
+  const x = useMotionValue(width / 2);
+  const y = useMotionValue(height / 2);
 
-  const x = useMotionValue(windowDimensions.width / 2);
-  const y = useMotionValue(windowDimensions.height / 2);
-
-  const rotateX = useTransform(y, [0, windowDimensions.height], [10, -10]);
-  const rotateY = useTransform(x, [0, windowDimensions.width], [10, -10]);
+  const rotateX = useTransform(y, [0, height], [10, -10]);
+  const rotateY = useTransform(x, [0, width], [10, -10]);
 
   const handlePosition = (e: React.MouseEvent<HTMLDivElement>) => {
     window.requestAnimationFrame(() => handlePosition);
@@ -39,26 +25,21 @@ export default function Perspective({ children }: Props) {
     y.set(e.clientY - rect.top);
   };
   const handleLeave = (): void => {
-    x.set(windowDimensions.width / 2);
-    y.set(windowDimensions.height / 2);
+    x.set(width / 2);
+    y.set(height / 2);
   };
 
-  useEffect(() => {
-    function handleResize() {
-      setWindowDimensions(getWindowDimensions());
-    }
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
   return (
-    <motion.section onMouseMove={handlePosition} onMouseLeave={handleLeave}>
+    <motion.div
+      onMouseMove={handlePosition}
+      onMouseLeave={handleLeave}
+      ref={ref}
+    >
       <Content>
         <Container
           style={{
-            rotateX: rotateX,
-            rotateY: rotateY,
+            rotateX: inView ? rotateX : 0,
+            rotateY: inView ? rotateY : 0,
             transitionDuration: '0.8s',
             transitionTimingFunction: 'linear',
           }}
@@ -66,7 +47,7 @@ export default function Perspective({ children }: Props) {
           {children}
         </Container>
       </Content>
-    </motion.section>
+    </motion.div>
   );
 }
 

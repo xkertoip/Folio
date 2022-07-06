@@ -6,32 +6,28 @@ import {
   useViewportScroll,
   motion,
   useTransform,
-  useMotionValue,
 } from 'framer-motion';
 import { device } from '../../styles/mediaQuery';
-import mailImage from '/images/mail.svg';
+
 import Image from 'next/image';
+import useWindowDimensions from '../../utils/useWindowDimensions';
 
 type Props = {
-  href: string;
+  link: string;
   children?: ReactNode;
+  image: string;
 };
 
-function getWindowDimensions() {
-  if (typeof window !== `undefined`) {
-    const { innerWidth: width, innerHeight: height } = window;
-    return {
-      width,
-      height,
-    };
-  } else
-    return {
-      width: 800,
-      height: 800,
-    };
-}
+const variantsText = {
+  hidden: {
+    opacity: 1,
+  },
+  show: {
+    opacity: 0,
+  },
+};
 
-const variants = {
+const variantsImage = {
   hidden: {
     scale: 0,
   },
@@ -49,18 +45,50 @@ const variants = {
   },
 };
 
-export default function CircleButton({ children, href }: Props) {
-  const [windowDimensions, setWindowDimensions] = useState(
-    getWindowDimensions()
-  );
-  const x = useMotionValue(windowDimensions.width / 2);
-  const y = useMotionValue(windowDimensions.height / 2);
-
-  const { scrollYProgress } = useViewportScroll();
+export default function CircleButton({ children, link, image }: Props) {
+  const { height, width } = useWindowDimensions();
+  const [wrapperDim, setWrapperDim] = useState({
+    top: 0,
+    height: 0,
+  });
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const physicsOutline = { damping: 25, mass: 1, stiffness: 75 };
+
+  const { scrollY } = useViewportScroll();
+
+  const initial = wrapperDim.top - height;
+  const final = wrapperDim.top + wrapperDim.height;
+
+  const yRange = useTransform(
+    scrollY,
+    [initial, final],
+    [wrapperDim.height, -wrapperDim.height]
+  );
+  const outlineY = useSpring(yRange, { stiffness: 100, damping: 50 });
+  const textY = useSpring(yRange, { stiffness: 150, damping: 50 });
+
+  useEffect(() => {
+    if (wrapperRef && wrapperRef.current) {
+      const wrapper = wrapperRef.current;
+      const onResize = () => {
+        setWrapperDim({
+          top:
+            wrapper.getBoundingClientRect().top + window.scrollY ||
+            window.pageYOffset,
+          height: wrapper.clientHeight,
+        });
+      };
+      onResize();
+      window.addEventListener('resize', onResize);
+      return () => window.removeEventListener('resize', onResize);
+    }
+  }, [wrapperRef]);
+
+  /*const x = useMotionValue(windowDimensions.width / 2);
+  const y = useMotionValue(windowDimensions.height / 2);*/
+
+  /*const physicsOutline = { damping: 25, mass: 1, stiffness: 75 };
   const springOutline = useSpring(scrollYProgress, physicsOutline);
-  const transformOutline = useTransform(springOutline, [0, 1], ['-25%', '25%']);
+  const transformOutline = useTransform(springOutline, [0, 1], ['-55%', '55%']);
   const positionX = useTransform(
     x,
     [0, windowDimensions.width],
@@ -90,24 +118,24 @@ export default function CircleButton({ children, href }: Props) {
 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  }, []);*/
 
   return (
     <Wrapper
       ref={wrapperRef}
-      onMouseMove={handlePosition}
-      onMouseLeave={handleLeave}
+      /*      onMouseMove={handlePosition}
+      onMouseLeave={handleLeave}*/
     >
-      <Link href={href}>
+      <Link href={link}>
         <motion.a whileHover="show" initial="hidden">
-          <motion.div style={{ y: positionY, x: positionX }}>
+          <motion.div style={{ y: textY }} variants={variantsText}>
             {children}
           </motion.div>
-          <CircleOutline />
-          <HiddenCircle variants={variants}>
-            <HiddenImage>
+          <CircleOutline style={{ y: outlineY }} />
+          <HiddenCircle variants={variantsImage}>
+            <HiddenImage style={{ y: textY }}>
               <Image
-                src={mailImage}
+                src={image}
                 alt="mail"
                 layout="responsive"
                 objectFit="contain"
@@ -166,14 +194,14 @@ const HiddenCircle = styled(motion.div)`
   right: 0;
   left: 0;
   bottom: 0;
-  background-color: var(--specialColor);
+  background-color: transparent;
   border-radius: 50%;
   overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
 `;
-const HiddenImage = styled.div`
+const HiddenImage = styled(motion.div)`
   width: 40%;
   height: 40%;
 `;

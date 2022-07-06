@@ -2,7 +2,7 @@ import { NextPage } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Layout from '../components/Layout';
 import React, { useState } from 'react';
-import FollowImage from '../components/FollowImage';
+import FollowImage from '../components/ParallaxImage';
 import OnView from '../components/OnView';
 import AnimatedTitle from '../components/AnimatedSection';
 import styled from 'styled-components';
