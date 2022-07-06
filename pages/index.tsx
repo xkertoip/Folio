@@ -8,14 +8,16 @@ import Image from 'next/image';
 import OnView from '../components/OnView';
 import { device } from '../styles/mediaQuery';
 import SocialMedia from '../components/SocialMedia';
-import FollowImage from '../components/FollowImage';
 import CircleButton from '../components/CircleButton';
 import Perspective from '../components/Perspective';
 import Title from '../components/AnimatedSection/Title';
 import { useTranslation } from 'next-i18next';
 import ParallaxEffect from '../components/ParallaaxEffext';
 import DownloadButton from '../components/DownloadButton';
-
+import mailImage from '/images/mail.svg';
+import ImageSection from '../components/ParallaxImage';
+import SpecialSection from '../components/ParallaxImage/specialSection';
+import ParallaxImage from '../components/ParallaxImage';
 const backgroundImage = require('/images/home_background.jpg');
 const downloadImage = require('/images/download.svg');
 const prev = require('/images/prev.svg');
@@ -41,18 +43,17 @@ const Home: NextPage = () => {
 
   return (
     <Layout title={title} description={subtitle}>
-      <FollowImage index={0} array={array} />
-      <Perspective>
-        <OnView>
-          <Title title="Piotr Szczypka," />
-          {subtitle ? (
-            <Title title="Frontend developer" content="Web Developer" />
-          ) : null}
-          <SocialMedia />
-        </OnView>
-      </Perspective>
       <section>
-        <Description>
+        <Perspective>
+          <OnView>
+            <Title title="Piotr Szczypka," />
+            {subtitle ? (
+              <Title title="Frontend developer" content="Web Developer" />
+            ) : null}
+            <SocialMedia />
+          </OnView>
+        </Perspective>
+        <ParallaxImage image={backgroundImage}>
           <OnView>
             <h2>Cześć, tu Piotrek!</h2>
             <p>
@@ -62,26 +63,33 @@ const Home: NextPage = () => {
               przez roboty.
             </p>
           </OnView>
-          <OnView>
-            <h4>{t(`cvText`)}</h4>
-            <DownloadButton text={t(`download`)}>
-              <Image
-                src={downloadImage}
-                alt="download"
-                objectFit="contain"
-                layout="responsive"
-              />
-            </DownloadButton>
-          </OnView>
-
+          <div>
+            <OnView>
+              <h3>{t(`cvText`)}</h3>
+            </OnView>
+            <OnView>
+              <DownloadButton text={t(`download`)}>
+                <Image
+                  src={downloadImage}
+                  alt="download"
+                  objectFit="contain"
+                  layout="responsive"
+                />
+              </DownloadButton>
+            </OnView>
+          </div>
           {/*  <Slider array={projectsData} />*/}
-        </Description>
+        </ParallaxImage>
       </section>
+      <Line />
       <ParallaxEffect array={parallaxArray} />
+      <Line />
+      <ParallaxEffect array={parallaxArray} reverse={true} />
+      <Line />
       <section>
         <OnView>
-          <CircleButton href="/contact">
-            <h4>{t(`mailWelcome`)}</h4>
+          <CircleButton link="/contact" image={mailImage}>
+            <h3>{t(`mailWelcome`)}</h3>
             <p>{t(`mailTitle`)}</p>
             <p>{t(`mailSubtitle`)}</p>
           </CircleButton>
@@ -145,11 +153,6 @@ const Wrapper = styled.div`
     justify-content: center;
   }
 `;
-const Description = styled(Wrapper)`
-  @media only screen and ${device.tablet} {
-    width: 50%;
-  }
-`;
 const BackgroundChoice = styled.div`
   width: 100%;
   height: 100%;
@@ -196,6 +199,13 @@ const Choice = styled.div`
       height: unset;
     }
   }
+`;
+
+const Line = styled.div`
+  border-width: 1px 0 0;
+  border-style: solid;
+  border-color: var(--mainColor);
+  position: relative;
 `;
 
 export const getStaticProps = async ({ locale }: { locale: string }) => ({

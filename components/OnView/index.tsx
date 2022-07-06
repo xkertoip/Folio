@@ -12,10 +12,10 @@ const variants = {
   show: {
     opacity: 1,
     y: 0,
-    transition: { duration: 1 },
+    transition: { duration: 0.5 },
     staggerChildren: 0.3,
   },
-  hidden: { opacity: 0, y: '10vh' },
+  hidden: { opacity: 0, y: 50 },
 };
 
 function OnView({ children, setIndex }: Props) {

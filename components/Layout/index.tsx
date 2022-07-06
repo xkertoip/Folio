@@ -48,6 +48,7 @@ export default Layout;
 
 const Wrapper = styled(motion.div)`
   position: relative;
+  isolation: isolate;
   :before,
   :after {
     content: '';
