@@ -15,9 +15,11 @@ import { useTranslation } from 'next-i18next';
 import ParallaxEffect from '../components/ParallaaxEffext';
 import DownloadButton from '../components/DownloadButton';
 import mailImage from '/images/mail.svg';
-import ImageSection from '../components/ParallaxImage';
-import SpecialSection from '../components/ParallaxImage/specialSection';
 import ParallaxImage from '../components/ParallaxImage';
+import Slider from '../components/Slider';
+import { projectsData } from '../public/projectData';
+import { Container, Description, Section } from '../components/Containers';
+import Footer from '../components/Footer';
 const backgroundImage = require('/images/home_background.jpg');
 const downloadImage = require('/images/download.svg');
 const prev = require('/images/prev.svg');
@@ -26,7 +28,6 @@ const aboutBackground = require('/images/pesrpsective.jpeg');
 const projectsBackground = require('/images/code.jpg');
 const title = "Hello, I'm Piotr 👋";
 const subtitle = "I'm a frontend developer from Poland";
-const array = [backgroundImage];
 
 const Home: NextPage = () => {
   const { t } = useTranslation('common');
@@ -43,57 +44,58 @@ const Home: NextPage = () => {
 
   return (
     <Layout title={title} description={subtitle}>
-      <section>
+      <ParallaxImage image={backgroundImage}>
         <Perspective>
-          <OnView>
+          <Container>
             <Title title="Piotr Szczypka," />
             {subtitle ? (
               <Title title="Frontend developer" content="Web Developer" />
             ) : null}
             <SocialMedia />
-          </OnView>
+          </Container>
         </Perspective>
-        <ParallaxImage image={backgroundImage}>
-          <OnView>
-            <h2>Cześć, tu Piotrek!</h2>
-            <p>
-              Jestem frontend developerem, obecnie koduję w React, z
-              wykorzystaniem frameworka Next.js, do budowania stron
-              wykorzystujących SSR w celu podniesienia rezultatów wyszukiwania
-              przez roboty.
-            </p>
-          </OnView>
+        <Description>
+          <h2>Cześć, tu Piotrek!</h2>
+          <p>
+            Jestem frontend developerem, obecnie koduję w React, z
+            wykorzystaniem frameworka Next.js, do budowania stron
+            wykorzystujących SSR w celu podniesienia rezultatów wyszukiwania
+            przez roboty.
+          </p>
           <div>
-            <OnView>
-              <h3>{t(`cvText`)}</h3>
-            </OnView>
-            <OnView>
-              <DownloadButton text={t(`download`)}>
-                <Image
-                  src={downloadImage}
-                  alt="download"
-                  objectFit="contain"
-                  layout="responsive"
-                />
-              </DownloadButton>
-            </OnView>
+            <h4>{t(`cvText`)}</h4>
+
+            <DownloadButton text={t(`download`)}>
+              <Image
+                src={downloadImage}
+                alt="download"
+                layout="responsive"
+                objectFit="cover"
+                objectPosition="top center"
+              />
+            </DownloadButton>
           </div>
-          {/*  <Slider array={projectsData} />*/}
-        </ParallaxImage>
-      </section>
-      <Line />
-      <ParallaxEffect array={parallaxArray} />
-      <Line />
-      <ParallaxEffect array={parallaxArray} reverse={true} />
-      <Line />
+        </Description>
+
+        {/*  <Slider array={projectsData} />*/}
+      </ParallaxImage>
+      <Section>
+        <Line />
+        <ParallaxEffect array={parallaxArray} />
+        <Line />
+        <ParallaxEffect array={parallaxArray} reverse={true} />
+        <Line />
+      </Section>
+
       <section>
-        <OnView>
-          <CircleButton link="/contact" image={mailImage}>
-            <h3>{t(`mailWelcome`)}</h3>
-            <p>{t(`mailTitle`)}</p>
-            <p>{t(`mailSubtitle`)}</p>
-          </CircleButton>
-        </OnView>
+        <Slider array={projectsData} />
+      </section>
+      <section>
+        <CircleButton link="/contact" image={mailImage}>
+          <h3>{t(`mailWelcome`)}</h3>
+          <p>{t(`mailTitle`)}</p>
+          <p>{t(`mailSubtitle`)}</p>
+        </CircleButton>
       </section>
       <section
         style={{
@@ -101,7 +103,8 @@ const Home: NextPage = () => {
           zIndex: 2,
         }}
       >
-        <Choice>
+        <Footer link="about" />
+        {/*<Choice>
           <Link href="/about">
             <a>
               <BackgroundChoiceText>
@@ -133,7 +136,7 @@ const Home: NextPage = () => {
               </BackgroundChoice>
             </a>
           </Link>
-        </Choice>
+        </Choice>*/}
       </section>
     </Layout>
   );
@@ -202,9 +205,9 @@ const Choice = styled.div`
 `;
 
 const Line = styled.div`
-  border-width: 1px 0 0;
+  border-width: 2px 0 0;
   border-style: solid;
-  border-color: var(--mainColor);
+  border-color: var(--main);
   position: relative;
 `;
 
