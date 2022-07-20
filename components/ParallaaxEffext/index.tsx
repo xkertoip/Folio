@@ -5,7 +5,9 @@ import {
   useTransform,
   useViewportScroll,
 } from 'framer-motion';
-import { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
+import useWindowDimensions from '../../utils/useWindowDimensions';
+import useElementProperties from '../../utils/useElementProperties';
 
 type Props = {
   array: string[];
@@ -13,55 +15,31 @@ type Props = {
 };
 
 export default function ParallaxEffect({ array, reverse }: Props) {
-  const [wrapperDim, setWrapperDim] = useState({
-    width: 0,
-    height: 0,
-    top: 0,
-    bottom: 0,
-    screen: 0,
-  });
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const { elementHeight, elementTop, elementWidth } = useElementProperties({
+    wrapperRef,
+  });
+  const { windowWidth, windowHeight } = useWindowDimensions();
+
   const { scrollY } = useViewportScroll();
 
-  const initial = wrapperDim.bottom - wrapperDim.screen;
-  const finish = wrapperDim.top;
+  const initial = elementTop + elementHeight - windowHeight;
+  const finish = elementTop;
 
   const xRange = useTransform(
     scrollY,
     [initial, finish],
-    [0, -wrapperDim.width]
+    [0, -elementWidth + windowWidth]
   );
   const xRangeReverse = useTransform(
     scrollY,
     [initial, finish],
-    [-wrapperDim.width, 0]
+    [-elementWidth + windowWidth, 0]
   );
   const x = useSpring(reverse ? xRangeReverse : xRange, {
-    stiffness: 30,
-    damping: 50,
+    stiffness: 50,
+    damping: 30,
   });
-
-  useEffect(() => {
-    if (wrapperRef && wrapperRef.current) {
-      const element = wrapperRef.current;
-      const onResize = () => {
-        setWrapperDim({
-          width: element.clientWidth - window.innerWidth,
-          height: element.clientHeight,
-          screen: window.innerHeight,
-          top:
-            element.getBoundingClientRect().top + window.scrollY ||
-            window.pageYOffset,
-          bottom:
-            element.getBoundingClientRect().bottom + window.scrollY ||
-            window.pageYOffset,
-        });
-      };
-      onResize();
-      window.addEventListener('resize', onResize);
-      return () => window.removeEventListener('resize', onResize);
-    }
-  }, [wrapperRef]);
 
   return (
     <Wrapper>

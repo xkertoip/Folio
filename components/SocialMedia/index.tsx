@@ -52,7 +52,6 @@ export default function SocialMedia() {
 }
 
 const Wrapper = styled.div`
-  margin: 0.5rem 0.5rem 4rem;
   display: flex;
   position: relative;
   flex-direction: row;

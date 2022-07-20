@@ -11,7 +11,7 @@ import { device } from '../../styles/mediaQuery';
 
 type Props = {
   index: number;
-  array: string[];
+  array: [];
 };
 
 function ImageSection({ index, array }: Props) {

@@ -19,6 +19,9 @@ const GlobalStyles = createGlobalStyle`
     --secondary: #cfcdcc;
     --secondaryColor: #27201e;
     --specialColor: #2596be;
+
+
+    
   }
 
   [data-theme='dark'] {
@@ -30,11 +33,10 @@ const GlobalStyles = createGlobalStyle`
     --specialColor: #2596be;
   }
   html {
-    
+
   }
   body {
     color: var(--mainColor);
-    overflow-x: hidden;
     scroll-behavior: smooth;
     background-color: var(--background);
   }
@@ -43,8 +45,6 @@ const GlobalStyles = createGlobalStyle`
   a {
     color: var(--mainColor);
     text-decoration: none;
-
-   
   }
   h1 {
     font-size: 14vw;
@@ -54,21 +54,22 @@ const GlobalStyles = createGlobalStyle`
     font-weight: normal;
   }
   h2 {
-    font-size: 2.25rem;
+    font-size: 2rem;
   }
   h3 {
-    font-size: 2rem;
-    margin: 1rem 0;
+    font-size: 1.75rem;
   }
   h4 {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
   }  
   h2, h3, h4 {
     font-family: RedHatText, serif;
     font-weight: normal;
+    margin: 0.5rem 0;
   }
   p {
     font-size: 1.25rem;
+    margin: 1rem 0;
   }
   @media only screen and ${device.tablet} {
     h1 {
@@ -83,6 +84,10 @@ const GlobalStyles = createGlobalStyle`
     h4 {
       font-size: 2rem;
     }
+    h2, h3, h4 {
+      margin: 1rem 0;
+    }
+    
   }
   button {
     border:none;
@@ -106,35 +111,10 @@ const GlobalStyles = createGlobalStyle`
     padding: 0;
   }
   section{
-    overflow: hidden;
   }
   
 
-  ::-webkit-scrollbar {
-    width: 7px;
-    margin:33px;
-    padding:30px;
-    position:absolute;
-    transform: translateX(-10px);
-  }
 
-  ::-webkit-scrollbar-track {
-    box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-    display: none;
-    margin:15px;
-  }
-
-  ::-webkit-scrollbar-thumb {
-    background-color: darkgrey;
-    border-radius: 10px;
-    margin:15px;
-    padding:10px;
-    position: absolute;
-    transform: translateX(10px);
-    left:-10px;
-    right:10px;
-
-  }
 `;
 
 export default GlobalStyles;

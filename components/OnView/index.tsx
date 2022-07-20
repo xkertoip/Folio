@@ -30,7 +30,6 @@ function OnView({ children, setIndex }: Props) {
       }
     } else {
       control.start('hidden');
-      console.log('hidden');
     }
   }, [control, inView]);
   return (

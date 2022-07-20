@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import Link from 'next/link';
-import React, { ReactNode, useEffect, useRef, useState } from 'react';
+import React, { ReactNode, useRef } from 'react';
 import {
   useSpring,
   useViewportScroll,
@@ -10,12 +10,13 @@ import {
 import { device } from '../../styles/mediaQuery';
 
 import Image from 'next/image';
-import useWindowDimensions from '../../utils/useWindowDimensions';
+import useElementProperties from '../../utils/useElementProperties';
 
 type Props = {
   link: string;
   children?: ReactNode;
   image: string;
+  offset?: number;
 };
 
 const variantsText = {
@@ -45,43 +46,22 @@ const variantsImage = {
   },
 };
 
-export default function CircleButton({ children, link, image }: Props) {
-  const { height, width } = useWindowDimensions();
-  const [wrapperDim, setWrapperDim] = useState({
-    top: 0,
-    height: 0,
-  });
+export default function CircleButton({
+  children,
+  link,
+  image,
+  offset = 64,
+}: Props) {
   const wrapperRef = useRef<HTMLDivElement>(null);
-
+  const { elementTop } = useElementProperties({ wrapperRef });
   const { scrollY } = useViewportScroll();
 
-  const initial = wrapperDim.top - height;
-  const final = wrapperDim.top + wrapperDim.height;
+  const initial = elementTop - offset;
+  const final = elementTop + offset;
 
-  const yRange = useTransform(
-    scrollY,
-    [initial, final],
-    [wrapperDim.height, -wrapperDim.height]
-  );
-  const outlineY = useSpring(yRange, { stiffness: 100, damping: 50 });
-  const textY = useSpring(yRange, { stiffness: 150, damping: 50 });
-
-  useEffect(() => {
-    if (wrapperRef && wrapperRef.current) {
-      const wrapper = wrapperRef.current;
-      const onResize = () => {
-        setWrapperDim({
-          top:
-            wrapper.getBoundingClientRect().top + window.scrollY ||
-            window.pageYOffset,
-          height: wrapper.clientHeight,
-        });
-      };
-      onResize();
-      window.addEventListener('resize', onResize);
-      return () => window.removeEventListener('resize', onResize);
-    }
-  }, [wrapperRef]);
+  const yRange = useTransform(scrollY, [initial, final], [-offset, offset]);
+  const outlineY = useSpring(yRange, { damping: 25, mass: 1, stiffness: 75 });
+  const textY = useSpring(yRange, { damping: 25, mass: 1, stiffness: 75 });
 
   /*const x = useMotionValue(windowDimensions.width / 2);
   const y = useMotionValue(windowDimensions.height / 2);*/
@@ -139,6 +119,7 @@ export default function CircleButton({ children, link, image }: Props) {
                 alt="mail"
                 layout="responsive"
                 objectFit="contain"
+                objectPosition="top center"
               />
             </HiddenImage>
           </HiddenCircle>
@@ -149,11 +130,12 @@ export default function CircleButton({ children, link, image }: Props) {
 }
 
 const Wrapper = styled(motion.div)`
-  padding: 4rem 0;
+  padding: 8rem 0;
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
+  z-index: 1;
   a {
     position: relative;
     width: 100%;
@@ -179,7 +161,6 @@ const Wrapper = styled(motion.div)`
     height: 100%;
   }
   @media only screen and ${device.tablet} {
-    padding: 8rem 0;
     a {
       max-width: 30vw;
       min-height: 30vw;
@@ -212,9 +193,9 @@ const CircleOutline = styled(motion.div)`
   right: 0;
   bottom: 0;
   border-radius: 50%;
-  border-style: solid;
-  border-width: 1px;
-  border-color: var(--mainColor);
   will-change: transform;
+  background-color: var(--background);
   z-index: -1;
+  box-shadow: 0 2px 2px -1px rgb(37 150 190 / 20%),
+    0 4px 2px 0 rgb(37 150 190 / 14%), 0 1px 4px 0 rgb(37 150 190);
 `;

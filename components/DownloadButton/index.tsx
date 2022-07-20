@@ -19,9 +19,13 @@ export default function DownloadButton({ children, text }: Props) {
 }
 
 const Wrapper = styled.a`
-  border: 1px solid var(--mainColor);
+  box-shadow: 0 2px 4px -1px rgb(0 0 0 / 20%), 0 4px 5px 0 rgb(0 0 0 / 14%),
+    0 1px 10px 0 rgb(0 0 0 / 12%);
+  background-color: var(--background);
+  border-top: 2px solid var(--specialColor);
+  margin: 1rem 0 0;
   width: 100%;
-  padding: 2rem;
+  padding: 1rem;
   display: flex;
   justify-content: center;
   gap: 1rem;

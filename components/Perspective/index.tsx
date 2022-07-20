@@ -1,22 +1,23 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useEffect } from 'react';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
 import styled from 'styled-components';
 import { device } from '../../styles/mediaQuery';
-import { useInView } from 'react-intersection-observer';
 import useWindowDimensions from '../../utils/useWindowDimensions';
+import useDeviceDetect from '../../utils/useDeviceDetect';
+import { Container } from '../Containers';
 
 type Props = {
   children?: ReactNode;
 };
 
 export default function Perspective({ children }: Props) {
-  const { width, height } = useWindowDimensions();
-  const [ref, inView] = useInView();
-  const x = useMotionValue(width / 2);
-  const y = useMotionValue(height / 2);
+  const { windowHeight, windowWidth } = useWindowDimensions();
+  const { isMobile } = useDeviceDetect();
+  const x = useMotionValue(windowWidth / 2);
+  const y = useMotionValue(windowHeight / 2);
 
-  const rotateX = useTransform(y, [0, height], [10, -10]);
-  const rotateY = useTransform(x, [0, width], [10, -10]);
+  const rotateX = useTransform(y, [0, windowHeight], [10, -10]);
+  const rotateY = useTransform(x, [0, windowWidth], [10, -10]);
 
   const handlePosition = (e: React.MouseEvent<HTMLDivElement>) => {
     window.requestAnimationFrame(() => handlePosition);
@@ -25,34 +26,38 @@ export default function Perspective({ children }: Props) {
     y.set(e.clientY - rect.top);
   };
   const handleLeave = (): void => {
-    x.set(width / 2);
-    y.set(height / 2);
+    x.set(windowWidth / 2);
+    y.set(windowHeight / 2);
   };
 
+  if (!isMobile) {
+    return (
+      <motion.div onMouseMove={handlePosition} onMouseLeave={handleLeave}>
+        <Wrapper>
+          <Content
+            style={{
+              rotateX: rotateX,
+              rotateY: rotateY,
+              transitionDuration: '0.8s',
+              transitionTimingFunction: 'linear',
+            }}
+          >
+            {children}
+          </Content>
+        </Wrapper>
+      </motion.div>
+    );
+  }
   return (
-    <motion.div
-      onMouseMove={handlePosition}
-      onMouseLeave={handleLeave}
-      ref={ref}
-    >
-      <Content>
-        <Container
-          style={{
-            rotateX: inView ? rotateX : 0,
-            rotateY: inView ? rotateY : 0,
-            transitionDuration: '0.8s',
-            transitionTimingFunction: 'linear',
-          }}
-        >
-          {children}
-        </Container>
-      </Content>
+    <motion.div>
+      <Wrapper as={Container}>
+        <Content>{children}</Content>
+      </Wrapper>
     </motion.div>
   );
 }
 
-const Content = styled(motion.div)`
-  padding: 4rem 1rem 1rem;
+const Wrapper = styled(motion.div)`
   min-height: 100vh;
   will-change: transform;
   display: flex;
@@ -64,12 +69,14 @@ const Content = styled(motion.div)`
   mix-blend-mode: inherit;
   z-index: 10;
   @media only screen and ${device.tablet} {
-    padding: 64px 10% 1rem;
     justify-content: center;
   }
 `;
 
-const Container = styled(motion.div)`
+const Content = styled(motion.div)`
   transform-style: preserve-3d;
   will-change: transform;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 `;
