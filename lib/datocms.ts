@@ -1,29 +1,32 @@
-import { GraphQLClient } from 'graphql-request';
-import { RequestProps, Project } from './types';
+import { RequestProps } from './types';
+import tiny from 'tiny-json-http';
 
-export const request = ({ query, variables }: RequestProps) => {
-  const client = new GraphQLClient(`https://graphql.datocms.com/`, {
+export async function request({ query, variables, preview }: RequestProps) {
+  let endpoint = 'https://graphql.datocms.com';
+
+  if (process.env.NEXT_DATOCMS_ENVIRONMENT) {
+    endpoint += `/environments/${process.env.NEXT_DATOCMS_ENVIRONMENT}`;
+  }
+
+  if (preview) {
+    endpoint += `/preview`;
+  }
+
+  const { body } = await tiny.post({
+    url: endpoint,
     headers: {
       authorization: `Bearer ${process.env.NEXT_DATOCMS_API_TOKEN}`,
     },
+    data: {
+      query,
+      variables,
+    },
   });
-  return client.request(query, variables);
-};
 
-export async function getAllProjects(): Promise<Project[]> {
-  const ALL_PROJECTS_QUERY = `
-query ALL_PROJECTS_QUERY {
-   allProjects {
-    projectInfo
-    slug
-    projectTitle
-    projectAdds
-    projectId
+  if (body.errors) {
+    console.error('Ouch! The query has some errors!');
+    throw body.errors;
   }
-}
-`;
-  const data = await request({
-    query: ALL_PROJECTS_QUERY,
-  });
-  return data?.allProjects;
+
+  return body.data;
 }

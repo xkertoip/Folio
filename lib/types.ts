@@ -5,10 +5,11 @@ export type RequestProps = {
 };
 
 export type Project = {
-  projectInfo: string;
-  coverImage?: any;
-  excerpt?: string;
-  projectId: number;
+  title: string;
+  image: string;
+  description?: string;
+  adds: number;
   slug: string;
-  projectTitle: string;
+  technology: string;
+  introduction: string;
 };
