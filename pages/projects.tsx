@@ -1,21 +1,24 @@
-import { GetServerSideProps, NextPage } from 'next';
-
 import styled from 'styled-components';
-import { projectsData } from '../public/projectData';
 import Layout from '../components/Layout';
-import { getAllProjects } from '../lib/datocms';
+import { getAllProjects, request } from '../lib/datocms';
 import { Project } from '../lib/types';
 import React from 'react';
+import { GetStaticProps } from 'next';
+import Link from 'next/link';
 const title = "Hello, I'm Piotr 👋";
 const subtitle = "I'm a frontend developer from Poland";
 
-const Projects: React.FC<{ allProjects: Project[] }> = ({ allProjects }) => {
+const Projects = ({ allProjects }: { allProjects: Project[] }) => {
   const sortedArray = allProjects?.sort((a, b) => a.projectId - b.projectId);
   return (
     <Layout title={title} description={subtitle}>
       <div>
-        {sortedArray?.map(({ slug, projectId }, i) => (
-          <Wrapper key={i}>{slug}</Wrapper>
+        {sortedArray?.map(({ slug, projectId, projectInfo }, i) => (
+          <Wrapper key={i}>
+            <Link href={slug}>{slug}</Link>
+            <div>{projectId}</div>
+            <div>{projectInfo}</div>
+          </Wrapper>
         ))}
       </div>
       <ButtonContainer>
@@ -46,9 +49,24 @@ const Button = styled.button`
   color: white;
 `;
 
-export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
-  const allProjects = await getAllProjects();
-  console.log(locale, allProjects);
+export const getStaticProps: GetStaticProps = async (context) => {
+  const formattedLocale = context.locale?.split('-')[0];
+  const ALL_PROJECTS_QUERY = `
+query ALL_PROJECTS_QUERY {
+   allProjects {
+    projectInfo(locale: ${formattedLocale})
+    slug
+    projectTitle
+    projectAdds
+    projectId
+  }
+}
+  
+   `;
+  const data = await request({
+    query: ALL_PROJECTS_QUERY,
+  });
+  const allProjects = data?.allProjects;
   return {
     props: {
       allProjects,

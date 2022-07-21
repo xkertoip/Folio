@@ -5,7 +5,7 @@ export type RequestProps = {
 };
 
 export type Project = {
-  content?: string;
+  projectInfo: string;
   coverImage?: any;
   excerpt?: string;
   projectId: number;

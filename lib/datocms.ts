@@ -13,14 +13,17 @@ export const request = ({ query, variables }: RequestProps) => {
 export async function getAllProjects(): Promise<Project[]> {
   const ALL_PROJECTS_QUERY = `
 query ALL_PROJECTS_QUERY {
-  allProjects {
+   allProjects {
+    projectInfo
     slug
+    projectTitle
+    projectAdds
+    projectId
   }
 }
 `;
   const data = await request({
     query: ALL_PROJECTS_QUERY,
-    variables: { limit: 10 },
   });
   return data?.allProjects;
 }
