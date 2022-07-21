@@ -6,6 +6,7 @@ import { useContext } from 'react';
 import { MenuContext } from './HeaderManager';
 import { useTranslation } from 'next-i18next';
 import { device } from '../../styles/mediaQuery';
+import i18n from '../../lib/i18n';
 
 const menu = [
   { title: 'Home', path: '/' },
@@ -25,14 +26,14 @@ function List() {
   const { t } = useTranslation('common');
   return (
     <>
-      {menu.map((item, index) => (
+      {menu.map(({ path, title }, index) => (
         <ListItem
           key={index}
           variants={variants}
           onClick={setOpenMenu}
-          active={router.pathname === item.path ? 'active' : 'disable'}
+          active={router.pathname === path ? 'active' : 'disable'}
         >
-          <Link href={item.path}>{t(`${item.title}`)}</Link>
+          <Link href={path}>{t(`${title}`)}</Link>
         </ListItem>
       ))}
     </>
