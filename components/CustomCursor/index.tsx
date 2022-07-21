@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import useDeviceDetect from '../../utils/useDeviceDetect';
 
@@ -20,14 +20,10 @@ const CustomCursor = ({ speed = 0.1 }) => {
     key: -1,
   });
 
-  const [visible, setVisibility] = useState(false);
-
   useEffect(() => {
     const handlePosition = (e: MouseEvent) => {
       const { clientX, clientY } = e;
       if (positionRef.current && mainCursor.current) {
-        if (!visible) setVisibility(true);
-
         const mouseX = clientX;
         const mouseY = clientY;
         positionRef.current.mouseX =
