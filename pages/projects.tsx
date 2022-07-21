@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import Layout from '../components/Layout';
-import { getAllProjects, request } from '../lib/datocms';
+import { request } from '../lib/datocms';
 import { Project } from '../lib/types';
 import React from 'react';
 import { GetStaticProps } from 'next';
