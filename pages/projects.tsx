@@ -10,11 +10,11 @@ const title = "Hello, I'm Piotr 👋";
 const subtitle = "I'm a frontend developer from Poland";
 
 const Projects: React.FC<{ allProjects: Project[] }> = ({ allProjects }) => {
-  const sortedArray = allProjects?.sort((a, b) => a.id - b.id);
+  const sortedArray = allProjects?.sort((a, b) => a.projectId - b.projectId);
   return (
     <Layout title={title} description={subtitle}>
       <div>
-        {sortedArray?.map(({ slug, id }, i) => (
+        {sortedArray?.map(({ slug, projectId }, i) => (
           <Wrapper key={i}>{slug}</Wrapper>
         ))}
       </div>
