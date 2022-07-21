@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { useQuerySubscription } from 'react-datocms';
 import Layout from '../components/Layout';
 import { request } from '../lib/datocms';
 import { Project } from '../lib/types';
@@ -8,16 +9,47 @@ import Link from 'next/link';
 const title = "Hello, I'm Piotr 👋";
 const subtitle = "I'm a frontend developer from Poland";
 
-const Projects = ({ allProjects }: { allProjects: Project[] }) => {
-  const sortedArray = allProjects?.sort((a, b) => a.projectId - b.projectId);
+export const getStaticProps: GetStaticProps = async ({ locale, preview }) => {
+  const formattedLocale = locale?.split('-')[0];
+  const graphqlRequest = {
+    query: `
+    {
+        allProjects {
+        introduction(locale: ${formattedLocale})
+        slug
+        title
+        }
+    }
+   `,
+    preview,
+  };
+  return {
+    props: {
+      subscription: preview
+        ? {
+            ...graphqlRequest,
+            initialData: await request(graphqlRequest),
+            token: process.env.NEXT_DATOCMS_API_TOKEN,
+          }
+        : {
+            enabled: false,
+            initialData: await request(graphqlRequest),
+          },
+    },
+  };
+};
+
+const Projects = ({ subscription }: any) => {
+  const {
+    data: { allProjects },
+  } = useQuerySubscription(subscription);
   return (
     <Layout title={title} description={subtitle}>
       <div>
-        {sortedArray?.map(({ slug, projectId, projectInfo }, i) => (
-          <Wrapper key={i}>
-            <Link href={slug}>{slug}</Link>
-            <div>{projectId}</div>
-            <div>{projectInfo}</div>
+        {allProjects?.map(({ title, introduction, slug }: Project) => (
+          <Wrapper key={title}>
+            <Link href={`/projects/${slug}`}>{title}</Link>
+            <div>{introduction}</div>
           </Wrapper>
         ))}
       </div>
@@ -48,28 +80,3 @@ const Button = styled.button`
   background-color: blue;
   color: white;
 `;
-
-export const getStaticProps: GetStaticProps = async (context) => {
-  const formattedLocale = context.locale?.split('-')[0];
-  const ALL_PROJECTS_QUERY = `
-query ALL_PROJECTS_QUERY {
-   allProjects {
-    projectInfo(locale: ${formattedLocale})
-    slug
-    projectTitle
-    projectAdds
-    projectId
-  }
-}
-  
-   `;
-  const data = await request({
-    query: ALL_PROJECTS_QUERY,
-  });
-  const allProjects = data?.allProjects;
-  return {
-    props: {
-      allProjects,
-    },
-  };
-};
