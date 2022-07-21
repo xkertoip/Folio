@@ -1,6 +1,5 @@
-import React, { ReactNode, useEffect } from 'react';
+import React, { ReactNode } from 'react';
 import { motion, useAnimation } from 'framer-motion';
-import { useInView } from 'react-intersection-observer';
 import styled from 'styled-components';
 
 type Props = {
@@ -18,22 +17,9 @@ const variants = {
   hidden: { opacity: 0, y: 50 },
 };
 
-function OnView({ children, setIndex }: Props) {
-  const control = useAnimation();
-  const [ref, inView] = useInView();
-
-  useEffect(() => {
-    if (inView) {
-      control.start('show');
-      if (setIndex) {
-        setIndex();
-      }
-    } else {
-      control.start('hidden');
-    }
-  }, [control, inView]);
+function OnView({ children }: Props) {
   return (
-    <Wrapper ref={ref} variants={variants} initial="hidden" animate={control}>
+    <Wrapper variants={variants} initial="hidden">
       {children}
     </Wrapper>
   );

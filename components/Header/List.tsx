@@ -6,7 +6,6 @@ import { useContext } from 'react';
 import { MenuContext } from './HeaderManager';
 import { useTranslation } from 'next-i18next';
 import { device } from '../../styles/mediaQuery';
-import i18n from '../../lib/i18n';
 
 const menu = [
   { title: 'Home', path: '/' },
