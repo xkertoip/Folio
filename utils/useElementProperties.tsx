@@ -12,9 +12,9 @@ export default function useElementProperties({ wrapperRef }: Props) {
   });
 
   useEffect(() => {
+    const element = wrapperRef.current;
     const getElementSize = () => {
-      if (wrapperRef && wrapperRef.current) {
-        const element = wrapperRef.current;
+      if (element) {
         const newElementTop =
           element.getBoundingClientRect().top + window.scrollY ||
           window.pageYOffset;

@@ -71,6 +71,7 @@ function Content() {
   const { openMenu } = useContext(MenuContext);
   const { theme, setTheme } = useTheme();
   const router = useRouter();
+  const currentPath = useRouter().asPath;
   return (
     <>
       <InnerBackground
@@ -99,7 +100,7 @@ function Content() {
         </Info>
         <Options variants={container}>
           <Link
-            href={router.pathname}
+            href={currentPath}
             locale={router.locale === 'en' ? 'pl' : 'en'}
           >
             <motion.a variants={item}>

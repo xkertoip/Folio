@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-import { Container } from '../Containers';
 import SocialMedia from '../SocialMedia';
 import Link from 'next/link';
 const next = require('/images/next.svg');
