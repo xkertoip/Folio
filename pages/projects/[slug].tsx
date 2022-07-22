@@ -62,7 +62,7 @@ query ProjectBySlug($slug: String) {
   };
 };
 
-const ProjectPage = ({ subscription, preview }: any) => {
+const ProjectPage = ({ subscription }: any) => {
   const {
     data: { project },
   } = useQuerySubscription(subscription);
