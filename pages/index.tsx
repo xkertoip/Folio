@@ -1,10 +1,9 @@
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { NextPage } from 'next';
+import { GetStaticProps, NextPage } from 'next';
 import Layout from '../components/Layout';
 import styled from 'styled-components';
 import React from 'react';
 import Image from 'next/image';
-import { device } from '../styles/mediaQuery';
 import SocialMedia from '../components/SocialMedia';
 import CircleButton from '../components/CircleButton';
 import Perspective from '../components/Perspective';
@@ -14,16 +13,28 @@ import ParallaxEffect from '../components/ParallaaxEffext';
 import DownloadButton from '../components/DownloadButton';
 import mailImage from '/images/mail.svg';
 import ParallaxImage from '../components/ParallaxImage';
-import Slider from '../components/Slider';
-import { projectsData } from '../public/projectData';
-import { Container, Description, Section } from '../components/Containers';
+import Slider, {
+  Slide,
+  ItemContent,
+  ImageContainer,
+  Description,
+} from '../components/Slider';
+import { Introduce, Section, TitleContainer } from '../components/Containers';
 import Footer from '../components/Footer';
+import { request } from '../lib/datocms';
+import { useQuerySubscription } from 'react-datocms';
+import { Project } from '../lib/types';
+import Link from 'next/link';
 const backgroundImage = require('/images/home_background.jpg');
 const downloadImage = require('/images/download.svg');
 const title = "Hello, I'm Piotr 👋";
 const subtitle = "I'm a frontend developer from Poland";
 
-const Home: NextPage = () => {
+const Home: NextPage = ({ subscription }: any) => {
+  const {
+    data: { allProjects },
+  } = useQuerySubscription(subscription);
+
   const { t } = useTranslation('common');
   const parallaxArray = [
     'React',
@@ -40,15 +51,15 @@ const Home: NextPage = () => {
     <Layout title={title} description={subtitle}>
       <ParallaxImage image={backgroundImage}>
         <Perspective>
-          <Container>
+          <TitleContainer>
             <Title title="Piotr Szczypka," />
             {subtitle ? (
               <Title title="Frontend developer" content="Web Developer" />
             ) : null}
             <SocialMedia />
-          </Container>
+          </TitleContainer>
         </Perspective>
-        <Description>
+        <Introduce>
           <h2>Cześć, tu Piotrek!</h2>
           <p>
             Jestem frontend developerem, obecnie koduję w React, z
@@ -69,9 +80,7 @@ const Home: NextPage = () => {
               />
             </DownloadButton>
           </div>
-        </Description>
-
-        {/*  <Slider array={projectsData} />*/}
+        </Introduce>
       </ParallaxImage>
       <Section>
         <Line />
@@ -82,7 +91,34 @@ const Home: NextPage = () => {
       </Section>
 
       <section>
-        <Slider array={projectsData} />
+        <Slider>
+          {allProjects?.map((project: Project) => (
+            <Slide key={project.title}>
+              <Link href={project.slug}>
+                <ItemContent>
+                  <ImageContainer>
+                    <Image
+                      src={backgroundImage}
+                      alt="project preview"
+                      objectFit="cover"
+                      layout="fill"
+                    />
+                  </ImageContainer>
+                  <Description>
+                    <h4>{project.title}</h4>
+                    <Line />
+                    <h3> {project.technology}</h3>
+                    <Line />
+                    <p>
+                      {project.introduction?.length > 10 &&
+                        project.introduction.slice(0, 45) + '...'}
+                    </p>
+                  </Description>
+                </ItemContent>
+              </Link>
+            </Slide>
+          ))}
+        </Slider>
       </section>
       <section>
         <CircleButton link="/contact" image={mailImage}>
@@ -98,105 +134,12 @@ const Home: NextPage = () => {
         }}
       >
         <Footer link="about" />
-        {/*<Choice>
-          <Link href="/about">
-            <a>
-              <BackgroundChoiceText>
-                <p>{t(`projects`)}</p> <Image src={prev} alt="prev" />
-              </BackgroundChoiceText>
-              <BackgroundChoice>
-                <Image
-                  src={projectsBackground}
-                  layout="fill"
-                  objectFit="cover"
-                  alt="about"
-                />
-              </BackgroundChoice>
-            </a>
-          </Link>
-          <Link href="/contact">
-            <a>
-              <BackgroundChoiceText>
-                <p>{t(`about`)}</p> <Image src={next} alt="next" />
-              </BackgroundChoiceText>
-
-              <BackgroundChoice>
-                <Image
-                  src={aboutBackground}
-                  layout="fill"
-                  objectFit="cover"
-                  alt="about"
-                />
-              </BackgroundChoice>
-            </a>
-          </Link>
-        </Choice>*/}
       </section>
     </Layout>
   );
 };
 
 export default Home;
-
-const Wrapper = styled.div`
-  position: relative;
-  display: flex;
-  gap: 2rem;
-  flex-direction: column;
-  z-index: 2;
-  padding: 4rem 1rem;
-  @media only screen and ${device.tablet} {
-    padding: 4rem 10%;
-    justify-content: center;
-  }
-`;
-const BackgroundChoice = styled.div`
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 1;
-  opacity: 0.2;
-  transition-duration: 0.8s;
-  :hover {
-    opacity: 0.6;
-  }
-`;
-const BackgroundChoiceText = styled.div`
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 2rem;
-`;
-const Choice = styled.div`
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-
-  a {
-    width: 100%;
-    height: 50vh;
-    position: relative;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition-duration: 0.5s;
-    font-size: 2rem;
-    background-color: var(--background);
-  }
-  @media only screen and ${device.tablet} {
-    flex-direction: row;
-    a {
-      height: unset;
-    }
-  }
-`;
 
 const Line = styled.div`
   border-width: 2px 0 0;
@@ -205,8 +148,34 @@ const Line = styled.div`
   position: relative;
 `;
 
-export const getStaticProps = async ({ locale }: { locale: string }) => ({
-  props: {
-    ...(await serverSideTranslations(locale, ['common', 'home'])),
-  },
-});
+export const getStaticProps: GetStaticProps = async ({ locale, preview }) => {
+  const formattedLocale = locale?.split('-')[0];
+  const graphqlRequest = {
+    query: `
+    {
+        allProjects {
+        introduction(locale: ${formattedLocale})
+        slug
+        title
+        }
+    }
+   `,
+    preview,
+  };
+
+  return {
+    props: {
+      ...(await serverSideTranslations(locale as string, ['common', 'home'])),
+      subscription: preview
+        ? {
+            ...graphqlRequest,
+            initialData: await request(graphqlRequest),
+            token: process.env.NEXT_DATOCMS_API_TOKEN,
+          }
+        : {
+            enabled: false,
+            initialData: await request(graphqlRequest),
+          },
+    },
+  };
+};

@@ -32,25 +32,23 @@ export default function Perspective({ children }: Props) {
 
   if (!isMobile) {
     return (
-      <motion.div onMouseMove={handlePosition} onMouseLeave={handleLeave}>
-        <Wrapper>
-          <Content
-            style={{
-              rotateX: rotateX,
-              rotateY: rotateY,
-              transitionDuration: '0.8s',
-              transitionTimingFunction: 'linear',
-            }}
-          >
-            {children}
-          </Content>
-        </Wrapper>
-      </motion.div>
+      <Wrapper onMouseMove={handlePosition} onMouseLeave={handleLeave}>
+        <Content
+          style={{
+            rotateX: rotateX,
+            rotateY: rotateY,
+            transitionDuration: '0.8s',
+            transitionTimingFunction: 'linear',
+          }}
+        >
+          {children}
+        </Content>
+      </Wrapper>
     );
   }
   return (
     <motion.div>
-      <Wrapper as={Container}>
+      <Wrapper>
         <Content>{children}</Content>
       </Wrapper>
     </motion.div>
@@ -58,25 +56,17 @@ export default function Perspective({ children }: Props) {
 }
 
 const Wrapper = styled(motion.div)`
-  min-height: 100vh;
   will-change: transform;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
   align-items: stretch;
   position: relative;
   perspective: 1000px;
   mix-blend-mode: inherit;
-  z-index: 10;
-  @media only screen and ${device.tablet} {
-    justify-content: center;
-  }
+  z-index: 1;
+  transform-style: preserve-3d;
 `;
 
 const Content = styled(motion.div)`
   transform-style: preserve-3d;
   will-change: transform;
   display: flex;
-  flex-direction: column;
-  gap: 2rem;
 `;

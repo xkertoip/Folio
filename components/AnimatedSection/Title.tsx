@@ -52,6 +52,7 @@ const Wrapper = styled(motion.div)`
 `;
 const Content = styled(motion.h1)<Props>`
   text-transform: uppercase;
+
   color: var(${(p) => (p.content !== '' ? '--specialColor' : '--mainColor')});
   :after {
     content: '${(p) => (p.content !== '' ? p.content : p.title)}';
