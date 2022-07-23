@@ -13,7 +13,7 @@ export default function Footer({ link }: Props) {
     <Wrapper>
       <Link href={`/${link}`}>
         <Content>
-          <span>{link}</span>
+          <h2>Explore more</h2>
 
           <Image src={next} alt="next" />
         </Content>

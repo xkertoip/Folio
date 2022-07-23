@@ -26,13 +26,18 @@ function List() {
   return (
     <>
       {menu.map(({ path, title }, index) => (
-        <ListItem
-          key={index}
-          variants={variants}
-          onClick={setOpenMenu}
-          active={router.pathname === path ? 'active' : 'disable'}
-        >
-          <Link href={path}>{t(`${title}`)}</Link>
+        <ListItem key={index} variants={variants} onClick={setOpenMenu}>
+          <Link href={path}>
+            <a
+              style={{
+                color: `var(${
+                  router.pathname === path ? '--main' : '--mainColor'
+                })`,
+              }}
+            >
+              {t(`${title}`)}
+            </a>
+          </Link>
         </ListItem>
       ))}
     </>
@@ -41,11 +46,8 @@ function List() {
 
 export default List;
 
-const ListItem = styled(motion.li)<{ active: string }>`
+const ListItem = styled(motion.li)`
   a {
-    color: var(
-      ${({ active }) => (active === 'active' ? '--main' : '--mainColor')}
-    );
     width: 100%;
     font-size: 2.5rem;
     padding: 0;

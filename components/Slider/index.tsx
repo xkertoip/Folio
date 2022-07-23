@@ -3,52 +3,17 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { device } from '../../styles/mediaQuery';
 import { motion } from 'framer-motion';
+import { Project } from '../../lib/types';
+import { ReactNode } from 'react';
 
-type Data = {
-  id: number;
-  name: string;
-  src: string;
-  href: string;
-  technology: string;
-  info: string;
-};
 type Props = {
-  array: Data[];
+  children: ReactNode;
 };
 
-export default function Slider({ array }: Props) {
-  const sortedArray = array.sort((a, b) => a.id - b.id);
-
+export default function Slider({ children }: Props) {
   return (
     <Wrapper>
-      <List role="list">
-        {sortedArray.map((element: Data) => (
-          <Item key={element.id}>
-            <Link href={element.href}>
-              <ItemContent>
-                <ImageContainer>
-                  <Image
-                    src={element.src}
-                    alt="project preview"
-                    objectFit="cover"
-                    layout="fill"
-                  />
-                </ImageContainer>
-                <Description>
-                  <h4>{element.name}</h4>
-                  <Line />
-                  <h3> {element.technology}</h3>
-                  <Line />
-                  <p>
-                    {element.info.length > 10 &&
-                      element.info.substring(0, 45) + '...'}
-                  </p>
-                </Description>
-              </ItemContent>
-            </Link>
-          </Item>
-        ))}
-      </List>
+      <List role="list">{children}</List>
     </Wrapper>
   );
 }
@@ -74,7 +39,7 @@ const List = styled(motion.div)`
   padding: 1rem;
 `;
 
-const Item = styled(motion.div)`
+export const Slide = styled(motion.div)`
   position: relative;
   display: flex;
   flex-direction: column;
@@ -88,11 +53,14 @@ const Item = styled(motion.div)`
     flex-direction: row;
   }
 `;
-const ItemContent = styled.a`
+export const ItemContent = styled.a`
   width: 70vw;
+  @media only screen and ${device.tablet} {
+    width: 300px;
+  }
 `;
 
-const ImageContainer = styled(motion.div)`
+export const ImageContainer = styled(motion.div)`
   width: 100%;
   height: 40vh;
   position: relative;
@@ -100,7 +68,7 @@ const ImageContainer = styled(motion.div)`
   }
 `;
 
-const Description = styled.div`
+export const Description = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 1rem;
