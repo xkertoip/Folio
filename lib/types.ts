@@ -6,7 +6,8 @@ export type RequestProps = {
 
 export type Project = {
   title: string;
-  image: string;
+  image: any;
+  id: number;
   description?: string;
   adds: number;
   slug: string;

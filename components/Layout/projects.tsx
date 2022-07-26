@@ -1,7 +1,6 @@
 import React, { ReactNode } from 'react';
 import { NextSeo } from 'next-seo';
 import { motion } from 'framer-motion';
-import SmoothScroll from '../SmoothScroll';
 import styled from 'styled-components';
 type Props = {
   children: ReactNode;
@@ -24,7 +23,7 @@ const variants = {
   },
 };
 
-function DefaultLayout({ children, title, description }: Props) {
+function ProjectsLayout({ children, title, description }: Props) {
   return (
     <>
       <NextSeo
@@ -32,24 +31,22 @@ function DefaultLayout({ children, title, description }: Props) {
         description={description}
         openGraph={{ title, description }}
       />
-      <SmoothScroll>
-        <Wrapper
-          variants={variants}
-          initial="hidden"
-          animate="enter"
-          exit="hidden"
-          transition={{ type: 'linear' }}
-        >
-          {children}
-        </Wrapper>
-      </SmoothScroll>
+      <Wrapper
+        variants={variants}
+        initial="hidden"
+        animate="enter"
+        exit="hidden"
+        transition={{ type: 'linear' }}
+      >
+        {children}
+      </Wrapper>
     </>
   );
 }
 
-export default DefaultLayout;
+export default ProjectsLayout;
 
-const Wrapper = styled(motion.main)`
+const Wrapper = styled(motion.div)`
   position: relative;
   isolation: isolate;
   :before,

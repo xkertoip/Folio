@@ -1,8 +1,8 @@
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { GetStaticProps, NextPage } from 'next';
+import { GetStaticProps } from 'next';
 import Layout from '../components/Layout';
 import styled from 'styled-components';
-import React from 'react';
+import React, { ReactElement } from 'react';
 import Image from 'next/image';
 import SocialMedia from '../components/SocialMedia';
 import CircleButton from '../components/CircleButton';
@@ -13,24 +13,20 @@ import ParallaxEffect from '../components/ParallaaxEffext';
 import DownloadButton from '../components/DownloadButton';
 import mailImage from '/images/mail.svg';
 import ParallaxImage from '../components/ParallaxImage';
-import Slider, {
-  Slide,
-  ItemContent,
-  ImageContainer,
-  Description,
-} from '../components/Slider';
 import { Introduce, Section, TitleContainer } from '../components/Containers';
 import Footer from '../components/Footer';
 import { request } from '../lib/datocms';
 import { useQuerySubscription } from 'react-datocms';
-import { Project } from '../lib/types';
-import Link from 'next/link';
+import Slider from '../components/Slider';
+import { AppLayoutProps } from 'next/app';
+import DefaultLayout from '../components/Layout';
+import { NextPageWithLayout } from './_app';
 const backgroundImage = require('/images/home_background.jpg');
 const downloadImage = require('/images/download.svg');
 const title = "Hello, I'm Piotr 👋";
 const subtitle = "I'm a frontend developer from Poland";
 
-const Home: NextPage = ({ subscription }: any) => {
+const Home: NextPageWithLayout = ({ subscription }: any) => {
   const {
     data: { allProjects },
   } = useQuerySubscription(subscription);
@@ -48,7 +44,7 @@ const Home: NextPage = ({ subscription }: any) => {
   ];
 
   return (
-    <Layout title={title} description={subtitle}>
+    <>
       <ParallaxImage image={backgroundImage}>
         <Perspective>
           <TitleContainer>
@@ -91,34 +87,7 @@ const Home: NextPage = ({ subscription }: any) => {
       </Section>
 
       <section>
-        <Slider>
-          {allProjects?.map((project: Project) => (
-            <Slide key={project.title}>
-              <Link href={project.slug}>
-                <ItemContent>
-                  <ImageContainer>
-                    <Image
-                      src={backgroundImage}
-                      alt="project preview"
-                      objectFit="cover"
-                      layout="fill"
-                    />
-                  </ImageContainer>
-                  <Description>
-                    <h4>{project.title}</h4>
-                    <Line />
-                    <h3> {project.technology}</h3>
-                    <Line />
-                    <p>
-                      {project.introduction?.length > 10 &&
-                        project.introduction.slice(0, 45) + '...'}
-                    </p>
-                  </Description>
-                </ItemContent>
-              </Link>
-            </Slide>
-          ))}
-        </Slider>
+        <Slider array={allProjects} />
       </section>
       <section>
         <CircleButton link="/contact" image={mailImage}>
@@ -135,10 +104,17 @@ const Home: NextPage = ({ subscription }: any) => {
       >
         <Footer link="about" />
       </section>
-    </Layout>
+    </>
   );
 };
 
+Home.getLayout = function getLayout(page: ReactElement) {
+  return (
+    <DefaultLayout title={title} description={subtitle}>
+      {page}
+    </DefaultLayout>
+  );
+};
 export default Home;
 
 const Line = styled.div`
@@ -156,8 +132,13 @@ export const getStaticProps: GetStaticProps = async ({ locale, preview }) => {
         allProjects {
         introduction(locale: ${formattedLocale})
         slug
-        title
-        }
+        id
+        image {
+      responsiveImage {
+        src
+      }
+    }
+    }
     }
    `,
     preview,
