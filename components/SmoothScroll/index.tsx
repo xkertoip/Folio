@@ -2,7 +2,6 @@ import React, {
   useRef,
   useState,
   useCallback,
-  useLayoutEffect,
   ReactNode,
   useEffect,
 } from 'react';
@@ -13,48 +12,38 @@ import {
   motion,
 } from 'framer-motion';
 import styled from 'styled-components';
+import useElementProperties from '../../utils/useElementProperties';
 
 type Props = {
   children: ReactNode;
 };
 
 function SmoothScroll({ children }: Props) {
-  const scrollRef = useRef(null);
-  const [pageHeight, setPageHeight] = useState(0);
-  const resizePageHeight = useCallback((entries: any) => {
-    for (let entry of entries) {
-      setPageHeight(entry.contentRect.height);
-    }
-  }, []);
-
-  useEffect(() => {
-    const resizeObserver = new ResizeObserver((entries) =>
-      resizePageHeight(entries)
-    );
-    if (scrollRef && scrollRef.current) {
-      resizeObserver.observe(scrollRef.current);
-      return () => resizeObserver.disconnect();
-    }
-  }, [scrollRef, resizePageHeight]);
+  const wrapperRef = useRef(null);
+  const { elementHeight } = useElementProperties({ wrapperRef });
 
   const { scrollY } = useViewportScroll();
-  const transform = useTransform(scrollY, [0, pageHeight], [0, -pageHeight]);
+  const transform = useTransform(
+    scrollY,
+    [0, elementHeight],
+    [0, -elementHeight]
+  );
   const physics = { damping: 15, mass: 0.27, stiffness: 55 };
   const spring = useSpring(transform, physics);
 
   return (
     <>
-      <Wrapper ref={scrollRef} style={{ y: spring }} layoutScroll>
+      <Wrapper ref={wrapperRef} style={{ y: spring }} layoutScroll>
         {children}
       </Wrapper>
-      <div style={{ height: pageHeight }} />
+      <div style={{ height: elementHeight }} />
     </>
   );
 }
 
 export default SmoothScroll;
 
-const Wrapper = styled(motion.main)`
+const Wrapper = styled(motion.div)`
   position: fixed;
   top: 0;
   left: 0;

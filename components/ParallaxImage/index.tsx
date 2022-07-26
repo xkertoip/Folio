@@ -22,8 +22,6 @@ export default function ParallaxImage({ children, image, offset = 80 }: Props) {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const { elementHeight, elementTop } = useElementProperties({ wrapperRef });
   const { scrollY } = useViewportScroll();
-  console.log(elementHeight);
-
   const initial = elementTop;
   const final = elementHeight / 2 - offset;
 

@@ -1,4 +1,11 @@
-import { AppProps } from 'next/app';
+import {
+  AppContext,
+  AppInitialProps,
+  AppLayoutProps,
+  AppProps,
+} from 'next/app';
+import type { NextComponentType, NextPage } from 'next';
+import { Component, ReactElement, ReactNode } from 'react';
 import '../styles/globals.css';
 import GlobalStyles from '../styles/globalStyles';
 import { ThemeProvider } from 'next-themes';
@@ -8,11 +15,19 @@ import Header from '../components/Header';
 import { AnimatePresence } from 'framer-motion';
 import CustomCursor from '../components/CustomCursor';
 import HeaderManager from '../components/Header/HeaderManager';
-import SmoothScroll from '../components/SmoothScroll';
 
 declare const window: any;
 
-function Folio({ Component, pageProps, router }: AppProps) {
+export type NextPageWithLayout = NextPage & {
+  getLayout?: (page: ReactElement) => ReactNode;
+};
+
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout;
+};
+
+const MyApp = ({ Component, pageProps, router }: AppPropsWithLayout) => {
+  const getLayout = Component.getLayout ?? ((page: ReactNode) => page);
   const url = `https://piotr.szczypka.com${router.route}`;
 
   return (
@@ -33,19 +48,16 @@ function Folio({ Component, pageProps, router }: AppProps) {
         <HeaderManager>
           <CustomCursor />
           <Header />
-
-          <SmoothScroll>
-            <AnimatePresence
-              exitBeforeEnter
-              onExitComplete={() => window.scrollTo(0, 0)}
-            >
-              <Component {...pageProps} cannonical={url} key={url} />
-            </AnimatePresence>
-          </SmoothScroll>
+          <AnimatePresence
+            exitBeforeEnter
+            onExitComplete={() => window.scrollTo(0, 0)}
+          >
+            {getLayout(<Component {...pageProps} cannonical={url} key={url} />)}
+          </AnimatePresence>
         </HeaderManager>
       </ThemeProvider>
     </>
   );
-}
+};
 
-export default appWithTranslation(Folio);
+export default appWithTranslation(MyApp);

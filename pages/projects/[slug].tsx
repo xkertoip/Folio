@@ -1,11 +1,13 @@
-import Layout from '../../components/Layout';
 const title = "Hello, I'm Piotr 👋";
 const subtitle = "I'm a frontend developer from Poland";
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { request } from '../../lib/datocms';
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { useQuerySubscription } from 'react-datocms';
 import { Project } from '../../lib/types';
+import { NextPageWithLayout } from '../_app';
+import ProjectsLayout from '../../components/Layout/projects';
+import Projects from '../projects';
 
 export const getStaticPaths: GetStaticPaths = async (context) => {
   const data = await request({ query: `{ allProjects { slug } }` });
@@ -62,17 +64,25 @@ query ProjectBySlug($slug: String) {
   };
 };
 
-const ProjectPage = ({ subscription }: any) => {
+const ProjectPage: NextPageWithLayout = ({ subscription }: any) => {
   const {
     data: { project },
   } = useQuerySubscription(subscription);
   return (
-    <Layout title={title} description={subtitle}>
+    <>
       <div>{project.title}</div>
       <div>{project.description}</div>
       <div>{project.adds}</div>
       <div>{project.technology}</div>
-    </Layout>
+    </>
+  );
+};
+
+ProjectPage.getLayout = function getLayout(page: ReactElement) {
+  return (
+    <ProjectsLayout title={title} description={subtitle}>
+      {page}
+    </ProjectsLayout>
   );
 };
 export default ProjectPage;

@@ -54,10 +54,10 @@ const GlobalStyles = createGlobalStyle`
     font-weight: normal;
   }
   h2 {
-    font-size: 2rem;
+    font-size: 3rem;
   }
   h3 {
-    font-size: 1.75rem;
+    font-size: 2rem;
   }
   h4 {
     font-size: 1.5rem;
@@ -68,21 +68,11 @@ const GlobalStyles = createGlobalStyle`
     margin: 0.5rem 0;
   }
   p {
-    font-size: 1.25rem;
     margin: 1rem 0;
   }
   @media only screen and ${device.tablet} {
     h1 {
       font-size: 6vw;
-    }
-    h2 {
-      font-size: 4rem;
-    }
-    h3 {
-      font-size: 3rem;
-    }
-    h4 {
-      font-size: 2rem;
     }
     h2, h3, h4 {
       margin: 1rem 0;

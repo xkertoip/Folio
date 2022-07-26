@@ -3,9 +3,13 @@ import { useQuerySubscription } from 'react-datocms';
 import Layout from '../components/Layout';
 import { request } from '../lib/datocms';
 import { Project } from '../lib/types';
-import React from 'react';
+import React, { ReactElement, ReactNode } from 'react';
 import { GetStaticProps } from 'next';
 import Link from 'next/link';
+import ProjectsLayout from '../components/Layout/projects';
+import { NextPageWithLayout } from './_app';
+import DefaultLayout from '../components/Layout';
+import Home from './index';
 const title = "Hello, I'm Piotr 👋";
 const subtitle = "I'm a frontend developer from Poland";
 
@@ -39,12 +43,12 @@ export const getStaticProps: GetStaticProps = async ({ locale, preview }) => {
   };
 };
 
-const Projects = ({ subscription }: any) => {
+const Projects: NextPageWithLayout = ({ subscription }: any) => {
   const {
     data: { allProjects },
   } = useQuerySubscription(subscription);
   return (
-    <Layout title={title} description={subtitle}>
+    <>
       <div>
         {allProjects?.map(({ title, introduction, slug }: Project) => (
           <Wrapper key={title}>
@@ -57,7 +61,15 @@ const Projects = ({ subscription }: any) => {
         <Button>Prev</Button>
         <Button>Next</Button>
       </ButtonContainer>
-    </Layout>
+    </>
+  );
+};
+
+Projects.getLayout = function getLayout(page: ReactElement) {
+  return (
+    <ProjectsLayout title={title} description={subtitle}>
+      {page}
+    </ProjectsLayout>
   );
 };
 export default Projects;
