@@ -11,12 +11,14 @@ type Props = {
 const variants = {
   hidden: {
     opacity: 0,
+    x: '100%',
     transition: {
       staggerChildren: 0.15,
     },
   },
   enter: {
     opacity: 1,
+    x: 0,
     transition: {
       staggerChildren: 0.15,
     },
@@ -46,23 +48,4 @@ function ProjectsLayout({ children, title, description }: Props) {
 
 export default ProjectsLayout;
 
-const Wrapper = styled(motion.div)`
-  position: relative;
-  isolation: isolate;
-  :before,
-  :after {
-    content: '';
-    width: 0.5px;
-    min-height: 100%;
-    background-color: var(--secondary);
-    position: fixed;
-    top: 0;
-    z-index: -1;
-  }
-  :before {
-    right: 15%;
-  }
-  :after {
-    right: 45%;
-  }
-`;
+const Wrapper = styled(motion.div)``;

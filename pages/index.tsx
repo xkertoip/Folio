@@ -96,14 +96,8 @@ const Home: NextPageWithLayout = ({ subscription }: any) => {
           <p>{t(`mailSubtitle`)}</p>
         </CircleButton>
       </section>
-      <section
-        style={{
-          position: 'relative',
-          zIndex: 2,
-        }}
-      >
-        <Footer link="about" />
-      </section>
+
+      <Footer link="about" />
     </>
   );
 };
