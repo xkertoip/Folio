@@ -2,7 +2,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticProps } from 'next';
 import Layout from '../components/Layout';
 import styled from 'styled-components';
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useContext } from 'react';
 import Image from 'next/image';
 import SocialMedia from '../components/SocialMedia';
 import CircleButton from '../components/CircleButton';

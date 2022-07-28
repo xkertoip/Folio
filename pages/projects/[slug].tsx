@@ -6,8 +6,7 @@ import React, { ReactElement } from 'react';
 import { useQuerySubscription } from 'react-datocms';
 import { Project } from '../../lib/types';
 import { NextPageWithLayout } from '../_app';
-import ProjectsLayout from '../../components/Layout/projects';
-import Projects from '../projects';
+import ProjectLayout from '../../components/Layout/project';
 
 export const getStaticPaths: GetStaticPaths = async (context) => {
   const data = await request({ query: `{ allProjects { slug } }` });
@@ -80,9 +79,9 @@ const ProjectPage: NextPageWithLayout = ({ subscription }: any) => {
 
 ProjectPage.getLayout = function getLayout(page: ReactElement) {
   return (
-    <ProjectsLayout title={title} description={subtitle}>
+    <ProjectLayout title={title} description={subtitle}>
       {page}
-    </ProjectsLayout>
+    </ProjectLayout>
   );
 };
 export default ProjectPage;

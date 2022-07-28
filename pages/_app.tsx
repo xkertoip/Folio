@@ -15,6 +15,7 @@ import Header from '../components/Header';
 import { AnimatePresence } from 'framer-motion';
 import CustomCursor from '../components/CustomCursor';
 import HeaderManager from '../components/Header/HeaderManager';
+import ProjectManager from '../components/ProjectContext';
 
 declare const window: any;
 
@@ -48,12 +49,16 @@ const MyApp = ({ Component, pageProps, router }: AppPropsWithLayout) => {
         <HeaderManager>
           <CustomCursor />
           <Header />
-          <AnimatePresence
-            exitBeforeEnter
-            onExitComplete={() => window.scrollTo(0, 0)}
-          >
-            {getLayout(<Component {...pageProps} cannonical={url} key={url} />)}
-          </AnimatePresence>
+          <ProjectManager>
+            <AnimatePresence
+              exitBeforeEnter
+              onExitComplete={() => window.scrollTo(0, 0)}
+            >
+              {getLayout(
+                <Component {...pageProps} cannonical={url} key={url} />
+              )}
+            </AnimatePresence>
+          </ProjectManager>
         </HeaderManager>
       </ThemeProvider>
     </>

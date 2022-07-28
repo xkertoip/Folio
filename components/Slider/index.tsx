@@ -1,10 +1,11 @@
 import styled from 'styled-components';
 import { device } from '../../styles/mediaQuery';
 import { motion } from 'framer-motion';
-import React from 'react';
+import React, { useContext } from 'react';
 import { Project } from '../../lib/types';
 import Link from 'next/link';
 import Image from 'next/image';
+import { ProjectContext } from '../ProjectContext';
 
 type Props = {
   array: [];
@@ -41,13 +42,15 @@ const variantsCircle = {
 };
 
 export default function Slider({ array }: Props) {
+  const { setCurrentProject } = useContext(ProjectContext);
+  const slideHandler = (index: number) => setCurrentProject(index);
   return (
     <Wrapper>
       <List role="list">
         {array?.map((project: Project) => (
           <Slide key={project.id} whileHover="hover" initial="leave">
             <Link href={`/projects/${project.slug}`}>
-              <ItemContent>
+              <ItemContent onClick={() => slideHandler(project.id)}>
                 <ImageContainer variants={variantsImage}>
                   <Image
                     src={project.image.responsiveImage.src}
