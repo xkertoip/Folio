@@ -13,6 +13,7 @@ import { motion } from 'framer-motion';
 const next = require('/images/next.svg');
 const prev = require('/images/prev.svg');
 import Image from 'next/image';
+import useWindowDimensions from '../utils/useWindowDimensions';
 const title = "Hello, I'm Piotr 👋";
 const subtitle = "I'm a frontend developer from Poland";
 
@@ -102,6 +103,7 @@ const Projects: NextPageWithLayout = ({ subscription }: any) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const [[transition, direction], setTransition] = useState([0, 0]);
   const [current, setCurrent] = useState(0);
+  const { windowHeight } = useWindowDimensions();
   const { elementHeight } = useElementProperties({
     wrapperRef,
   });
@@ -137,6 +139,7 @@ const Projects: NextPageWithLayout = ({ subscription }: any) => {
                   ref={wrapperRef}
                   style={{
                     backgroundImage: `url(${image.responsiveImage.src})`,
+                    height: windowHeight,
                   }}
                   animate={{
                     y: transition,
@@ -240,8 +243,8 @@ const ProjectTechnology = styled(motion.h2)`
 `;
 
 const ProjectWrapper = styled(motion.div)`
-  min-height: calc(100vh - 4rem);
   width: 100%;
+  height: 100vh;
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
