@@ -12,6 +12,7 @@ import flagPL from '/images/poland.svg';
 import flagUK from '/images/uk.svg';
 import light from '/images/light.svg';
 import dark from '/images/dark.svg';
+import useWindowDimensions from '../../utils/useWindowDimensions';
 
 const variants = {
   hidden: {
@@ -72,18 +73,25 @@ function Content() {
   const { theme, setTheme } = useTheme();
   const router = useRouter();
   const currentPath = useRouter().asPath;
+  const { windowHeight } = useWindowDimensions();
   return (
     <>
       <InnerBackground
         variants={background}
         initial="hidden"
         animate={openMenu ? 'show' : 'hidden'}
+        style={{
+          height: windowHeight,
+        }}
       />
 
       <Wrapper
         variants={variants}
         initial="hidden"
         animate={openMenu ? 'show' : 'hidden'}
+        style={{
+          height: windowHeight,
+        }}
       >
         <Navigation variants={container}>
           <List />
@@ -133,17 +141,16 @@ export default Content;
 
 const Wrapper = styled(motion.nav)`
   position: fixed;
-  top: 4rem;
   left: 0;
   width: 100%;
-  min-height: calc(100vh - 8rem);
+  height: calc(100vh - 4rem);
   transform-origin: top center;
   background-color: var(--background);
-  z-index: 10;
+  z-index: -1;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 0 16px;
+  padding: 4rem 1rem 0;
   @media only screen and ${device.tablet} {
     flex-direction: row;
     padding: 0 10%;
@@ -156,7 +163,7 @@ const InnerBackground = styled(motion.div)`
   top: 0;
   left: 0;
   width: 100%;
-  min-height: 100vh;
+  height: 100vh;
   z-index: -1;
   transform-origin: top center;
   background-color: var(--secondaryColor);
