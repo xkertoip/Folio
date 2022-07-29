@@ -123,7 +123,11 @@ const Projects: NextPageWithLayout = ({ subscription }: any) => {
 
   return (
     <>
-      <Wrapper>
+      <Wrapper
+        style={{
+          height: windowHeight,
+        }}
+      >
         <Content>
           {allProjects?.map(
             ({
@@ -219,8 +223,7 @@ export default Projects;
 const Wrapper = styled.div`
   overflow-y: hidden;
   width: 100%;
-  min-height: 100vh;
-  height: 100%;
+  height: 100vh;
   position: absolute;
   top: 0;
   left: 0;
