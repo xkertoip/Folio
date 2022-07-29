@@ -18,7 +18,6 @@ import Footer from '../components/Footer';
 import { request } from '../lib/datocms';
 import { useQuerySubscription } from 'react-datocms';
 import Slider from '../components/Slider';
-import { AppLayoutProps } from 'next/app';
 import DefaultLayout from '../components/Layout';
 import { NextPageWithLayout } from './_app';
 const backgroundImage = require('/images/home_background.jpg');

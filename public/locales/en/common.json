@@ -7,5 +7,7 @@
     "mailWelcome": "Hi !",
     "mailTitle": "Have I intrested you ?",
     "mailSubtitle": "Please contact me !",
-    "cvText": "Here is my CV"
+    "cvText": "Here is my CV",
+    "readMore": "Read More",
+    "back": "back"
 }
