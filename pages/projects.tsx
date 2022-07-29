@@ -1,17 +1,18 @@
 import styled from 'styled-components';
 import { useQuerySubscription } from 'react-datocms';
-import Layout from '../components/Layout';
 import { request } from '../lib/datocms';
 import { Project } from '../lib/types';
-import React, { ReactElement, ReactNode, useRef, useState } from 'react';
+import React, { ReactNode, useRef, useState } from 'react';
 import { GetStaticProps } from 'next';
-import Link from 'next/link';
 import ProjectsLayout from '../components/Layout/projects';
 import { NextPageWithLayout } from './_app';
 
 import { device } from '../styles/mediaQuery';
 import useElementProperties from '../utils/useElementProperties';
 import { motion } from 'framer-motion';
+const next = require('/images/next.svg');
+const prev = require('/images/prev.svg');
+import Image from 'next/image';
 const title = "Hello, I'm Piotr 👋";
 const subtitle = "I'm a frontend developer from Poland";
 
@@ -52,34 +53,22 @@ export const getStaticProps: GetStaticProps = async ({ locale, preview }) => {
     },
   };
 };
-
-export function range(initial: number, length: number, current: number) {
-  let x;
-  if (current > length - 1) {
-    x = current % length;
-    return x;
-  } else if (current < initial) {
-    if (length + (current % length) === length) {
-      x = (current % length) * -1;
-      return x;
-    } else {
-      x = length + (current % length);
-      return x;
-    }
-  } else {
-    x = current;
-    return x;
-  }
-}
-const variantsWrapper = {
+const variantsButton = {
   hidden: {
     opacity: 0,
-    transition: {
-      when: 'afterChildren',
-    },
   },
   show: {
     opacity: 1,
+  },
+};
+
+const variantsWrapper = {
+  hidden: {
+    opacity: 0,
+  },
+  show: {
+    opacity: 1,
+
     transition: {
       when: 'beforeChildren',
     },
@@ -90,6 +79,7 @@ const variantsText = {
     return {
       y: direction >= 0 ? '100%' : '-100%',
       opacity: 0,
+
       transition: {
         duration: 1,
       },
@@ -98,6 +88,7 @@ const variantsText = {
   show: {
     y: 0,
     opacity: 1,
+
     transition: {
       duration: 1,
     },
@@ -114,12 +105,18 @@ const Projects: NextPageWithLayout = ({ subscription }: any) => {
   const { elementHeight } = useElementProperties({
     wrapperRef,
   });
-  const currentIndex = range(0, allProjects.length, 0);
 
-  const handlePosition = (newDirection: number) => {
-    setTransition([transition + newDirection * elementHeight, newDirection]);
-    setCurrent(current - newDirection);
-    console.log(current);
+  const handleIncrease = () => {
+    if (current < allProjects.length - 1) {
+      setTransition([transition - elementHeight, -1]);
+      setCurrent(current + 1);
+    }
+  };
+  const handleDecrease = () => {
+    if (current > 0) {
+      setTransition([transition + elementHeight, 1]);
+      setCurrent(current - 1);
+    }
   };
 
   return (
@@ -135,7 +132,7 @@ const Projects: NextPageWithLayout = ({ subscription }: any) => {
               technology,
               order,
             }: Project) => (
-              <motion.div key={id}>
+              <div key={id}>
                 <ProjectWrapper
                   ref={wrapperRef}
                   style={{
@@ -149,19 +146,19 @@ const Projects: NextPageWithLayout = ({ subscription }: any) => {
                   }}
                 />
                 <ProjectContent
-                  variants={variantsWrapper}
-                  initial="hidden"
                   animate={current === order - 1 ? 'show' : 'hidden'}
+                  variants={variantsWrapper}
                 >
-                  <ProjectNumber>
-                    <ProjectTextMask>
+                  <div>
+                    <ProjectTextMask style={{ display: 'flex' }}>
+                      <h1>0</h1>
                       <motion.h1 variants={variantsText} custom={direction}>
                         {order}
                       </motion.h1>
                     </ProjectTextMask>
-                  </ProjectNumber>
+                  </div>
 
-                  <ProjectDescription>
+                  <div>
                     <ProjectTextMask>
                       <ProjectTechnology
                         variants={variantsText}
@@ -180,15 +177,27 @@ const Projects: NextPageWithLayout = ({ subscription }: any) => {
                         {introduction} <span>Read More</span>
                       </motion.p>
                     </ProjectTextMask>
-                  </ProjectDescription>
+                  </div>
                 </ProjectContent>
-              </motion.div>
+              </div>
             )
           )}
         </Content>
         <ButtonContainer>
-          <Button onClick={() => handlePosition(1)}>Prev</Button>
-          <Button onClick={() => handlePosition(-1)}>Next</Button>
+          <Button
+            variants={variantsButton}
+            animate={current > 0 ? 'show' : 'hidden'}
+            onClick={() => handleDecrease()}
+          >
+            <Image src={prev} alt="prev" />
+          </Button>
+          <Button
+            variants={variantsButton}
+            animate={current < allProjects.length - 1 ? 'show' : 'hidden'}
+            onClick={() => handleIncrease()}
+          >
+            <Image src={next} alt="next" />
+          </Button>
         </ButtonContainer>
       </Wrapper>
     </>
@@ -231,34 +240,50 @@ const ProjectTechnology = styled(motion.h2)`
 `;
 
 const ProjectWrapper = styled(motion.div)`
-  min-height: 100vh;
+  min-height: calc(100vh - 4rem);
   width: 100%;
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
   display: flex;
   justify-content: flex-end;
+  @media only screen and ${device.tablet} {
+    min-height: 100vh;
+  }
 `;
 const ProjectTextMask = styled.div`
   position: relative;
   overflow: hidden;
 `;
-const ProjectTitle = styled(motion.h1)``;
+const ProjectTitle = styled(motion.h1)`
+  text-align: right;
+  @media only screen and ${device.tablet} {
+    text-align: left;
+  }
+`;
 
 const ProjectContent = styled(motion.div)`
-  width: 100%;
   position: absolute;
-  margin-top: 4rem;
+  top: 0;
+  width: 100%;
   margin-bottom: 7rem;
   display: flex;
-  top: 4rem;
-  z-index: 2;
+  flex-direction: column;
+  margin-top: 4rem;
+  padding: 0 1rem;
+  @media only screen and ${device.tablet} {
+    flex-direction: row;
+  }
 `;
 const ProjectNumber = styled.div`
-  width: 50%;
+  @media only screen and ${device.tablet} {
+    width: 50%;
+  }
 `;
 const ProjectDescription = styled.div`
-  width: 50%;
+  @media only screen and ${device.tablet} {
+    width: 50%;
+  }
 `;
 const ButtonContainer = styled.div`
   position: absolute;
@@ -271,7 +296,9 @@ const ButtonContainer = styled.div`
 const Button = styled(motion.button)`
   width: 65px;
   height: 65px;
-  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background-color: transparent;
   box-shadow: 0 2px 4px -1px rgb(0 0 0 / 20%), 0 4px 5px 0 rgb(0 0 0 / 14%),
     0 1px 10px 0 rgb(0 0 0 / 12%);
