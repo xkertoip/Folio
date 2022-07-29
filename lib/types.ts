@@ -8,6 +8,7 @@ export type Project = {
   title: string;
   image: any;
   id: number;
+  order: number;
   description?: string;
   adds: number;
   slug: string;

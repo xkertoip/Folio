@@ -2,7 +2,6 @@ import React, { ReactNode } from 'react';
 import { NextSeo } from 'next-seo';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
-
 type Props = {
   children: ReactNode;
   title: string;
@@ -12,18 +11,21 @@ type Props = {
 const variants = {
   hidden: {
     opacity: 0,
-    x: '100%',
+    y: '100%',
+    transition: {
+      staggerChildren: 0.15,
+    },
   },
   enter: {
     opacity: 1,
-    x: 0,
+    y: 0,
     transition: {
-      duration: 1,
+      staggerChildren: 0.15,
     },
   },
 };
 
-function ProjectsLayout({ children, title, description }: Props) {
+function ProjectLayout({ children, title, description }: Props) {
   return (
     <>
       <NextSeo
@@ -47,6 +49,6 @@ function ProjectsLayout({ children, title, description }: Props) {
   );
 }
 
-export default ProjectsLayout;
+export default ProjectLayout;
 
 const Wrapper = styled(motion.div)``;
