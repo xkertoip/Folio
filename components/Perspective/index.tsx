@@ -1,23 +1,23 @@
-import React, { ReactNode, useEffect } from 'react';
+import React, { ReactNode } from 'react';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
 import styled from 'styled-components';
-import { device } from '../../styles/mediaQuery';
-import useWindowDimensions from '../../utils/useWindowDimensions';
 import useDeviceDetect from '../../utils/useDeviceDetect';
-import { Container } from '../Containers';
 
 type Props = {
   children?: ReactNode;
 };
 
 export default function Perspective({ children }: Props) {
-  const { windowHeight, windowWidth } = useWindowDimensions();
   const { isMobile } = useDeviceDetect();
-  const x = useMotionValue(windowWidth / 2);
-  const y = useMotionValue(windowHeight / 2);
+  // @ts-ignore
+  const x = useMotionValue(window.innerWidth / 2);
+  // @ts-ignore
+  const y = useMotionValue(window.innerHeight / 2);
 
-  const rotateX = useTransform(y, [0, windowHeight], [10, -10]);
-  const rotateY = useTransform(x, [0, windowWidth], [10, -10]);
+  // @ts-ignore
+  const rotateX = useTransform(y, [0, window.innerHeight], [10, -10]);
+  // @ts-ignore
+  const rotateY = useTransform(x, [0, window.innerHeight], [10, -10]);
 
   const handlePosition = (e: React.MouseEvent<HTMLDivElement>) => {
     window.requestAnimationFrame(() => handlePosition);
@@ -26,8 +26,10 @@ export default function Perspective({ children }: Props) {
     y.set(e.clientY - rect.top);
   };
   const handleLeave = (): void => {
-    x.set(windowWidth / 2);
-    y.set(windowHeight / 2);
+    // @ts-ignore
+    x.set(window.innerWidth / 2);
+    // @ts-ignore
+    y.set(window.innerHeight / 2);
   };
 
   if (!isMobile) {

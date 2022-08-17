@@ -1,10 +1,4 @@
-import React, {
-  useRef,
-  useState,
-  useCallback,
-  ReactNode,
-  useEffect,
-} from 'react';
+import React, { useRef, ReactNode } from 'react';
 import {
   useViewportScroll,
   useTransform,
@@ -18,28 +12,29 @@ type Props = {
   children: ReactNode;
 };
 
-function SmoothScroll({ children }: Props) {
-  const wrapperRef = useRef(null);
-  const { elementHeight } = useElementProperties({ wrapperRef });
-
+const SmoothScroll = ({ children }: Props) => {
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const element = useElementProperties({ wrapperRef });
   const { scrollY } = useViewportScroll();
+
   const transform = useTransform(
     scrollY,
-    [0, elementHeight],
-    [0, -elementHeight]
+    [0, element.elementHeight],
+    [0, -element.elementHeight]
   );
+
   const physics = { damping: 15, mass: 0.27, stiffness: 55 };
   const spring = useSpring(transform, physics);
 
   return (
     <>
-      <Wrapper ref={wrapperRef} style={{ y: spring }} layoutScroll>
+      <Wrapper ref={wrapperRef} style={{ y: spring }}>
         {children}
       </Wrapper>
-      <div style={{ height: elementHeight }} />
+      <div style={{ height: element.elementHeight }} />
     </>
   );
-}
+};
 
 export default SmoothScroll;
 

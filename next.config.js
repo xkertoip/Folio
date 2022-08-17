@@ -2,7 +2,7 @@
 
 const { i18n } = require('./next-i18next.config');
 const nextConfig = {
-  reactStrictMode: false,
+  reactStrictMode: true,
   i18n,
   env: {
     NEXT_DATOCMS_API_TOKEN: process.env.NEXT_DATOCMS_API_TOKEN,

@@ -6,35 +6,33 @@ import {
   useViewportScroll,
 } from 'framer-motion';
 import { useRef } from 'react';
-import useWindowDimensions from '../../utils/useWindowDimensions';
 import useElementProperties from '../../utils/useElementProperties';
+import useWindowDimensions from '../../utils/useWindowDimensions';
 
 type Props = {
   array: string[];
   reverse?: boolean;
 };
 
-export default function ParallaxEffect({ array, reverse }: Props) {
+const ParallaxEffect = ({ array, reverse }: Props) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const { elementHeight, elementTop, elementWidth } = useElementProperties({
+  const element = useElementProperties({
     wrapperRef,
   });
-  const { windowWidth, windowHeight } = useWindowDimensions();
 
   const { scrollY } = useViewportScroll();
 
-  const initial = elementTop + elementHeight - windowHeight;
-  const finish = elementTop;
-
+  const initial = element.elementTop - window.innerHeight;
+  const finish = element.elementTop;
   const xRange = useTransform(
     scrollY,
     [initial, finish],
-    [0, -elementWidth + windowWidth]
+    [0, -element.elementWidth + window.innerWidth]
   );
   const xRangeReverse = useTransform(
     scrollY,
     [initial, finish],
-    [-elementWidth + windowWidth, 0]
+    [-element.elementWidth + window.innerWidth, 0]
   );
   const x = useSpring(reverse ? xRangeReverse : xRange, {
     stiffness: 50,
@@ -43,30 +41,24 @@ export default function ParallaxEffect({ array, reverse }: Props) {
 
   return (
     <Wrapper>
-      <Content style={{ x }} ref={wrapperRef} initial={{ x: 0 }}>
-        <h1>
-          {array.map((element, i) => {
-            return <span key={i}> &nbsp;-&nbsp;{element}</span>;
-          })}
-        </h1>
+      <Content style={{ x }} ref={wrapperRef}>
+        {array.map((element, i) => {
+          return <h1 key={i}> &nbsp;-&nbsp;{element}</h1>;
+        })}
       </Content>
     </Wrapper>
   );
-}
+};
+
+export default ParallaxEffect;
 
 const Wrapper = styled.div`
   position: relative;
   z-index: 1;
 `;
 const Content = styled(motion.div)`
-  display: inline-block;
+  display: inline-flex;
   flex-direction: row;
-  padding: 2rem;
   will-change: transform;
-
-  h1 {
-    span {
-      white-space: nowrap;
-    }
-  }
+  padding: 0 2rem;
 `;

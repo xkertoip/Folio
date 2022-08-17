@@ -60,7 +60,7 @@ export default function ParallaxImage({ children, image, offset = 80 }: Props) {
 }
 
 const Wrapper = styled.div``;
-const TextContainer = styled.div`
+/*const TextContainer = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
@@ -68,7 +68,7 @@ const TextContainer = styled.div`
   @media only screen and ${device.tablet} {
     max-width: 45%;
   }
-`;
+`;*/
 const ImageContainer = styled(motion.div)`
   position: fixed;
   width: 100%;

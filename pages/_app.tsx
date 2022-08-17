@@ -17,8 +17,6 @@ import CustomCursor from '../components/CustomCursor';
 import HeaderManager from '../components/Header/HeaderManager';
 import ProjectManager from '../components/ProjectContext';
 
-declare const window: any;
-
 export type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
 };

@@ -1,11 +1,17 @@
-import { RefObject, useEffect, useState } from 'react';
+import { RefObject, useEffect, useLayoutEffect, useState } from 'react';
 
 type Props = {
   wrapperRef: RefObject<HTMLDivElement>;
 };
 
+interface Size {
+  elementTop: number;
+  elementHeight: number;
+  elementWidth: number;
+}
+
 export default function useElementProperties({ wrapperRef }: Props) {
-  const [elementProperties, setElementProperties] = useState({
+  const [elementProperties, setElementProperties] = useState<Size>({
     elementTop: 0,
     elementHeight: 0,
     elementWidth: 0,
@@ -13,23 +19,20 @@ export default function useElementProperties({ wrapperRef }: Props) {
 
   useEffect(() => {
     const element = wrapperRef.current;
-    const getElementSize = () => {
+    const onResize = () => {
       if (element) {
-        const newElementTop =
-          element.getBoundingClientRect().top + window.scrollY ||
-          window.pageYOffset;
-        const newElementWidth = element.clientWidth;
-        const newElementHeight = element.clientHeight;
         setElementProperties({
-          elementTop: newElementTop,
-          elementWidth: newElementWidth,
-          elementHeight: newElementHeight,
+          elementTop:
+            element.getBoundingClientRect().top + window.scrollY ||
+            window.pageYOffset,
+          elementWidth: element.clientWidth,
+          elementHeight: element.clientHeight,
         });
       }
     };
-    getElementSize();
-    window.addEventListener('resize', getElementSize);
-    return () => window.removeEventListener('resize', getElementSize);
+    onResize();
+    window.addEventListener('resize', () => onResize());
+    return () => window.removeEventListener('resize', () => onResize());
   }, [wrapperRef]);
 
   return elementProperties;

@@ -4,7 +4,7 @@ import { device } from './mediaQuery';
 const GlobalStyles = createGlobalStyle`
   * {
     margin:0;
-    font-family: RedHatText, serif;
+    font-family: RedHatText, sans-serif;;
     cursor: none;
   }
   *, *:before, *:after {
@@ -48,10 +48,6 @@ const GlobalStyles = createGlobalStyle`
   }
   h1 {
     font-size: 14vw;
-    line-height: 1.3;
-    margin: 0;
-    font-family: BodoniModa, serif;
-    font-weight: normal;
   }
   h2 {
     font-size: 3rem;
@@ -62,17 +58,20 @@ const GlobalStyles = createGlobalStyle`
   h4 {
     font-size: 1.5rem;
   }  
-  h2, h3, h4 {
-    font-family: RedHatText, serif;
+  h1, h2, h3, h4 {
     font-weight: normal;
     margin: 0.5rem 0;
+    font-family: BodoniModa, sans-serif;
   }
   p {
     margin: 1rem 0;
+    @media only screen and ${device.tablet} {
+      font-size: 1.25rem;
+    }
   }
   @media only screen and ${device.tablet} {
     h1 {
-      font-size: 6vw;
+      font-size: 5rem;
     }
     h2, h3, h4 {
       margin: 1rem 0;
@@ -93,14 +92,13 @@ const GlobalStyles = createGlobalStyle`
     color: #fff;
   }
   p, button, input {
-    font-family: RedHatText, serif;
-    color: var(--mainColor)
+    font-family: RedHatText, sans-serif;;
+    color: var(--mainColor);
+    
   }
   ul {
     list-style: none;
     padding: 0;
-  }
-  section{
   }
   
 
