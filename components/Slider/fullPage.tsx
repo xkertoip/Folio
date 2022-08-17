@@ -1,12 +1,11 @@
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { Project } from '../../lib/types';
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { device } from '../../styles/mediaQuery';
 import Image from 'next/image';
 const next = require('/images/next.svg');
 const prev = require('/images/prev.svg');
-import useElementProperties from '../../utils/useElementProperties';
 import useWindowDimensions from '../../utils/useWindowDimensions';
 import { useTranslation } from 'next-i18next';
 
@@ -18,41 +17,72 @@ const variantsButton = {
     opacity: 1,
   },
 };
-
 const variantsWrapper = {
   hidden: {
-    opacity: 0,
+    transition: {
+      duration: 1,
+      when: 'afterChildren',
+    },
   },
-  show: {
+  visible: {
+    transition: {
+      duration: 1,
+      when: 'afterChildren',
+    },
+  },
+};
+const variantContent = {
+  hidden: {
+    opacity: 0,
+    zIndex: -1,
+    transition: {
+      when: 'afterChildren',
+    },
+  },
+  visible: {
+    opacity: 1,
+    zIndex: 1,
+  },
+};
+
+const variantsView = {
+  open: {
     opacity: 1,
     zIndex: 1,
     transition: {
-      when: 'beforeChildren',
+      when: 'afterChildren',
     },
+  },
+  close: {
+    opacity: 0,
+    zIndex: -1,
   },
 };
 const variantsText = {
   hidden: (direction: number) => {
     return {
       y: direction >= 0 ? '100%' : '-100%',
-      opacity: 0,
       transition: {
         duration: 1,
       },
     };
   },
-  show: {
+  visible: {
     y: 0,
-    opacity: 1,
-
     transition: {
       duration: 1,
     },
   },
-};
-const variantsScale = {
+  open: {
+    x: -100,
+  },
   close: {
-    scaleX: 0,
+    x: 0,
+  },
+};
+const variantsOpen = {
+  close: {
+    x: 0,
     opacity: 0,
   },
   open: {
@@ -67,25 +97,22 @@ type Props = {
 };
 
 export default function FullPage({ array }: Props) {
-  const wrapperRef = useRef<HTMLDivElement>(null);
   const [[transition, direction], setTransition] = useState([0, 0]);
   const [current, setCurrent] = useState(0);
   const [open, setOpen] = useState(false);
-  const { windowHeight } = useWindowDimensions();
-  const { elementHeight } = useElementProperties({
-    wrapperRef,
-  });
+
   const { t } = useTranslation('common');
 
   const handleIncrease = () => {
     if (current < array.length - 1) {
-      setTransition([transition - elementHeight, -1]);
+      setTransition([transition - window.innerHeight, -1]);
       setCurrent(current + 1);
+      console.log(transition);
     }
   };
   const handleDecrease = () => {
     if (current > 0) {
-      setTransition([transition + elementHeight, 1]);
+      setTransition([transition + window.innerHeight, 1]);
       setCurrent(current - 1);
     }
   };
@@ -106,107 +133,59 @@ export default function FullPage({ array }: Props) {
             order,
             description,
           }: Project) => (
-            <motion.div key={id}>
-              <Background
-                ref={wrapperRef}
-                style={{
-                  backgroundImage: `url(${image.responsiveImage.src})`,
-                  height: windowHeight,
-                }}
-                animate={{
-                  y: transition,
-                  transition: {
-                    duration: 1,
-                  },
-                }}
-              />
-              <Content
-                animate={current === order - 1 ? 'show' : 'hidden'}
-                variants={variantsWrapper}
-              >
-                <Mask>
-                  <Mask
-                    style={{
-                      display: 'flex',
-                      opacity: open ? 0 : 1,
-                      y: open ? '100%' : 0,
-                      zIndex: open ? -1 : 1,
-                    }}
-                  >
-                    <motion.h1 variants={variantsText} custom={direction}>
-                      {order}
-                    </motion.h1>
-                  </Mask>
-                </Mask>
-
-                <Text>
-                  <Introduction
-                    style={{
-                      x: open ? 100 : 0,
-                      opacity: open ? 0 : 1,
-                    }}
-                  >
-                    <Mask>
-                      <Technology variants={variantsText} custom={direction}>
-                        {technology}
-                      </Technology>
-                    </Mask>
-                    <Mask>
-                      <Title variants={variantsText} custom={direction}>
-                        {title}
-                      </Title>
-                    </Mask>
-                    <Mask>
-                      <motion.p variants={variantsText} custom={direction}>
-                        {introduction}
-                        <ReadMore onClick={() => handleOpen()}>
-                          {t(`readMore`)}
-                        </ReadMore>
-                      </motion.p>
-                    </Mask>
-                  </Introduction>
-                </Text>
-              </Content>
-              <HiddenCont
-                style={{
-                  scaleX: open ? 1 : 0,
-                  opacity: open ? 1 : 0,
-                  zIndex: open ? 2 : -1,
-                  transformOrigin: 'top left',
-                }}
-                variants={variantsText}
-                animate={current === order - 1 ? 'show' : 'hidden'}
-              >
-                <BackButton
+            <Item
+              animate={current === order - 1 ? 'visible' : 'hidden'}
+              key={id}
+              variants={variantContent}
+            >
+              <Background variants={variantsText} custom={direction}>
+                <Image
+                  src={image.responsiveImage.src}
+                  alt="pictureProject"
+                  layout="fill"
+                  objectFit="contain"
+                  objectPosition={open ? 'top left' : 'top right'}
                   style={{
-                    opacity: open ? 1 : 0,
-                    x: open ? 0 : '-100%',
-                    zIndex: open ? 1 : -1,
+                    transitionDuration: '1s',
                   }}
+                />
+              </Background>
+              <Aside animate={open ? 'open' : 'close'}>
+                <Mask>
+                  <motion.h1
+                    variants={variantsText}
+                    custom={direction}
+                    animate={current === order - 1 ? 'visible' : 'hidden'}
+                  >
+                    {order}
+                  </motion.h1>
+                </Mask>
+                <BackButton
                   onClick={() => handleOpen()}
+                  variants={variantsView}
                 >
                   {t(`back`)}
                 </BackButton>
-                <motion.div
-                  variants={variantsScale}
-                  style={{
-                    backgroundColor: 'var(--background)',
-                    height: '50vh',
-                  }}
+              </Aside>
+              <View>
+                <MainView
+                  variants={variantsView}
+                  animate={open ? 'close' : 'open'}
                 >
-                  <motion.p>{description}</motion.p>
-                </motion.div>
-
-                <ImageContainer variants={variantsScale}>
-                  <Image
-                    src={image.responsiveImage.src}
-                    alt="image desc"
-                    objectFit="cover"
-                    layout="fill"
-                  />
-                </ImageContainer>
-              </HiddenCont>
-            </motion.div>
+                  <motion.div>
+                    <ReadMore onClick={() => handleOpen()}>
+                      {t(`readMore`)}
+                    </ReadMore>
+                  </motion.div>
+                </MainView>
+                <SecondView
+                  variants={variantsView}
+                  animate={open ? 'open' : 'close'}
+                >
+                  {description}
+                </SecondView>
+              </View>
+            </Item>
           )
         )}
       </Wrapper>
@@ -248,6 +227,10 @@ const Technology = styled(motion.h2)`
     background-color: var(--mainColor);
   }
 `;
+const MainView = styled(motion.div)``;
+const View = styled(motion.div)`
+  position: relative;
+`;
 const ReadMore = styled.span`
   white-space: nowrap;
   text-decoration: underline;
@@ -255,15 +238,17 @@ const ReadMore = styled.span`
 `;
 const Background = styled(motion.div)`
   width: 100%;
-  height: 100vh;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
   display: flex;
   justify-content: flex-end;
   will-change: transform;
+`;
+const Aside = styled(motion.div)`
   @media only screen and ${device.tablet} {
-    min-height: 100vh;
+    width: 20%;
   }
 `;
 const Introduction = styled(motion.div)`
@@ -272,7 +257,6 @@ const Introduction = styled(motion.div)`
 const Mask = styled(motion.div)`
   position: relative;
   overflow: hidden;
-  transition-duration: 1s;
 `;
 const Title = styled(motion.h1)`
   text-align: right;
@@ -281,16 +265,18 @@ const Title = styled(motion.h1)`
   }
 `;
 
-const Content = styled(motion.div)`
+const Item = styled(motion.div)`
   position: absolute;
   overflow: hidden;
   top: 0;
+  height: 100%;
   width: 100%;
-  margin-bottom: 7rem;
+  padding: 4rem 1rem 0;
   display: flex;
   flex-direction: column;
-  margin-top: 4rem;
-  padding: 0 1rem;
+  @media only screen and ${device.tablet} {
+    flex-direction: row;
+  }
 `;
 const Text = styled(motion.div)`
   transition-duration: 1s;
@@ -303,6 +289,7 @@ const BackButton = styled(motion.button)`
   display: flex;
   align-items: center;
   transition-duration: 1s;
+  position: relative;
   margin: 2rem 0;
   :before {
     content: '';
@@ -312,14 +299,11 @@ const BackButton = styled(motion.button)`
     background-color: var(--mainColor);
   }
 `;
-const HiddenCont = styled(motion.div)`
+const SecondView = styled(motion.div)`
   position: absolute;
-  left: 0;
   top: 0;
-  padding: 4rem 0 0;
+  left: 0;
   width: 100%;
-  overflow: scroll;
-  transition-duration: 1s;
   display: flex;
   flex-direction: column;
   @media only screen and ${device.tablet} {
@@ -334,6 +318,7 @@ const ButtonContainer = styled.div`
   display: flex;
   justify-content: space-between;
   gap: 2rem;
+  z-index: 2;
 `;
 const Button = styled(motion.button)`
   width: 65px;
@@ -358,3 +343,83 @@ export const ImageContainer = styled(motion.div)`
   @media only screen and ${device.tablet} {
   }
 `;
+
+/* <Mask>
+                  <Mask
+                    style={{
+                      display: 'flex',
+                                    opacity: open ? 0 : 1,
+                      y: open ? '100%' : 0,
+                      zIndex: open ? -1 : 1,
+                    }}
+                  >
+                    <motion.h1 variants={variantsText} custom={direction}>
+                      {order}
+                    </motion.h1>
+                  </Mask>
+                </Mask>
+
+                <Text>
+                  <Introduction
+                    style={{
+                      x: open ? 100 : 0,
+                      opacity: open ? 0 : 1,
+                    }}
+                  >
+                    <Mask>
+                      <Technology variants={variantsText} custom={direction}>
+                        {technology}
+                      </Technology>
+                    </Mask>
+                    <Mask>
+                      <Title variants={variantsText} custom={direction}>
+                        {title}
+                      </Title>
+                    </Mask>
+                    <Mask>
+                      <motion.p variants={variantsText} custom={direction}>
+                        {introduction}
+
+                      </motion.p>
+                    </Mask>
+                  </Introduction>
+                </Text>*/
+/*            <HiddenCont
+                style={{
+                  scaleX: open ? 1 : 0,
+                  opacity: open ? 1 : 0,
+                  zIndex: open ? 2 : -1,
+                  transformOrigin: 'top left',
+                }}
+                variants={variantsText}
+                animate={current === order - 1 ? 'show' : 'hidden'}
+              >
+                <BackButton
+                  style={{
+                    opacity: open ? 1 : 0,
+                    x: open ? 0 : '-100%',
+                    zIndex: open ? 1 : -1,
+                  }}
+                  onClick={() => handleOpen()}
+                >
+                  {t(`back`)}
+                </BackButton>
+                <motion.div
+                  variants={variantsScale}
+                  style={{
+                    backgroundColor: 'var(--background)',
+                    height: '50vh',
+                  }}
+                >
+                  <motion.p>{description}</motion.p>
+                </motion.div>
+
+                <ImageContainer variants={variantsScale}>
+                  <Image
+                    src={image.responsiveImage.src}
+                    alt="image desc"
+                    objectFit="cover"
+                    layout="fill"
+                  />
+                </ImageContainer>
+              </HiddenCont>*/

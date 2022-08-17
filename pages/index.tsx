@@ -1,18 +1,15 @@
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { GetStaticProps } from 'next';
-import Layout from '../components/Layout';
 import styled from 'styled-components';
-import React, { ReactElement, useContext } from 'react';
+import React, { ReactElement } from 'react';
 import Image from 'next/image';
 import SocialMedia from '../components/SocialMedia';
 import CircleButton from '../components/CircleButton';
 import Perspective from '../components/Perspective';
 import Title from '../components/AnimatedSection/Title';
 import { useTranslation } from 'next-i18next';
-import ParallaxEffect from '../components/ParallaaxEffext';
 import DownloadButton from '../components/DownloadButton';
 import mailImage from '/images/mail.svg';
-import ParallaxImage from '../components/ParallaxImage';
 import { Introduce, Section, TitleContainer } from '../components/Containers';
 import Footer from '../components/Footer';
 import { request } from '../lib/datocms';
@@ -20,6 +17,8 @@ import { useQuerySubscription } from 'react-datocms';
 import Slider from '../components/Slider';
 import DefaultLayout from '../components/Layout';
 import { NextPageWithLayout } from './_app';
+import ParallaxEffect from '../components/ParallaxEffect';
+import ParallaxImage from '../components/ParallaxImage';
 const backgroundImage = require('/images/home_background.jpg');
 const downloadImage = require('/images/download.svg');
 const title = "Hello, I'm Piotr 👋";
@@ -29,18 +28,8 @@ const Home: NextPageWithLayout = ({ subscription }: any) => {
   const {
     data: { allProjects },
   } = useQuerySubscription(subscription);
-
   const { t } = useTranslation('common');
-  const parallaxArray = [
-    'React',
-    'Web Development',
-    t(`application`),
-    'Frontend',
-    'Next',
-    'Gsap',
-    'Gatsby',
-    'Worpress',
-  ];
+  const parallaxArray = ['JavaScript', 'React', 'Next', 'Gatsby', 'Wordpress'];
 
   return (
     <>
@@ -79,15 +68,15 @@ const Home: NextPageWithLayout = ({ subscription }: any) => {
       </ParallaxImage>
       <Section>
         <Line />
-        <ParallaxEffect array={parallaxArray} />
+        {/*        <ParallaxEffect array={parallaxArray} />
         <Line />
-        <ParallaxEffect array={parallaxArray} reverse={true} />
+        <ParallaxEffect array={parallaxArray} reverse={true} />*/}
         <Line />
       </Section>
 
-      <section>
+      {/*     <section>
         <Slider array={allProjects} />
-      </section>
+      </section>*/}
       <section>
         <CircleButton link="/contact" image={mailImage}>
           <h3>{t(`mailWelcome`)}</h3>

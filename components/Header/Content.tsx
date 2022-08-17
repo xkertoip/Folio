@@ -73,7 +73,7 @@ function Content() {
   const { theme, setTheme } = useTheme();
   const router = useRouter();
   const currentPath = useRouter().asPath;
-  const { windowHeight } = useWindowDimensions();
+  const windowSize = useWindowDimensions();
   return (
     <>
       <InnerBackground
@@ -81,7 +81,7 @@ function Content() {
         initial="hidden"
         animate={openMenu ? 'show' : 'hidden'}
         style={{
-          height: windowHeight,
+          height: windowSize?.windowHeight,
         }}
       />
 
@@ -90,7 +90,7 @@ function Content() {
         initial="hidden"
         animate={openMenu ? 'show' : 'hidden'}
         style={{
-          height: windowHeight,
+          height: windowSize?.windowHeight,
         }}
       >
         <Navigation variants={container}>

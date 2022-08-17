@@ -1,8 +1,8 @@
 import React, { ReactNode } from 'react';
 import { NextSeo } from 'next-seo';
 import { motion } from 'framer-motion';
-import SmoothScroll from '../SmoothScroll';
 import styled from 'styled-components';
+import dynamic from 'next/dynamic';
 type Props = {
   children: ReactNode;
   title: string;
@@ -24,6 +24,10 @@ const variants = {
   },
 };
 
+const SmoothScrollWithoutSSR = dynamic(() => import('../SmoothScroll'), {
+  ssr: false,
+});
+
 function DefaultLayout({ children, title, description }: Props) {
   return (
     <>
@@ -32,7 +36,7 @@ function DefaultLayout({ children, title, description }: Props) {
         description={description}
         openGraph={{ title, description }}
       />
-      <SmoothScroll>
+      <SmoothScrollWithoutSSR>
         <Wrapper
           variants={variants}
           initial="hidden"
@@ -42,7 +46,7 @@ function DefaultLayout({ children, title, description }: Props) {
         >
           {children}
         </Wrapper>
-      </SmoothScroll>
+      </SmoothScrollWithoutSSR>
     </>
   );
 }

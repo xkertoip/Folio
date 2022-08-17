@@ -21,9 +21,7 @@ const ProjectManager = ({ children }: Props) => {
     [currentProject]
   );
 
-  useEffect(() => {
-    console.log(currentProject);
-  }, [currentProject]);
+  useEffect(() => {}, [currentProject]);
   return (
     <ProjectContext.Provider value={value}>{children}</ProjectContext.Provider>
   );
