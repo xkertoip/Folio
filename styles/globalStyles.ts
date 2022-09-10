@@ -13,9 +13,9 @@ const GlobalStyles = createGlobalStyle`
     
   }
   :root {
-    --background: #C7B9B5;
-    --main: rgba(39, 32, 30, .3);
-    --mainColor: #27201e;
+    --background: #929ea8;
+    --main: rgba(39, 32, 30);
+    --mainColor: #fff;
     --secondary: #cfcdcc;
     --secondaryColor: #27201e;
     --specialColor: #2596be;
@@ -47,16 +47,16 @@ const GlobalStyles = createGlobalStyle`
     text-decoration: none;
   }
   h1 {
-    font-size: 14vw;
+    font-size: 3rem;
   }
   h2 {
-    font-size: 3rem;
+    font-size: 2.5rem;
   }
   h3 {
     font-size: 2rem;
   }
   h4 {
-    font-size: 1.5rem;
+    font-size: 1.7rem;
   }  
   h1, h2, h3, h4 {
     font-weight: normal;

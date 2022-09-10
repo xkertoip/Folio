@@ -9,15 +9,11 @@ type Props = {
 
 export default function Perspective({ children }: Props) {
   const { isMobile } = useDeviceDetect();
-  // @ts-ignore
   const x = useMotionValue(window.innerWidth / 2);
-  // @ts-ignore
   const y = useMotionValue(window.innerHeight / 2);
 
-  // @ts-ignore
-  const rotateX = useTransform(y, [0, window.innerHeight], [10, -10]);
-  // @ts-ignore
-  const rotateY = useTransform(x, [0, window.innerHeight], [10, -10]);
+  const rotateX = useTransform(y, [0, window.innerHeight], [20, -20]);
+  const rotateY = useTransform(x, [0, window.innerWidth], [20, -20]);
 
   const handlePosition = (e: React.MouseEvent<HTMLDivElement>) => {
     window.requestAnimationFrame(() => handlePosition);
@@ -26,9 +22,7 @@ export default function Perspective({ children }: Props) {
     y.set(e.clientY - rect.top);
   };
   const handleLeave = (): void => {
-    // @ts-ignore
     x.set(window.innerWidth / 2);
-    // @ts-ignore
     y.set(window.innerHeight / 2);
   };
 
@@ -49,26 +43,22 @@ export default function Perspective({ children }: Props) {
     );
   }
   return (
-    <motion.div>
-      <Wrapper>
-        <Content>{children}</Content>
-      </Wrapper>
-    </motion.div>
+    <Wrapper>
+      <Content>{children}</Content>
+    </Wrapper>
   );
 }
 
-const Wrapper = styled(motion.div)`
+const Wrapper = styled.div`
   will-change: transform;
   align-items: stretch;
   position: relative;
   perspective: 1000px;
   mix-blend-mode: inherit;
-  z-index: 1;
   transform-style: preserve-3d;
 `;
 
 const Content = styled(motion.div)`
   transform-style: preserve-3d;
   will-change: transform;
-  display: flex;
 `;

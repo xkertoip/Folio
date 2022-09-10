@@ -1,65 +1,82 @@
 import styled from 'styled-components';
-import { motion } from 'framer-motion';
+import { motion, useMotionValue, useTransform } from 'framer-motion';
+import { device } from '../../styles/mediaQuery';
+import Image from 'next/image';
+const backgroundImage = require('/images/home_background.jpg');
 
 type Props = {
   title: string;
-  content?: string;
 };
 
-const variants = {
-  hidden: {
-    y: '50vh',
-    skew: 15,
-    rotateZ: 25,
-  },
-  show: {
-    x: 0,
-    y: 0,
-    skew: [0, 5, 0],
-    rotateZ: [0, 5, 0],
-    transition: {
-      duration: 0.8,
-    },
-  },
-  hover: {
-    x: ['0%', '100%'],
-    skew: [0, 5, 0],
-    rotateZ: [0, 5, 0],
-    transition: {
-      duration: 0.8,
-    },
-  },
-};
+export default function Title({ title }: Props) {
+  const x = useMotionValue(100);
 
-export default function Title({ title, content = '' }: Props) {
+  const translateX = useTransform(x, [0, 100], [0, 100]);
+
+  function handleMouseMove(event: any) {
+    x.set(event.pageX);
+    console.log(event.pageX);
+  }
   return (
-    <Wrapper
-      whileHover="hover"
-      initial="hidden"
-      animate="show"
-      whileTap="hover"
-    >
-      <Content variants={variants} title={title} content={content}>
-        {title}
-      </Content>
+    <Wrapper>
+      <Content onMouseMove={handleMouseMove}>{title}</Content>
+      {/*      <BackgroundImage>
+        <Image
+          src={backgroundImage}
+          alt="backgroundImage"
+          layout="fill"
+          objectFit="cover"
+        />
+      </BackgroundImage>
+      <AlterImage
+        style={{
+          transform: `translateX(${translateX})`,
+        }}
+      >
+        <Image
+          src={backgroundImage}
+          alt="backgroundImage"
+          layout="fill"
+          objectFit="cover"
+        />
+      </AlterImage>*/}
     </Wrapper>
   );
 }
+const AlterImage = styled(motion.div)`
+  position: absolute;
+  z-index: 0;
+  top: 0;
+  left: 0;
+  width: 30%;
+  min-height: 100%;
+  transition-duration: 1s;
+`;
+
+const BackgroundImage = styled(motion.div)`
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 100%;
+`;
 
 const Wrapper = styled(motion.div)`
   transform-style: preserve-3d;
   overflow: hidden;
-`;
-const Content = styled(motion.h1)<Props>`
-  text-transform: uppercase;
 
-  color: var(${(p) => (p.content !== '' ? '--specialColor' : '--mainColor')});
-  :after {
-    content: '${(p) => (p.content !== '' ? p.content : p.title)}';
-    color: var(${(p) => (p.content !== '' ? '--mainColor' : '--specialColor')});
-    position: absolute;
-    top: 0;
-    right: 100%;
-    width: 100%;
+  @media only screen and ${device.tablet} {
+    text-align: center;
+  }
+`;
+const Content = styled(motion.h1)`
+  text-transform: uppercase;
+  font-size: 7vh;
+  padding: 0 1rem;
+  z-index: 1;
+  position: relative;
+  @media only screen and ${device.tablet} {
+    font-size: 20vh;
   }
 `;

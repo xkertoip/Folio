@@ -2,102 +2,85 @@ import styled from 'styled-components';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import { useRouter } from 'next/router';
+import { useTheme } from 'next-themes';
 const facebook = require('/images/facebook.svg');
 const linkedIn = require('/images/linkedin.svg');
 const github = require('/images/github.svg');
+const flagPl = require('/images/poland.svg');
+const flagUK = require('/images/uk.svg');
+const light = require('/images/light.svg');
+const dark = require('/images/dark.svg');
 
-const variants = {
-  hidden: {
-    y: '10vh',
-  },
-  show: {
-    y: 0,
-    transition: {
-      duration: 0.3,
-    },
-  },
+const item = {
+  hidden: { opacity: 0, translateY: '100%' },
+  show: { opacity: 1, translateY: 0 },
 };
 
 export default function SocialMedia() {
+  const router = useRouter();
+  const currentPath = useRouter().asPath;
+  const { theme, setTheme } = useTheme();
   return (
-    <Wrapper>
+    <>
       <Link href="https://www.linkedin.com/in/piotr-szczypka/" target="_blank">
-        <a>
-          <ImageContainer variants={variants} initial="hidden" animate="show">
-            <Image
-              src={linkedIn}
-              alt="linkedIn"
-              layout="fill"
-              objectFit="contain"
-            />
-          </ImageContainer>
-        </a>
+        <ImageContainer variants={item}>
+          <Image
+            src={linkedIn}
+            alt="linkedIn"
+            layout="fill"
+            objectFit="contain"
+          />
+        </ImageContainer>
       </Link>
       <Link href="https://www.github.com/xkertoip" target="_blank">
-        <a>
-          <ImageContainer variants={variants} initial="hidden" animate="show">
-            <Image
-              src={github}
-              alt="github"
-              layout="fill"
-              objectFit="contain"
-            />
-          </ImageContainer>
-        </a>
+        <ImageContainer variants={item}>
+          <Image src={github} alt="github" layout="fill" objectFit="contain" />
+        </ImageContainer>
       </Link>
       <Link href="https://www.facebook.com/piotrek.szczypka/" target="_blank">
-        <a>
-          <ImageContainer variants={variants} initial="hidden" animate="show">
-            <Image
-              src={facebook}
-              alt="facebook"
-              layout="fill"
-              objectFit="contain"
-            />
-          </ImageContainer>
-        </a>
+        <ImageContainer variants={item}>
+          <Image
+            src={facebook}
+            alt="facebook"
+            layout="fill"
+            objectFit="contain"
+          />
+        </ImageContainer>
       </Link>
-    </Wrapper>
+      <Link href={currentPath} locale={router.locale === 'en' ? 'pl' : 'en'}>
+        <ImageContainer variants={item}>
+          <Image
+            src={router.locale === 'en' ? flagPl : flagUK}
+            layout="fill"
+            objectFit="contain"
+            alt="Poland flag"
+          />
+        </ImageContainer>
+      </Link>
+      <ImageContainer
+        variants={item}
+        onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+      >
+        <Image
+          src={theme === 'dark' ? light : dark}
+          width={26}
+          height={26}
+          alt="light"
+        />
+      </ImageContainer>{' '}
+    </>
   );
 }
 
-const ImageContainer = styled(motion.div)`
+const ImageContainer = styled(motion.a)`
   color: var(--main);
-  height: 40px;
-  width: 40px;
+  height: 26px;
+  width: 26px;
   text-align: right;
-  transition: 0.5s;
   overflow: hidden;
   position: relative;
-
-  :before {
-    content: '';
-    min-width: 100%;
-    height: 3px;
-    top: 50%;
-    left: 0;
-    position: absolute;
-    margin: auto;
-    background-color: var(--mainColor);
-    transform: translateX(-100%);
-    transition-duration: 0.5s;
-    z-index: 1;
-  }
   :hover {
     color: var(--specialColor);
-    :before {
-      transform: translateX(0);
-    }
   }
-`;
-const Wrapper = styled.div`
-  display: flex;
-  position: relative;
-  flex-direction: row;
-  justify-content: flex-end;
-  overflow: hidden;
-  gap: 2rem;
-  align-items: end;
-  z-index: 1000;
-  text-align: right;
 `;

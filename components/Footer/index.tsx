@@ -1,37 +1,33 @@
 import styled from 'styled-components';
-import SocialMedia from '../SocialMedia';
-import Link from 'next/link';
-const next = require('/images/next.svg');
-import Image from 'next/image';
+
 import React from 'react';
 
-type Props = {
-  link: string;
-};
-export default function Footer({ link }: Props) {
+export default function Footer() {
   return (
     <Wrapper>
-      <Link href={`/${link}`}>
-        <Content>
-          <h2>Explore more</h2>
-
-          <Image src={next} alt="next" />
-        </Content>
-      </Link>
-      <SocialMedia />
-      <Line />
-      <span>Piotr Szczypka@2022</span>
+      <Info>
+        <span>Piotr Szczypka@2022</span>
+      </Info>
     </Wrapper>
   );
 }
 
 const Wrapper = styled.footer`
-  padding: 3rem 1rem 2rem;
+  padding: 0 1rem;
 `;
-const Content = styled.a`
+const Info = styled.div`
+  display: flex;
+  padding: 1rem 0;
+`;
+const Content = styled.div`
+  position: relative;
+  min-height: 50vh;
+  margin-bottom: 1rem;
+`;
+const ContentLink = styled.a`
   text-transform: uppercase;
   text-align: center;
-  margin: 5rem auto;
+  margin: auto;
   display: block;
   font-size: 2rem;
   font-weight: bold;
@@ -45,5 +41,5 @@ const Line = styled.div`
   border-style: solid;
   border-color: var(--mainColor);
   position: relative;
-  margin: 2rem 0;
+  z-index: 2;
 `;

@@ -14,7 +14,7 @@ import { Introduce, Section, TitleContainer } from '../components/Containers';
 import Footer from '../components/Footer';
 import { request } from '../lib/datocms';
 import { useQuerySubscription } from 'react-datocms';
-import Slider from '../components/Slider';
+import NewSlider from '../components/Slider/newSlider';
 import DefaultLayout from '../components/Layout';
 import { NextPageWithLayout } from './_app';
 import ParallaxEffect from '../components/ParallaxEffect';
@@ -33,59 +33,56 @@ const Home: NextPageWithLayout = ({ subscription }: any) => {
 
   return (
     <>
-      <ParallaxImage image={backgroundImage}>
-        <Perspective>
-          <TitleContainer>
-            <Title title="Piotr Szczypka," />
-            {subtitle ? (
-              <Title title="Frontend developer" content="Web Developer" />
-            ) : null}
-            <SocialMedia />
-          </TitleContainer>
-        </Perspective>
+      {/*      <ParallaxImage image={backgroundImage} />*/}
+      <Perspective>
+        <TitleContainer>
+          <Title title="/CREATIVE DEVELOPER/" />
+        </TitleContainer>
+      </Perspective>
+      <Section>
         <Introduce>
-          <h2>Cześć, tu Piotrek!</h2>
-          <p>
-            Jestem frontend developerem, obecnie koduję w React, z
-            wykorzystaniem frameworka Next.js, do budowania stron
-            wykorzystujących SSR w celu podniesienia rezultatów wyszukiwania
-            przez roboty.
-          </p>
           <div>
-            <h4>{t(`cvText`)}</h4>
-
-            <DownloadButton text={t(`download`)}>
-              <Image
-                src={downloadImage}
-                alt="download"
-                layout="responsive"
-                objectFit="cover"
-                objectPosition="top center"
-              />
-            </DownloadButton>
+            <p>{t(`introduce`)}</p>
+            <Line />
+            <div>
+              <h4>{t(`cvText`)}</h4>
+              <DownloadButton text={t(`download`)}>
+                <Image
+                  src={downloadImage}
+                  alt="download"
+                  layout="responsive"
+                  objectFit="cover"
+                  objectPosition="top center"
+                />
+              </DownloadButton>
+            </div>
           </div>
         </Introduce>
-      </ParallaxImage>
+      </Section>
       <Section>
         <Line />
-        {/*        <ParallaxEffect array={parallaxArray} />
+        <ParallaxEffect array={parallaxArray} />
         <Line />
-        <ParallaxEffect array={parallaxArray} reverse={true} />*/}
+        <ParallaxEffect array={parallaxArray} reverse={true} />
         <Line />
       </Section>
 
       {/*     <section>
         <Slider array={allProjects} />
       </section>*/}
-      <section>
+
+      <Section>
+        <NewSlider array={allProjects} />
+      </Section>
+      <Section>
         <CircleButton link="/contact" image={mailImage}>
           <h3>{t(`mailWelcome`)}</h3>
           <p>{t(`mailTitle`)}</p>
           <p>{t(`mailSubtitle`)}</p>
         </CircleButton>
-      </section>
+      </Section>
 
-      <Footer link="about" />
+      <Footer />
     </>
   );
 };
@@ -100,10 +97,11 @@ Home.getLayout = function getLayout(page: ReactElement) {
 export default Home;
 
 const Line = styled.div`
-  border-width: 2px 0 0;
+  border-width: 1px 0 0;
   border-style: solid;
-  border-color: var(--main);
+  border-color: var(--mainColor);
   position: relative;
+  z-index: 2;
 `;
 
 export const getStaticProps: GetStaticProps = async ({ locale, preview }) => {
@@ -111,10 +109,12 @@ export const getStaticProps: GetStaticProps = async ({ locale, preview }) => {
   const graphqlRequest = {
     query: `
     {
-        allProjects {
+        allProjects(orderBy: order_ASC) {
         introduction(locale: ${formattedLocale})
         slug
         id
+        title
+        order
         image {
       responsiveImage {
         src

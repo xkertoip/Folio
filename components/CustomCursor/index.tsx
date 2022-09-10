@@ -8,7 +8,6 @@ function lerp(start: number, end: number, amt: number) {
 const CustomCursor = ({ speed = 0.1 }) => {
   const { isMobile } = useDeviceDetect();
   const mainCursor = useRef<HTMLDivElement>(null);
-  const secondCursor = useRef<HTMLDivElement>(null);
 
   const positionRef = useRef({
     mouseX: 0,
@@ -32,7 +31,6 @@ const CustomCursor = ({ speed = 0.1 }) => {
           mouseY - mainCursor.current.clientHeight / 2;
         if (
           e.target instanceof HTMLAnchorElement ||
-          e.target instanceof HTMLHeadingElement ||
           e.target instanceof HTMLImageElement ||
           e.target instanceof HTMLButtonElement
         ) {
@@ -79,9 +77,6 @@ const CustomCursor = ({ speed = 0.1 }) => {
           positionRef.current.destinationY = distanceY;
         }
       }
-      if (secondCursor && secondCursor.current) {
-        secondCursor.current.style.transform = `translate3d(${destinationX}px, ${destinationY}px, 0)`;
-      }
     };
     followMouse();
   }, [speed]);
@@ -91,7 +86,6 @@ const CustomCursor = ({ speed = 0.1 }) => {
       {!isMobile && (
         <div>
           <MainCursor ref={mainCursor} />
-          <SecondCursor ref={secondCursor} />
         </div>
       )}
     </>
@@ -110,18 +104,5 @@ export const MainCursor = styled.div`
   mix-blend-mode: difference;
   background-color: white;
   transition: 0.1s linear;
-  z-index: 1000;
-`;
-
-export const SecondCursor = styled.div`
-  position: fixed;
-  pointer-events: none;
-  left: 0;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  mix-blend-mode: saturation;
-  background-color: var(--specialColor);
-  transition: 2s cubic-bezier(0.075, 0.82, 0.165, 1);
-  z-index: 1000;
+  z-index: 9000;
 `;

@@ -7,7 +7,6 @@ import {
 } from 'framer-motion';
 import { useRef } from 'react';
 import useElementProperties from '../../utils/useElementProperties';
-import useWindowDimensions from '../../utils/useWindowDimensions';
 
 type Props = {
   array: string[];

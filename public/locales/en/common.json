@@ -7,7 +7,9 @@
     "mailWelcome": "Hi !",
     "mailTitle": "Have I intrested you ?",
     "mailSubtitle": "Please contact me !",
-    "cvText": "Here is my CV",
+    "cvText": "You will find my resume attached below.",
     "readMore": "Read More",
-    "back": "back"
+    "back": "back",
+    "quote": "Life is like riding a bicycle. To keep your balance, you must keep moving",
+    "introduce": "Hi, I'm Piotrek! I come from Kasinka Mała, currently living in Kraków. \n I'm imaginative person with a strong sense of humor. I put huge emphasis on self-development ."
 }
