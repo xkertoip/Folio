@@ -105,8 +105,7 @@ const Container = styled(motion.nav)`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 0 1rem;
-  margin-bottom: 3rem;
+  padding: 0 1rem 4rem;
   h5 {
     color: var(--main);
     text-align: right;
@@ -149,6 +148,8 @@ const Navigation = styled.ul`
 const Info = styled.div`
   display: flex;
   flex-direction: column;
+  border-bottom: 1px solid var(--main);
+  overflow: hidden;
   a {
     padding: 0;
   }

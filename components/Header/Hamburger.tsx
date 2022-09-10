@@ -58,19 +58,17 @@ const Hamburger = () => {
 export default Hamburger;
 
 export const Wrapper = styled.div`
-  width: 36px;
   position: fixed;
   bottom: 1rem;
   left: 50%;
-  height: 26px;
   background: transparent;
   transform: translateX(-50%);
   z-index: 300;
 `;
 
 export const Button = styled(motion.button)`
-  width: inherit;
-  height: inherit;
+  width: 36px;
+  height: 26px;
   position: relative;
   span:first-child {
     top: 0;
