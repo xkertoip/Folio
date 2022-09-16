@@ -15,10 +15,13 @@ const Background = () => {
 
   const transform = useTransform(
     scrollY,
-    [0, element.elementWidth],
-    [-element.elementWidth + window.innerHeight, element.elementWidth + 50]
+    [0, element.elementWidth - window.innerHeight],
+    [
+      -element.elementWidth + window.innerHeight,
+      element.elementWidth - window.innerHeight + 100,
+    ]
   );
-  const physics = { damping: 100, mass: 1, stiffness: 225 };
+  const physics = { damping: 100, mass: 1, stiffness: 200 };
   const spring = useSpring(transform, physics);
   return (
     <Wrapper
@@ -40,7 +43,7 @@ const Wrapper = styled(motion.div)`
   top: 0;
   right: 0;
   padding: 1rem;
-  z-index: 1;
+  z-index: -1;
 `;
 const Title = styled.div`
   transform-origin: top right;
@@ -54,8 +57,7 @@ const Title = styled.div`
     font-size: 37vw;
     margin: 0;
     line-height: 0.8;
-    color: var(--main);
-    opacity: 0.8;
+    color: var(--specialColor);
   }
   span {
     z-index: -1;

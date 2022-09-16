@@ -54,10 +54,18 @@ export default ParallaxEffect;
 const Wrapper = styled.div`
   position: relative;
   z-index: 1;
+  padding-top: 1rem;
 `;
 const Content = styled(motion.div)`
   display: inline-flex;
   flex-direction: row;
   will-change: transform;
   padding: 0 2rem;
+  border-width: 1px 0 1px;
+  border-style: solid;
+  border-color: var(--secondary);
+  background-color: var(--background);
+  h2 {
+    color: var(--secondary);
+  }
 `;

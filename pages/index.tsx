@@ -19,7 +19,7 @@ import { NextPageWithLayout } from './_app';
 import ParallaxEffect from '../components/ParallaxEffect';
 import { Project } from '../lib/types';
 import dynamic from 'next/dynamic';
-import { Indicator } from '../components/Headings';
+import { Indicator, SectionTitle } from '../components/Headings';
 import { useTheme } from 'next-themes';
 
 const downloadImage = require('/images/download.svg');
@@ -38,6 +38,17 @@ const PerspectiveWithoutSSR = dynamic(
   }
 );
 
+const variants = {
+  hover: {
+    scaleX: [1, 0.5, 1, 0.5, 1],
+    scaleY: [1, 0.5, 0.5, 0.5, 1],
+  },
+  initial: {
+    scaleX: 1,
+    scaleY: 1,
+  },
+};
+
 const Home: NextPageWithLayout = ({ subscription }: any) => {
   const {
     data: { allProjects },
@@ -50,32 +61,39 @@ const Home: NextPageWithLayout = ({ subscription }: any) => {
       <Section>
         <MainViewContainer as={Container}>
           <div>
-            <Indicator>N&#176;1 Hello</Indicator>
+            <SectionTitle
+              whileHover={'hover'}
+              initial={'initial'}
+              variants={variants}
+            >
+              Hi!<Indicator>N&#176;1 Hello</Indicator>
+            </SectionTitle>
           </div>
+
+          <OpacityWrapper as={Shadow}>
+            <Image src={mainView3} alt={'logo'} />
+          </OpacityWrapper>
           <div>
-            <ImageWrapper>
-              <Image src={mainView3} alt={'logo'} />
-            </ImageWrapper>
-          </div>
-          <div>
-            <ImageWrapper>
+            <OpacityWrapper as={Shadow}>
               <Image src={mainView1} alt={'logo'} />
-            </ImageWrapper>
-            <ImageWrapper>
-              <Image
-                src={theme === 'dark' ? logoLight : logoDark}
-                alt={'logo'}
-              />
-            </ImageWrapper>
+            </OpacityWrapper>
+            <Image src={theme === 'dark' ? logoLight : logoDark} alt={'logo'} />
           </div>
         </MainViewContainer>
       </Section>
       <Section>
-        <SecondViewContainer as={Container}>
+        <MainViewContainer as={Container}>
           <div>
-            <Indicator>N&#176;2 About</Indicator>
-            <h2>Positive Guy</h2>{' '}
+            <SectionTitle>
+              <Indicator>N&#176;2 About</Indicator>
+              Positive Guy
+            </SectionTitle>
           </div>
+
+          <OpacityWrapper as={Shadow}>
+            <Image src={mainView2} alt={'logo'} />
+          </OpacityWrapper>
+
           <div>
             <p>{t(`introduce`)}</p>
             <p>{t(`cvText`)}</p>
@@ -90,19 +108,14 @@ const Home: NextPageWithLayout = ({ subscription }: any) => {
               />
             </DownloadButton>
           </div>
-          <div>
-            <ImageWrapper>
-              <Image src={mainView2} alt={'logo'} />
-            </ImageWrapper>
-          </div>
-        </SecondViewContainer>
+        </MainViewContainer>
       </Section>
       <Section>
         <ThirdView as={Container}>
-          <div>
+          <SectionTitle>
             <Indicator>N&#176;3 Work</Indicator>
-            <h2>Some Work</h2>
-          </div>
+            Some Work
+          </SectionTitle>
           <ProjectWrapper>
             {allProjects.map((projects: Project) => (
               <ProjectContainer key={projects.id}>
@@ -118,21 +131,30 @@ const Home: NextPageWithLayout = ({ subscription }: any) => {
                   />
                 </ProjectImageWrapper>
                 <h3>{projects.title}</h3>
-                <Indicator>{projects.adds}</Indicator>
+                <h4>{projects.adds}</h4>
               </ProjectContainer>
             ))}
           </ProjectWrapper>
         </ThirdView>
       </Section>
       <Section>
-        <Container>
-          <h2>Skills</h2>
-        </Container>
-        <Line />
-        <ParallaxEffect array={parallaxArray} />
-        <Line />
-        <ParallaxEffect array={parallaxArray} reverse={true} />
-        <Line />
+        <div style={{ transform: 'rotate(-5deg)' }}>
+          <Container>
+            <SectionTitle>
+              Skills <Indicator>N&#176;4 Skills</Indicator>
+            </SectionTitle>
+          </Container>
+          <ParallaxEffect array={parallaxArray} />
+          <ParallaxEffect array={parallaxArray} reverse={true} />
+        </div>
+      </Section>
+      <Section>
+        <CircleButton link="/contact" image={mailImage}>
+          <h4>{t(`mailWelcome`)}</h4>
+          <p>
+            {t(`mailTitle`)} <br /> {t(`mailSubtitle`)}
+          </p>
+        </CircleButton>
       </Section>
       {/*      <ParallaxImage image={backgroundImage} />*/}
       {/*      <PerspectiveWithoutSSR>
@@ -141,68 +163,11 @@ const Home: NextPageWithLayout = ({ subscription }: any) => {
         </TitleContainer>
       </PerspectiveWithoutSSR>*/}
 
-      {/*  <section>
-        <Container>
-          <InfoContainer>
-            <p>{t(`introduce`)}</p>
-            <Line />
-            <p>{t(`cvText`)}</p>
-          </InfoContainer>
-          <DownloadButton text={t(`download`)}>
-            <Image
-              src={downloadImage}
-              alt="download"
-              layout="responsive"
-              objectFit="cover"
-              objectPosition="top center"
-            />
-          </DownloadButton>
-        </Container>
-      </section>*/}
-      {/*      <Section>
-        <Line />
-        <ParallaxEffect array={parallaxArray} />
-        <Line />
-        <ParallaxEffect array={parallaxArray} reverse={true} />
-        <Line />
-      </Section>*/}
+      {/*
       {/*     <section>
         <Slider array={allProjects} />
       </section>*/}
-      {/*<section>
-        <Container>
-          <h4
-            style={{
-              textAlign: 'right',
-              color: 'var(--main)',
-            }}
-          >
-            Work
-          </h4>
-          <h2>
-            Selected <br /> Work
-          </h2>
-        </Container>
-        <Container>
-          {allProjects.map((projects: Project) => (
-            <ProjectContainer key={projects.id}>
-              <ImageWrapper>
-                <Image
-                  alt="project"
-                  src={projects.image.responsiveImage.src}
-                  layout="responsive"
-                  objectFit="contain"
-                  objectPosition="top center"
-                  width={400}
-                  height={280}
-                />
-              </ImageWrapper>
-              <h4>{projects.title}</h4>
-              <span>{projects.adds}</span>
-            </ProjectContainer>
-          ))}
-        </Container>
-      </section>
+      {/*
       <Section>
         <CircleButton link="/contact" image={mailImage}>
           <h4>{t(`mailWelcome`)}</h4>
@@ -231,32 +196,17 @@ const MainViewContainer = styled.div`
   grid-template-rows: repeat(3, 1fr);
   min-height: calc(100vh - 2rem);
   div:first-child {
-    grid-area: 1/1/2/2;
+    grid-area: 1/1/2/3;
+    position: relative;
+    z-index: 2;
   }
   div:nth-child(2) {
     grid-area: 1/2/3/4;
   }
   div:last-child {
     grid-area: 2/1/4/3;
-  }
-`;
-
-const SecondViewContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(5, 1fr);
-  div:first-child {
-    grid-area: 1 / 1 / 3 / 4;
     position: relative;
     z-index: 2;
-  }
-  div:nth-child(2) {
-    grid-area: 3 / 1 / 6 / 3;
-    z-index: 1;
-  }
-  div:last-child {
-    grid-area: 2 / 2 / 5 / 4;
-    z-index: 0;
   }
 `;
 
@@ -265,16 +215,18 @@ const ThirdView = styled.div`
   overflow: hidden;
   z-index: 2;
 `;
-const ProjectWrapper = styled.div``;
+const ProjectWrapper = styled.div`
+  padding-top: 1rem;
+`;
 
 const ProjectContainer = styled.div`
-  margin-bottom: 2rem;
+  padding-bottom: 2rem;
   span {
     color: var(--main);
   }
-`;
-const InfoContainer = styled.div`
-  padding-top: 5rem;
+  h3 {
+    color: var(--secondary);
+  }
 `;
 const Line = styled.div`
   border-width: 1px 0 0;
@@ -283,10 +235,16 @@ const Line = styled.div`
   position: relative;
   z-index: 2;
 `;
-const ImageWrapper = styled.div`
-  position: relative;
-  margin-bottom: 1rem;
+const OpacityWrapper = styled.div`
   opacity: 0.9;
+`;
+const Shadow = styled.div`
+  margin-bottom: 1rem;
+
+  span {
+    box-shadow: 0 2px 4px -1px rgb(0 0 0 / 20%), 0 4px 5px 0 rgb(0 0 0 / 14%),
+      0 1px 10px 0 rgb(0 0 0 / 12%);
+  }
 `;
 const ProjectImageWrapper = styled.div`
   position: relative;

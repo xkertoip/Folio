@@ -137,6 +137,7 @@ export default function CircleButton({
 
 const Wrapper = styled(motion.div)`
   display: flex;
+  padding: 8rem 0;
   justify-content: center;
   align-items: center;
   position: relative;
@@ -201,7 +202,7 @@ const CircleOutline = styled(motion.div)`
   will-change: transform;
   background-color: var(--background);
   z-index: -1;
-  border-top: 2px solid var(--main);
+
   box-shadow: 0 2px 4px -1px rgb(0 0 0 / 20%), 0 4px 5px 0 rgb(0 0 0 / 14%),
     0 1px 10px 0 rgb(0 0 0 / 12%);
 `;

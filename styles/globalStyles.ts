@@ -59,7 +59,7 @@ const GlobalStyles = createGlobalStyle`
     font-size: 1rem;
     font-family: CaudexItalic, sans-serif;
   }  
-  h1, h2, h3, h4 {
+  h1, h2, h3 {
     font-weight: normal;
     margin: 0.5rem 0;
     font-family: Candal, sans-serif;
