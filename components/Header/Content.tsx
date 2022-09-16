@@ -1,137 +1,92 @@
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import Link from 'next/link';
-import { useTheme } from 'next-themes';
-import { useRouter } from 'next/router';
 import { device } from '../../styles/mediaQuery';
 import List from './List';
 import { useContext } from 'react';
 import { MenuContext } from './HeaderManager';
-import Image from 'next/image';
-import flagPL from '/images/poland.svg';
-import flagUK from '/images/uk.svg';
-import light from '/images/light.svg';
-import dark from '/images/dark.svg';
 import useWindowDimensions from '../../utils/useWindowDimensions';
+import SocialMedia from '../SocialMedia';
 
-const variants = {
+const variantsContainer = {
   hidden: {
     scaleY: 0,
     transition: {
-      delayChildren: -1,
-      staggerChildren: 0.5,
+      duration: 0.6,
+      staggerDirection: -1,
+      staggerChildren: 0.1,
       when: 'afterChildren',
     },
   },
   show: {
     scaleY: 1,
     transition: {
-      delay: 0.2,
-      duration: 0.5,
-      delayChildren: 0.5,
-      staggerChildren: 0.5,
+      duration: 0.6,
+      staggerChildren: 0.1,
+      when: 'beforeChildren',
     },
   },
 };
 
-const background = {
+const variantsBackground = {
   hidden: {
     scaleY: 0,
     transition: {
-      delay: 0.7,
+      duration: 0.3,
+      when: 'afterChildren',
     },
   },
   show: {
     scaleY: 1,
     transition: {
-      duration: 0.5,
-    },
-  },
-};
-
-const container = {
-  hidden: {
-    transition: {
-      staggerChildren: 0.1,
-      staggerDirection: -1,
-    },
-  },
-  show: {
-    transition: {
-      staggerChildren: 0.1,
+      duration: 0.3,
+      when: 'beforeChildren',
     },
   },
 };
 
 const item = {
-  hidden: { opacity: 0, translateY: -15 },
+  hidden: { opacity: 0, translateY: '100%' },
   show: { opacity: 1, translateY: 0 },
+};
+const firstItem = {
+  hidden: { opacity: 0, translateX: '100%' },
+  show: { opacity: 1, translateX: 0 },
 };
 
 function Content() {
   const { openMenu } = useContext(MenuContext);
-  const { theme, setTheme } = useTheme();
-  const router = useRouter();
-  const currentPath = useRouter().asPath;
+
   const windowSize = useWindowDimensions();
   return (
     <>
-      <InnerBackground
-        variants={background}
-        initial="hidden"
-        animate={openMenu ? 'show' : 'hidden'}
-        style={{
-          height: windowSize?.windowHeight,
-        }}
-      />
-
       <Wrapper
-        variants={variants}
         initial="hidden"
         animate={openMenu ? 'show' : 'hidden'}
-        style={{
-          height: windowSize?.windowHeight,
-        }}
+        variants={variantsBackground}
       >
-        <Navigation variants={container}>
-          <List />
-        </Navigation>
-        <Info variants={container}>
-          <motion.p variants={item}>
-            <strong>Contact Info</strong>
-          </motion.p>
-          <motion.p variants={item}>Kraków</motion.p>
-          <motion.a variants={item} href="tel:+48 536 777 364">
-            {' '}
-            +48 536 777 364
-          </motion.a>
-        </Info>
-        <Options variants={container}>
-          <Link
-            href={currentPath}
-            locale={router.locale === 'en' ? 'pl' : 'en'}
-          >
-            <motion.a variants={item}>
-              <Image
-                src={router.locale === 'en' ? flagPL : flagUK}
-                height={40}
-                width={40}
-                alt="Poland flag"
-              />
+        <Container
+          variants={variantsContainer}
+          style={{
+            height: windowSize?.windowHeight,
+          }}
+        >
+          <motion.h4 variants={firstItem}>N&#176; Menu</motion.h4>
+          <Navigation>
+            <List />
+          </Navigation>
+          <SocialWrapper>
+            <SocialMedia />
+          </SocialWrapper>
+
+          <Info>
+            <motion.span variants={item}>Kasinka Mała, 648</motion.span>
+            <motion.a variants={item} href="tel:+48 536 777 364">
+              {' '}
+              +48 536 777 364
             </motion.a>
-          </Link>
-          <motion.button
-            variants={item}
-            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-          >
-            <Image
-              src={theme === 'dark' ? light : dark}
-              width={40}
-              height={30}
-              alt="light"
-            />
-          </motion.button>{' '}
-        </Options>
+            <motion.span variants={item}>Poland</motion.span>
+          </Info>
+        </Container>
       </Wrapper>
     </>
   );
@@ -139,18 +94,24 @@ function Content() {
 
 export default Content;
 
-const Wrapper = styled(motion.nav)`
+const Container = styled(motion.nav)`
   position: fixed;
   left: 0;
+  bottom: 0;
   width: 100%;
   height: calc(100vh - 4rem);
-  transform-origin: top center;
+  transform-origin: bottom center;
   background-color: var(--background);
-  z-index: -1;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 4rem 1rem 0;
+  padding: 0 1rem 3rem;
+  h4 {
+    color: var(--main);
+    text-align: right;
+    font-weight: normal;
+  }
+
   @media only screen and ${device.tablet} {
     flex-direction: row;
     padding: 0 10%;
@@ -158,49 +119,41 @@ const Wrapper = styled(motion.nav)`
   }
 `;
 
-const InnerBackground = styled(motion.div)`
+const SocialWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+  gap: 1rem;
+  align-items: end;
+  text-align: right;
+`;
+
+const Wrapper = styled(motion.header)`
   position: fixed;
-  top: 0;
+  bottom: 0;
   left: 0;
   width: 100%;
   height: 100vh;
-  z-index: -1;
-  transform-origin: top center;
+  transform-origin: bottom center;
   background-color: var(--secondaryColor);
+  z-index: 299;
 `;
 
-const Navigation = styled(motion.ul)`
-  @media only screen and ${device.tablet} {
-    align-self: center;
-  }
+const Navigation = styled.ul`
+  padding: 0 2rem;
 `;
-const Info = styled(motion.div)`
+const Info = styled.div`
   display: flex;
   flex-direction: column;
-  text-align: end;
-  p,
-  a {
-    font-size: 1.3rem;
-  }
+  border-bottom: 1px solid var(--main);
+  padding-bottom: 1rem;
+  overflow: hidden;
   a {
     padding: 0;
   }
-  @media only screen and ${device.tablet} {
-    align-self: center;
-    p,
-    a {
-      font-size: 2rem;
-    }
-  }
-`;
-const Options = styled(motion.div)`
-  display: flex;
-  gap: 16px;
-  justify-content: flex-end;
-
-  @media only screen and ${device.tablet} {
-    position: absolute;
-    bottom: 0;
-    right: 16px;
+  * {
+    overflow: hidden;
+    color: var(--main);
   }
 `;

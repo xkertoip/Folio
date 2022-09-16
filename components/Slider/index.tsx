@@ -100,18 +100,16 @@ const HiddenCircle = styled(motion.div)`
 const List = styled(motion.ul)`
   display: flex;
   flex-direction: row;
-  padding: 1rem;
   @media only screen and ${device.tablet} {
     flex-wrap: wrap;
     justify-content: space-between;
-    padding: 0 10%;
   }
 `;
 
 export const Slide = styled(motion.li)`
   position: relative;
   width: 292px;
-  margin: 1rem;
+  margin-right: 1rem;
   overflow: hidden;
   background-color: var(--background);
   border-top: 2px solid var(--specialColor);

@@ -15,7 +15,7 @@ const menu = [
 ];
 
 const variants = {
-  hidden: { opacity: 0, translateY: -15 },
+  hidden: { opacity: 0, translateY: '100%' },
   show: { opacity: 1, translateY: 0 },
 };
 
@@ -26,9 +26,10 @@ function List() {
   return (
     <>
       {menu.map(({ path, title }, index) => (
-        <ListItem key={index} variants={variants} onClick={setOpenMenu}>
+        <Wrapper key={index} onClick={setOpenMenu}>
           <Link href={path}>
-            <a
+            <Container
+              variants={variants}
               style={{
                 color: `var(${
                   router.pathname === path ? '--main' : '--mainColor'
@@ -36,9 +37,9 @@ function List() {
               }}
             >
               {t(`${title}`)}
-            </a>
+            </Container>
           </Link>
-        </ListItem>
+        </Wrapper>
       ))}
     </>
   );
@@ -46,35 +47,19 @@ function List() {
 
 export default List;
 
-const ListItem = styled(motion.li)`
-  a {
-    width: 100%;
-    font-size: 2.5rem;
-    padding: 0;
-    overflow: hidden;
-    position: relative;
-    font-family: BodoniModa, serif;
-    transition: all 0.5s;
-    :before {
-      content: '';
-      min-width: 100%;
-      height: 5%;
-      position: absolute;
-      margin: auto;
-      background-color: var(--background);
-      top: 50%;
-      transform: translateX(-100%);
-      transition-duration: 0.5s;
-    }
-    :hover {
-      color: var(--secondary);
-      :before {
-        transform: translateX(0);
-      }
-    }
-
-    @media only screen and ${device.tablet} {
-      font-size: 4rem;
-    }
+const Wrapper = styled.li`
+  overflow: hidden;
+`;
+const Container = styled(motion.a)`
+  font-size: 2rem;
+  padding: 0;
+  display: block;
+  position: relative;
+  font-family: BodoniModa, serif;
+  :hover {
+    color: var(--secondary);
+  }
+  @media only screen and ${device.tablet} {
+    font-size: 4rem;
   }
 `;

@@ -11,6 +11,7 @@ import { device } from '../../styles/mediaQuery';
 
 import Image from 'next/image';
 import useElementProperties from '../../utils/useElementProperties';
+import { Container } from '../Containers';
 
 type Props = {
   link: string;
@@ -50,18 +51,25 @@ export default function CircleButton({
   children,
   link,
   image,
-  offset = 64,
+  offset = 80,
 }: Props) {
+  /*
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const { elementTop } = useElementProperties({ wrapperRef });
+  const element = useElementProperties({ wrapperRef });
   const { scrollY } = useViewportScroll();
 
-  const initial = elementTop - offset;
-  const final = elementTop + offset;
+  const initial = element.elementTop - offset;
+  const final =
+    element.elementTop + element.elementHeight - element.elementWidth * 0.8;
 
-  const yRange = useTransform(scrollY, [initial, final], [-offset, offset]);
+  const yRange = useTransform(
+    scrollY,
+    [initial, final],
+    [offset, element.elementHeight - element.elementWidth * 0.8 - 2 * offset]
+  );
   const outlineY = useSpring(yRange, { damping: 25, mass: 1, stiffness: 75 });
   const textY = useSpring(yRange, { damping: 25, mass: 1, stiffness: 75 });
+*/
 
   /*const x = useMotionValue(windowDimensions.width / 2);
   const y = useMotionValue(windowDimensions.height / 2);*/
@@ -102,18 +110,16 @@ export default function CircleButton({
 
   return (
     <Wrapper
-      ref={wrapperRef}
+      as={Container}
       /*      onMouseMove={handlePosition}
       onMouseLeave={handleLeave}*/
     >
       <Link href={link}>
         <motion.a whileHover="show" initial="hidden">
-          <motion.div style={{ y: textY }} variants={variantsText}>
-            {children}
-          </motion.div>
-          <CircleOutline style={{ y: outlineY }} />
+          <motion.div variants={variantsText}>{children}</motion.div>
+          <CircleOutline />
           <HiddenCircle variants={variantsImage}>
-            <HiddenImage style={{ y: textY }}>
+            <HiddenImage>
               <Image
                 src={image}
                 alt="mail"
@@ -130,8 +136,8 @@ export default function CircleButton({
 }
 
 const Wrapper = styled(motion.div)`
-  padding: 8rem 0;
   display: flex;
+  padding: 8rem 0;
   justify-content: center;
   align-items: center;
   position: relative;
@@ -196,6 +202,7 @@ const CircleOutline = styled(motion.div)`
   will-change: transform;
   background-color: var(--background);
   z-index: -1;
-  box-shadow: 0 2px 2px -1px rgb(37 150 190 / 20%),
-    0 4px 2px 0 rgb(37 150 190 / 14%), 0 1px 4px 0 rgb(37 150 190);
+
+  box-shadow: 0 2px 4px -1px rgb(0 0 0 / 20%), 0 4px 5px 0 rgb(0 0 0 / 14%),
+    0 1px 10px 0 rgb(0 0 0 / 12%);
 `;

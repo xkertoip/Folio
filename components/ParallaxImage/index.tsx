@@ -12,23 +12,23 @@ import useDeviceDetect from '../../utils/useDeviceDetect';
 import useElementProperties from '../../utils/useElementProperties';
 
 type Props = {
-  children: ReactNode;
   image: string;
   offset?: number;
 };
 
-export default function ParallaxImage({ children, image, offset = 80 }: Props) {
+export default function ParallaxImage({ image, offset = 80 }: Props) {
   const { isMobile } = useDeviceDetect();
   const wrapperRef = useRef<HTMLDivElement>(null);
+
   const { elementHeight, elementTop } = useElementProperties({ wrapperRef });
   const { scrollY } = useViewportScroll();
-  const initial = elementTop;
-  const final = elementHeight / 2 - offset;
+  const initial = 0;
+  const final = elementHeight;
 
   const yRange = useTransform(
     scrollY,
     [initial, final],
-    [offset, elementHeight / 2 + offset]
+    [0, elementHeight + offset]
   );
   const widthRange = useTransform(
     scrollY,
@@ -38,37 +38,25 @@ export default function ParallaxImage({ children, image, offset = 80 }: Props) {
   const y = useSpring(yRange, { damping: 25, mass: 1, stiffness: 75 });
 
   return (
-    <Wrapper ref={wrapperRef}>
-      {children}
-      <ImageContainer
-        style={{
-          y,
-          width: widthRange,
-        }}
-      >
-        <Image
-          src={image}
-          alt="Layout background"
-          layout="fill"
-          objectFit="cover"
-          objectPosition="top center"
-          placeholder="blur"
-        />
-      </ImageContainer>
-    </Wrapper>
+    <ImageContainer
+      ref={wrapperRef}
+      style={{
+        y,
+        width: widthRange,
+      }}
+    >
+      <Image
+        src={image}
+        alt="Layout background"
+        layout="fill"
+        objectFit="cover"
+        objectPosition="top center"
+        placeholder="blur"
+      />
+    </ImageContainer>
   );
 }
 
-const Wrapper = styled.div``;
-/*const TextContainer = styled.div`
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  @media only screen and ${device.tablet} {
-    max-width: 45%;
-  }
-`;*/
 const ImageContainer = styled(motion.div)`
   position: fixed;
   width: 100%;
