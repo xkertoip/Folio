@@ -1,4 +1,4 @@
-import { RefObject, useEffect, useLayoutEffect, useState } from 'react';
+import { RefObject, useEffect, useState } from 'react';
 
 type Props = {
   wrapperRef: RefObject<HTMLDivElement>;

@@ -3,31 +3,12 @@ import Hamburger from './Hamburger';
 import Content from './Content';
 import { useContext } from 'react';
 import { MenuContext } from './HeaderManager';
-import Image from 'next/image';
-const logo = require('/images/PSlogo.svg');
 
 function Header() {
-  const { openMenu } = useContext(MenuContext);
   return (
     <>
-      {/*      <Wrapper
-        style={{
-          backgroundColor: openMenu ? 'var(--background)' : 'transparent',
-        }}
-      >
-
-      </Wrapper>*/}
       <Hamburger />
       <Content />
-      {/*        <Brand>
-          <Image
-            src={logo}
-            alt="brand"
-            layout="responsive"
-            objectFit="contain"
-            objectPosition="center"
-          />
-        </Brand>*/}
     </>
   );
 }

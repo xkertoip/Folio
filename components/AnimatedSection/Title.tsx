@@ -72,11 +72,11 @@ const Wrapper = styled(motion.div)`
 `;
 const Content = styled(motion.h1)`
   text-transform: uppercase;
-  font-size: 7vh;
+  font-size: 8vh;
   padding: 0 1rem;
   z-index: 1;
   position: relative;
   @media only screen and ${device.tablet} {
-    font-size: 20vh;
+    font-size: 15vh;
   }
 `;

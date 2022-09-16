@@ -11,7 +11,6 @@ export const Container = styled.div`
 `;
 
 export const TitleContainer = styled.div`
-  min-height: 100vh;
   align-self: auto;
   margin: auto;
   display: flex;
@@ -22,8 +21,8 @@ export const TitleContainer = styled.div`
 `;
 
 export const Section = styled.section`
-  padding-bottom: 5rem;
-  padding-top: 5rem;
+  padding-bottom: 1rem;
+  padding-top: 1rem;
 `;
 
 export const Introduce = styled(Container)`

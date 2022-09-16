@@ -42,7 +42,7 @@ const ParallaxEffect = ({ array, reverse }: Props) => {
     <Wrapper>
       <Content style={{ x }} ref={wrapperRef}>
         {array.map((element, i) => {
-          return <h1 key={i}> &nbsp;-&nbsp;{element}</h1>;
+          return <h2 key={i}> &nbsp;-&nbsp;{element}</h2>;
         })}
       </Content>
     </Wrapper>

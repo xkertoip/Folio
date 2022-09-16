@@ -1,23 +1,32 @@
 import styled from 'styled-components';
 
 import React from 'react';
+import SocialMedia from '../SocialMedia';
 
 export default function Footer() {
   return (
     <Wrapper>
+      <Line />
+      <div>
+        <SocialMedia />
+      </div>
+
       <Info>
-        <span>Piotr Szczypka@2022</span>
+        <span>© 2022 - All rights reserved </span>
+        <br />
+        <span>Made by Piotr Szczypka</span>
       </Info>
     </Wrapper>
   );
 }
 
 const Wrapper = styled.footer`
-  padding: 0 1rem;
+  padding: 0 1rem 3rem;
 `;
 const Info = styled.div`
-  display: flex;
   padding: 1rem 0;
+  text-align: right;
+  color: var(--main);
 `;
 const Content = styled.div`
   position: relative;
@@ -33,13 +42,15 @@ const ContentLink = styled.a`
   font-weight: bold;
   span {
     margin-right: 2rem;
+    text-align: right;
   }
 `;
 
 const Line = styled.div`
   border-width: 1px 0 0;
+  width: 100%;
   border-style: solid;
-  border-color: var(--mainColor);
+  border-color: var(--main);
   position: relative;
   z-index: 2;
 `;

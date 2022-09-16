@@ -59,7 +59,8 @@ export default Hamburger;
 
 export const Wrapper = styled.div`
   position: fixed;
-  bottom: 1rem;
+  bottom: 0;
+  margin-bottom: 1rem;
   left: 50%;
   background: transparent;
   transform: translateX(-50%);
@@ -68,7 +69,7 @@ export const Wrapper = styled.div`
 
 export const Button = styled(motion.button)`
   width: 36px;
-  height: 26px;
+  height: 18px;
   position: relative;
   span:first-child {
     top: 0;
@@ -87,7 +88,7 @@ export const Button = styled(motion.button)`
 
 export const Stick = styled(motion.span)`
   width: 100%;
-  height: 2px;
-  background-color: var(--mainColor);
+  height: 1px;
+  background-color: var(--main);
   position: absolute;
 `;

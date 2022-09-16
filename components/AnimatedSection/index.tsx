@@ -20,7 +20,7 @@ export default function AnimatedSection({
   return (
     <Perspective>
       <Title title={title} />
-      {subtitle ? <Title title={subtitle} content={content} /> : null}
+      {subtitle ? <Title title={subtitle} /> : null}
     </Perspective>
   );
 }

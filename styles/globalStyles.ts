@@ -18,7 +18,7 @@ const GlobalStyles = createGlobalStyle`
     --mainColor: #fff;
     --secondary: #cfcdcc;
     --secondaryColor: #27201e;
-    --specialColor: #2596be;
+    --specialColor: #363434;
 
 
     
@@ -26,7 +26,7 @@ const GlobalStyles = createGlobalStyle`
 
   [data-theme='dark'] {
     --background: #27201e;
-    --main: rgba(255, 255, 255, .3);
+    --main: #cfcdcc;
     --mainColor: #fff;
     --secondary: #363434;
     --secondaryColor: #000;
@@ -36,7 +36,7 @@ const GlobalStyles = createGlobalStyle`
 
   }
   body {
-    color: var(--mainColor);
+    color: var(--main);
     scroll-behavior: smooth;
     background-color: var(--background);
   }
@@ -50,18 +50,19 @@ const GlobalStyles = createGlobalStyle`
     font-size: 3rem;
   }
   h2 {
-    font-size: 2.5rem;
+    font-size: 20vw;
   }
   h3 {
     font-size: 2rem;
   }
   h4 {
-    font-size: 1.7rem;
+    font-size: 1rem;
+    font-family: CaudexItalic, sans-serif;
   }  
   h1, h2, h3, h4 {
     font-weight: normal;
     margin: 0.5rem 0;
-    font-family: BodoniModa, sans-serif;
+    font-family: Candal, sans-serif;
   }
   p {
     margin: 1rem 0;
@@ -91,9 +92,9 @@ const GlobalStyles = createGlobalStyle`
   code {
     color: #fff;
   }
-  p, button, input {
+  p,  input {
     font-family: RedHatText, sans-serif;;
-    color: var(--mainColor);
+    color: var(--secondary);
     
   }
   ul {

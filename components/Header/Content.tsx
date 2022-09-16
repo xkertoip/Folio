@@ -59,7 +59,7 @@ function Content() {
   const windowSize = useWindowDimensions();
   return (
     <>
-      <InnerBackground
+      <Wrapper
         initial="hidden"
         animate={openMenu ? 'show' : 'hidden'}
         variants={variantsBackground}
@@ -70,7 +70,7 @@ function Content() {
             height: windowSize?.windowHeight,
           }}
         >
-          <motion.h5 variants={firstItem}>N&#176; Menu</motion.h5>
+          <motion.h4 variants={firstItem}>N&#176; Menu</motion.h4>
           <Navigation>
             <List />
           </Navigation>
@@ -87,7 +87,7 @@ function Content() {
             <motion.span variants={item}>Poland</motion.span>
           </Info>
         </Container>
-      </InnerBackground>
+      </Wrapper>
     </>
   );
 }
@@ -105,12 +105,10 @@ const Container = styled(motion.nav)`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: 0 1rem 4rem;
-  h5 {
+  padding: 0 1rem 3rem;
+  h4 {
     color: var(--main);
     text-align: right;
-    margin-top: 1rem;
-    font-size: 1rem;
     font-weight: normal;
   }
 
@@ -131,7 +129,7 @@ const SocialWrapper = styled.div`
   text-align: right;
 `;
 
-const InnerBackground = styled(motion.div)`
+const Wrapper = styled(motion.header)`
   position: fixed;
   bottom: 0;
   left: 0;
@@ -143,12 +141,13 @@ const InnerBackground = styled(motion.div)`
 `;
 
 const Navigation = styled.ul`
-  padding: 2rem 2rem 0;
+  padding: 0 2rem;
 `;
 const Info = styled.div`
   display: flex;
   flex-direction: column;
   border-bottom: 1px solid var(--main);
+  padding-bottom: 1rem;
   overflow: hidden;
   a {
     padding: 0;

@@ -15,7 +15,8 @@ import Header from '../components/Header';
 import { AnimatePresence } from 'framer-motion';
 import CustomCursor from '../components/CustomCursor';
 import HeaderManager from '../components/Header/HeaderManager';
-import ProjectManager from '../components/ProjectContext';
+import Background from '../components/Background';
+import dynamic from 'next/dynamic';
 
 export type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -24,6 +25,10 @@ export type NextPageWithLayout = NextPage & {
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 };
+
+const BackgroundWithoutSSR = dynamic(() => import('../components/Background'), {
+  ssr: false,
+});
 
 const MyApp = ({ Component, pageProps, router }: AppPropsWithLayout) => {
   const getLayout = Component.getLayout ?? ((page: ReactNode) => page);
@@ -47,7 +52,7 @@ const MyApp = ({ Component, pageProps, router }: AppPropsWithLayout) => {
         <HeaderManager>
           <CustomCursor />
           <Header />
-          <ProjectManager>
+          <main>
             <AnimatePresence
               exitBeforeEnter
               onExitComplete={() => window.scrollTo(0, 0)}
@@ -56,7 +61,7 @@ const MyApp = ({ Component, pageProps, router }: AppPropsWithLayout) => {
                 <Component {...pageProps} cannonical={url} key={url} />
               )}
             </AnimatePresence>
-          </ProjectManager>
+          </main>
         </HeaderManager>
       </ThemeProvider>
     </>

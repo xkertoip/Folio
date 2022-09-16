@@ -3,6 +3,7 @@ import { NextSeo } from 'next-seo';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import dynamic from 'next/dynamic';
+import Background from '../Background';
 type Props = {
   children: ReactNode;
   title: string;
@@ -44,6 +45,7 @@ function DefaultLayout({ children, title, description }: Props) {
           exit="hidden"
           transition={{ type: 'linear' }}
         >
+          <Background />
           {children}
         </Wrapper>
       </SmoothScrollWithoutSSR>
@@ -53,9 +55,8 @@ function DefaultLayout({ children, title, description }: Props) {
 
 export default DefaultLayout;
 
-const Wrapper = styled(motion.main)`
+const Wrapper = styled(motion.div)`
   position: relative;
-  isolation: isolate;
   :before,
   :after {
     content: '';

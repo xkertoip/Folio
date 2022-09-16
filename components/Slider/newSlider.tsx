@@ -61,12 +61,11 @@ const swipePower = (offset: number, velocity: number) => {
 const NewSlider = ({ array }: Props) => {
   const [[page, direction], setPage] = useState([0, 0]);
   const imageIndex = wrap(0, array.length, page);
-  const { t } = useTranslation('common');
 
   const paginate = (newDirection: number) => {
     setPage([page + newDirection, newDirection]);
   };
-
+  const { t } = useTranslation('common');
   return (
     <Wrapper as={Container}>
       <Content>
@@ -231,8 +230,7 @@ const Circle = styled.div`
     transform: translate(-50%, -50%);
   }
   @media only screen and ${device.tablet} {
-    width: 92px;
-    height: 92px;
+    width: ;
   }
 `;
 const TitleContainer = styled.div`
