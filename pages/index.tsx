@@ -31,6 +31,18 @@ const logoDark = require('/images/logoPS_dark.svg');
 const title = "Hello, I'm Piotr 👋";
 const subtitle = "I'm a frontend developer from Poland";
 
+const ParallaxWithoutSSR = dynamic(
+  () => import('../components/ParallaxEffect'),
+  {
+    ssr: false,
+  }
+);
+const PerspectiveWithoutSSR = dynamic(
+  () => import('../components/Perspective'),
+  {
+    ssr: false,
+  }
+);
 const variants = {
   hover: {
     scaleX: [1, 0.5, 1, 0.5, 1],
@@ -142,13 +154,13 @@ const Home: NextPageWithLayout = ({ subscription }: any) => {
               Skills <Indicator>N&#176;4 Skills</Indicator>
             </SectionTitle>
           </Container>
-          <ParallaxEffect array={parallaxArray} />
-          <ParallaxEffect array={parallaxArray} reverse={true} />
+          <ParallaxWithoutSSR array={parallaxArray} />
+          <ParallaxWithoutSSR array={parallaxArray} reverse={true} />
         </div>
       </Section>
       <Section>
         <Container>
-          <Perspective>
+          <PerspectiveWithoutSSR>
             <ContactWrapper>
               <h1>Have I intrested you ? </h1>
               <DownloadButton text={'Contact!'} href={'/contact'}>
@@ -161,7 +173,7 @@ const Home: NextPageWithLayout = ({ subscription }: any) => {
                 />
               </DownloadButton>
             </ContactWrapper>
-          </Perspective>
+          </PerspectiveWithoutSSR>
         </Container>
       </Section>
       <Footer />

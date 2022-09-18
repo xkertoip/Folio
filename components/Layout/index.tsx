@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import dynamic from 'next/dynamic';
 import Background from '../Background';
 import Footer from '../Footer';
+import SmoothScroll from '../SmoothScroll';
 
 type Props = {
   children: ReactNode;
@@ -42,7 +43,7 @@ function DefaultLayout({ children, title, description }: Props) {
         exit="hidden"
         transition={{ type: 'linear' }}
       >
-        <SmoothScrollWithoutSSR>{children}</SmoothScrollWithoutSSR>
+        <SmoothScroll>{children}</SmoothScroll>
       </Wrapper>
     </>
   );

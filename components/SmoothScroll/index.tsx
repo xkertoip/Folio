@@ -15,7 +15,7 @@ type Props = {
 
 const SmoothScroll = ({ children }: Props) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const [height, setHeight] = useState<number>(window.innerHeight);
+  const [height, setHeight] = useState<number>(0);
   const { scrollY } = useScroll({
     target: wrapperRef,
     offset: ['start start', 'end end'],
