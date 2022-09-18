@@ -4,12 +4,14 @@ import { device } from './mediaQuery';
 const GlobalStyles = createGlobalStyle`
   * {
     margin:0;
-    font-family: RedHatText, sans-serif;;
+    font-size: 1.1rem;
+    font-family: RedHatText, sans-serif;
     cursor: none;
   }
   *, *:before, *:after {
     box-sizing: border-box;
-    cursor: none
+    cursor: none;
+    font-size: 1.1rem;
     
   }
   :root {
@@ -67,7 +69,7 @@ const GlobalStyles = createGlobalStyle`
   p {
     margin: 1rem 0;
     @media only screen and ${device.tablet} {
-      font-size: 1.25rem;
+      
     }
   }
   @media only screen and ${device.tablet} {
@@ -93,11 +95,11 @@ const GlobalStyles = createGlobalStyle`
     color: #fff;
   }
   p,  input {
-    font-family: RedHatText, sans-serif;;
+    font-family: RedHatText, sans-serif;
     color: var(--secondary);
     
   }
-  ul {
+  ul, menu {
     list-style: none;
     padding: 0;
   }

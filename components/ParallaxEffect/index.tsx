@@ -1,11 +1,6 @@
 import styled from 'styled-components';
-import {
-  motion,
-  useSpring,
-  useTransform,
-  useViewportScroll,
-} from 'framer-motion';
-import { useRef } from 'react';
+import { motion, useScroll, useSpring, useTransform } from 'framer-motion';
+import { useEffect, useRef } from 'react';
 import useElementProperties from '../../utils/useElementProperties';
 
 type Props = {
@@ -19,10 +14,10 @@ const ParallaxEffect = ({ array, reverse }: Props) => {
     wrapperRef,
   });
 
-  const { scrollY } = useViewportScroll();
+  const { scrollY } = useScroll();
 
   const initial = element.elementTop - window.innerHeight;
-  const finish = element.elementTop;
+  const finish = element.elementTop + element.elementHeight;
   const xRange = useTransform(
     scrollY,
     [initial, finish],
@@ -31,10 +26,11 @@ const ParallaxEffect = ({ array, reverse }: Props) => {
   const xRangeReverse = useTransform(
     scrollY,
     [initial, finish],
-    [-element.elementWidth + window.innerWidth, 0]
+    [-element.elementWidth + window.innerWidth, -75]
   );
   const x = useSpring(reverse ? xRangeReverse : xRange, {
-    stiffness: 50,
+    stiffness: 75,
+    mass: 1,
     damping: 30,
   });
 
@@ -53,13 +49,11 @@ export default ParallaxEffect;
 
 const Wrapper = styled.div`
   position: relative;
-  z-index: 1;
   padding-top: 1rem;
 `;
 const Content = styled(motion.div)`
   display: inline-flex;
   flex-direction: row;
-  will-change: transform;
   padding: 0 2rem;
   border-width: 1px 0 1px;
   border-style: solid;

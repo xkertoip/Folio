@@ -22,15 +22,16 @@ export default function useElementProperties({ wrapperRef }: Props) {
     const onResize = () => {
       if (element) {
         setElementProperties({
+          elementHeight: element.clientHeight,
           elementTop:
             element.getBoundingClientRect().top + window.scrollY ||
             window.pageYOffset,
           elementWidth: element.clientWidth,
-          elementHeight: element.clientHeight,
         });
       }
     };
     onResize();
+
     window.addEventListener('resize', () => onResize());
     return () => window.removeEventListener('resize', () => onResize());
   }, [wrapperRef]);

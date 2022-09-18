@@ -5,7 +5,7 @@ import {
   AppProps,
 } from 'next/app';
 import type { NextComponentType, NextPage } from 'next';
-import { Component, ReactElement, ReactNode } from 'react';
+import React, { Component, ReactElement, ReactNode } from 'react';
 import '../styles/globals.css';
 import GlobalStyles from '../styles/globalStyles';
 import { ThemeProvider } from 'next-themes';
@@ -17,6 +17,7 @@ import CustomCursor from '../components/CustomCursor';
 import HeaderManager from '../components/Header/HeaderManager';
 import Background from '../components/Background';
 import dynamic from 'next/dynamic';
+import Footer from '../components/Footer';
 
 export type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -29,6 +30,13 @@ type AppPropsWithLayout = AppProps & {
 const BackgroundWithoutSSR = dynamic(() => import('../components/Background'), {
   ssr: false,
 });
+
+const SmoothScrollWithoutSSR = dynamic(
+  () => import('../components/SmoothScroll'),
+  {
+    ssr: false,
+  }
+);
 
 const MyApp = ({ Component, pageProps, router }: AppPropsWithLayout) => {
   const getLayout = Component.getLayout ?? ((page: ReactNode) => page);
@@ -52,16 +60,14 @@ const MyApp = ({ Component, pageProps, router }: AppPropsWithLayout) => {
         <HeaderManager>
           <CustomCursor />
           <Header />
-          <main>
-            <AnimatePresence
-              exitBeforeEnter
-              onExitComplete={() => window.scrollTo(0, 0)}
-            >
-              {getLayout(
-                <Component {...pageProps} cannonical={url} key={url} />
-              )}
-            </AnimatePresence>
-          </main>
+
+          <BackgroundWithoutSSR />
+          <AnimatePresence
+            exitBeforeEnter
+            onExitComplete={() => window.scrollTo(0, 0)}
+          >
+            {getLayout(<Component {...pageProps} cannonical={url} key={url} />)}
+          </AnimatePresence>
         </HeaderManager>
       </ThemeProvider>
     </>

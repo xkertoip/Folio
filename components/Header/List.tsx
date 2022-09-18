@@ -24,7 +24,7 @@ function List() {
   const router = useRouter();
   const { t } = useTranslation('common');
   return (
-    <>
+    <menu>
       {menu.map(({ path, title }, index) => (
         <Wrapper key={index} onClick={setOpenMenu}>
           <Link href={path}>
@@ -32,7 +32,7 @@ function List() {
               variants={variants}
               style={{
                 color: `var(${
-                  router.pathname === path ? '--main' : '--mainColor'
+                  router.pathname === path ? '--secondary' : '--main'
                 })`,
               }}
             >
@@ -41,7 +41,7 @@ function List() {
           </Link>
         </Wrapper>
       ))}
-    </>
+    </menu>
   );
 }
 
@@ -55,7 +55,7 @@ const Container = styled(motion.a)`
   padding: 0;
   display: block;
   position: relative;
-  font-family: BodoniModa, serif;
+  font-family: CaudexItalic, serif;
   :hover {
     color: var(--secondary);
   }

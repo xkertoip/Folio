@@ -4,6 +4,8 @@ import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import dynamic from 'next/dynamic';
 import Background from '../Background';
+import Footer from '../Footer';
+
 type Props = {
   children: ReactNode;
   title: string;
@@ -13,15 +15,11 @@ type Props = {
 const variants = {
   hidden: {
     opacity: 0,
-    transition: {
-      staggerChildren: 0.15,
-    },
+    y: 100,
   },
   enter: {
     opacity: 1,
-    transition: {
-      staggerChildren: 0.15,
-    },
+    y: 0,
   },
 };
 
@@ -37,18 +35,15 @@ function DefaultLayout({ children, title, description }: Props) {
         description={description}
         openGraph={{ title, description }}
       />
-      <SmoothScrollWithoutSSR>
-        <Wrapper
-          variants={variants}
-          initial="hidden"
-          animate="enter"
-          exit="hidden"
-          transition={{ type: 'linear' }}
-        >
-          <Background />
-          {children}
-        </Wrapper>
-      </SmoothScrollWithoutSSR>
+      <Wrapper
+        variants={variants}
+        initial="hidden"
+        animate="enter"
+        exit="hidden"
+        transition={{ type: 'linear' }}
+      >
+        <SmoothScrollWithoutSSR>{children}</SmoothScrollWithoutSSR>
+      </Wrapper>
     </>
   );
 }
@@ -57,20 +52,4 @@ export default DefaultLayout;
 
 const Wrapper = styled(motion.div)`
   position: relative;
-  :before,
-  :after {
-    content: '';
-    width: 0.5px;
-    min-height: 100%;
-    background-color: var(--secondary);
-    position: fixed;
-    top: 0;
-    z-index: -1;
-  }
-  :before {
-    right: 15%;
-  }
-  :after {
-    right: 45%;
-  }
 `;

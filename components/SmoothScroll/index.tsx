@@ -1,4 +1,4 @@
-import React, { useRef, ReactNode } from 'react';
+import React, { useRef, ReactNode, useState, useEffect } from 'react';
 import {
   useViewportScroll,
   useTransform,
@@ -15,17 +15,25 @@ type Props = {
 
 const SmoothScroll = ({ children }: Props) => {
   const wrapperRef = useRef<HTMLDivElement>(null);
-  const element = useElementProperties({ wrapperRef });
+  const [height, setHeight] = useState<number>(window.innerHeight);
   const { scrollY } = useScroll({
     target: wrapperRef,
     offset: ['start start', 'end end'],
   });
 
-  const transform = useTransform(
-    scrollY,
-    [0, element.elementHeight],
-    [0, -element.elementHeight]
-  );
+  useEffect(() => {
+    const ro = new ResizeObserver((elements) => {
+      for (let elem of elements) {
+        const crx = elem.contentRect;
+        setHeight(crx.height);
+      }
+    });
+    if (wrapperRef.current) {
+      ro.observe(wrapperRef.current);
+    }
+  }, [wrapperRef]);
+
+  const transform = useTransform(scrollY, [0, height], [0, -height]);
 
   const physics = { damping: 15, mass: 0.27, stiffness: 55 };
   const spring = useSpring(transform, physics);
@@ -35,7 +43,7 @@ const SmoothScroll = ({ children }: Props) => {
       <Wrapper ref={wrapperRef} style={{ y: spring }}>
         {children}
       </Wrapper>
-      <div style={{ height: element.elementHeight }} />
+      <div style={{ height: height }} />
     </>
   );
 };
