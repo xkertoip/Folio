@@ -21,6 +21,8 @@ import { Project } from '../lib/types';
 import dynamic from 'next/dynamic';
 import { Indicator, SectionTitle } from '../components/Headings';
 import { useTheme } from 'next-themes';
+import { motion } from 'framer-motion';
+import Link from 'next/link';
 
 const downloadImage = require('/images/download.svg');
 const mainView1 = require('/images/mainView1.jpeg');
@@ -76,7 +78,9 @@ const Home: NextPageWithLayout = ({ subscription }: any) => {
           </div>
 
           <OpacityWrapper as={Shadow}>
-            <Image src={mainView3} alt={'logo'} />
+            <motion.figure layoutId={'image'}>
+              <Image src={mainView3} alt={'logo'} />
+            </motion.figure>
           </OpacityWrapper>
           <div>
             <OpacityWrapper as={Shadow}>
@@ -127,22 +131,26 @@ const Home: NextPageWithLayout = ({ subscription }: any) => {
             Some Work
           </SectionTitle>
           <ProjectWrapper>
-            {allProjects.map((projects: Project) => (
-              <ProjectContainer key={projects.id}>
-                <ProjectImageWrapper>
-                  <Image
-                    alt="project"
-                    src={projects.image.responsiveImage.src}
-                    layout="responsive"
-                    objectFit="contain"
-                    objectPosition="top center"
-                    width={400}
-                    height={280}
-                  />
-                </ProjectImageWrapper>
-                <h3>{projects.title}</h3>
-                <h4>{projects.adds}</h4>
-              </ProjectContainer>
+            {allProjects.map((project: Project) => (
+              <Link href={'/projects/' + project.slug} key={project.id}>
+                <ProjectContainer>
+                  <ProjectImageWrapper>
+                    <motion.figure layoutId={`image-${project.id}`}>
+                      <Image
+                        alt="project"
+                        src={project.image.responsiveImage.src}
+                        layout="responsive"
+                        objectFit="contain"
+                        objectPosition="top center"
+                        width={400}
+                        height={280}
+                      />
+                    </motion.figure>
+                  </ProjectImageWrapper>
+                  <h3>{project.title}</h3>
+                  <h4>{project.adds}</h4>
+                </ProjectContainer>
+              </Link>
             ))}
           </ProjectWrapper>
         </ThirdView>
@@ -160,7 +168,7 @@ const Home: NextPageWithLayout = ({ subscription }: any) => {
       </Section>
       <Section>
         <Container>
-          <PerspectiveWithoutSSR>
+          <Perspective>
             <ContactWrapper>
               <h1>Have I intrested you ? </h1>
               <DownloadButton text={'Contact!'} href={'/contact'}>
@@ -173,7 +181,7 @@ const Home: NextPageWithLayout = ({ subscription }: any) => {
                 />
               </DownloadButton>
             </ContactWrapper>
-          </PerspectiveWithoutSSR>
+          </Perspective>
         </Container>
       </Section>
       <Footer />
@@ -219,8 +227,8 @@ const ProjectWrapper = styled.div`
   padding-top: 1rem;
 `;
 
-const ProjectContainer = styled.div`
-  padding-bottom: 2rem;
+const ProjectContainer = styled.a`
+  margin-bottom: 2rem;
   span {
     color: var(--main);
   }
@@ -228,17 +236,7 @@ const ProjectContainer = styled.div`
     color: var(--secondary);
   }
 `;
-const ContactWrapper = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: auto;
-  h1 {
-    grid-area: 1 / 1 / 2 / 3;
-  }
-  a {
-    grid-area: 2 / 1 /3 /2;
-  }
-`;
+const ContactWrapper = styled.div``;
 const OpacityWrapper = styled.div`
   opacity: 0.9;
 `;

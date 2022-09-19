@@ -1,3 +1,5 @@
+import styled from 'styled-components';
+
 const title = "Hello, I'm Piotr 👋";
 const subtitle = "I'm a frontend developer from Poland";
 import { GetStaticPaths, GetStaticProps } from 'next';
@@ -6,7 +8,9 @@ import React, { ReactElement } from 'react';
 import { useQuerySubscription } from 'react-datocms';
 import { Project } from '../../lib/types';
 import { NextPageWithLayout } from '../_app';
+import Image from 'next/image';
 import ProjectLayout from '../../components/Layout/project';
+import { motion } from 'framer-motion';
 
 export const getStaticPaths: GetStaticPaths = async (context) => {
   const data = await request({ query: `{ allProjects { slug } }` });
@@ -39,6 +43,11 @@ query ProjectBySlug($slug: String) {
     introduction
     description
     adds
+   image {
+      responsiveImage {
+        src
+      }
+    }
   }
 }
 `,
@@ -73,15 +82,38 @@ const ProjectPage: NextPageWithLayout = ({ subscription }: any) => {
       <div>{project.description}</div>
       <div>{project.adds}</div>
       <div>{project.technology}</div>
+      <OpacityWrapper as={Shadow}>
+        <motion.figure layoutId={`image-${project.id}`}>
+          <Image
+            src={project.image.responsiveImage.src}
+            alt={'porjectImage'}
+            layout={'responsive'}
+            width={400}
+            height={280}
+          />
+        </motion.figure>
+      </OpacityWrapper>
     </>
   );
 };
+const OpacityWrapper = styled.div`
+  opacity: 0.9;
+  position: relative;
+`;
+const Shadow = styled.div`
+  margin-bottom: 1rem;
 
-ProjectPage.getLayout = function getLayout(page: ReactElement) {
+  span {
+    box-shadow: 0 2px 4px -1px rgb(0 0 0 / 20%), 0 4px 5px 0 rgb(0 0 0 / 14%),
+      0 1px 10px 0 rgb(0 0 0 / 12%);
+  }
+`;
+
+/*ProjectPage.getLayout = function getLayout(page: ReactElement) {
   return (
     <ProjectLayout title={title} description={subtitle}>
       {page}
     </ProjectLayout>
   );
-};
+};*/
 export default ProjectPage;

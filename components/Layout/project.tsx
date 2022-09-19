@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useEffect } from 'react';
 import { NextSeo } from 'next-seo';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
@@ -26,6 +26,9 @@ const variants = {
 };
 
 function ProjectLayout({ children, title, description }: Props) {
+  useEffect(() => {
+    console.log('render');
+  }, []);
   return (
     <>
       <NextSeo
@@ -33,18 +36,10 @@ function ProjectLayout({ children, title, description }: Props) {
         description={description}
         openGraph={{ title, description }}
       />
-      <Wrapper
-        variants={variants}
-        initial="hidden"
-        animate="enter"
-        exit="hidden"
-        transition={{ type: 'linear' }}
-        style={{
-          backgroundColor: 'black',
-        }}
-      >
+      <div>
+        <h2>Projekty</h2>
         {children}
-      </Wrapper>
+      </div>
     </>
   );
 }
