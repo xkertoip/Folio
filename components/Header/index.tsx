@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import Hamburger from './Hamburger';
-import Content from './Content';
+import Menu from './Menu';
 import { useContext } from 'react';
 import { MenuContext } from './HeaderManager';
 
@@ -8,7 +8,7 @@ function Header() {
   return (
     <>
       <Hamburger />
-      <Content />
+      <Menu />
     </>
   );
 }

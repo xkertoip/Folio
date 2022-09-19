@@ -31,13 +31,18 @@ const logoDark = require('/images/logoPS_dark.svg');
 const title = "Hello, I'm Piotr 👋";
 const subtitle = "I'm a frontend developer from Poland";
 
+const ParallaxWithoutSSR = dynamic(
+  () => import('../components/ParallaxEffect'),
+  {
+    ssr: false,
+  }
+);
 const PerspectiveWithoutSSR = dynamic(
   () => import('../components/Perspective'),
   {
     ssr: false,
   }
 );
-
 const variants = {
   hover: {
     scaleX: [1, 0.5, 1, 0.5, 1],
@@ -59,7 +64,7 @@ const Home: NextPageWithLayout = ({ subscription }: any) => {
   return (
     <>
       <Section>
-        <MainViewContainer as={Container}>
+        <Grid as={Container}>
           <div>
             <SectionTitle
               whileHover={'hover'}
@@ -79,10 +84,10 @@ const Home: NextPageWithLayout = ({ subscription }: any) => {
             </OpacityWrapper>
             <Image src={theme === 'dark' ? logoLight : logoDark} alt={'logo'} />
           </div>
-        </MainViewContainer>
+        </Grid>
       </Section>
       <Section>
-        <MainViewContainer as={Container}>
+        <Grid as={Container}>
           <div>
             <SectionTitle>
               <Indicator>N&#176;2 About</Indicator>
@@ -98,7 +103,12 @@ const Home: NextPageWithLayout = ({ subscription }: any) => {
             <p>{t(`introduce`)}</p>
             <p>{t(`cvText`)}</p>
 
-            <DownloadButton text={t(`download`)}>
+            <DownloadButton
+              text={t(`download`)}
+              download={'CV_Piotr_Szczypka.pdf'}
+              target={'_blank'}
+              href={'/CV21.pdf'}
+            >
               <Image
                 src={downloadImage}
                 alt="download"
@@ -108,7 +118,7 @@ const Home: NextPageWithLayout = ({ subscription }: any) => {
               />
             </DownloadButton>
           </div>
-        </MainViewContainer>
+        </Grid>
       </Section>
       <Section>
         <ThirdView as={Container}>
@@ -144,38 +154,28 @@ const Home: NextPageWithLayout = ({ subscription }: any) => {
               Skills <Indicator>N&#176;4 Skills</Indicator>
             </SectionTitle>
           </Container>
-          <ParallaxEffect array={parallaxArray} />
-          <ParallaxEffect array={parallaxArray} reverse={true} />
+          <ParallaxWithoutSSR array={parallaxArray} />
+          <ParallaxWithoutSSR array={parallaxArray} reverse={true} />
         </div>
       </Section>
       <Section>
-        <CircleButton link="/contact" image={mailImage}>
-          <h4>{t(`mailWelcome`)}</h4>
-          <p>
-            {t(`mailTitle`)} <br /> {t(`mailSubtitle`)}
-          </p>
-        </CircleButton>
+        <Container>
+          <PerspectiveWithoutSSR>
+            <ContactWrapper>
+              <h1>Have I intrested you ? </h1>
+              <DownloadButton text={'Contact!'} href={'/contact'}>
+                <Image
+                  src={mailImage}
+                  alt="download"
+                  layout="responsive"
+                  objectFit="cover"
+                  objectPosition="top center"
+                />
+              </DownloadButton>
+            </ContactWrapper>
+          </PerspectiveWithoutSSR>
+        </Container>
       </Section>
-      {/*      <ParallaxImage image={backgroundImage} />*/}
-      {/*      <PerspectiveWithoutSSR>
-        <TitleContainer>
-          <Title title="/CREATIVE DEVELOPER/" />
-        </TitleContainer>
-      </PerspectiveWithoutSSR>*/}
-
-      {/*
-      {/*     <section>
-        <Slider array={allProjects} />
-      </section>*/}
-      {/*
-      <Section>
-        <CircleButton link="/contact" image={mailImage}>
-          <h4>{t(`mailWelcome`)}</h4>
-          <p>
-            {t(`mailTitle`)} <br /> {t(`mailSubtitle`)}
-          </p>
-        </CircleButton>
-      </Section>*/}
       <Footer />
     </>
   );
@@ -190,10 +190,10 @@ Home.getLayout = function getLayout(page: ReactElement) {
 };
 export default Home;
 
-const MainViewContainer = styled.div`
+const Grid = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(3, 1fr);
+  grid-template-rows: auto;
   min-height: calc(100vh - 2rem);
   div:first-child {
     grid-area: 1/1/2/3;
@@ -228,12 +228,16 @@ const ProjectContainer = styled.div`
     color: var(--secondary);
   }
 `;
-const Line = styled.div`
-  border-width: 1px 0 0;
-  border-style: solid;
-  border-color: var(--main);
-  position: relative;
-  z-index: 2;
+const ContactWrapper = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto;
+  h1 {
+    grid-area: 1 / 1 / 2 / 3;
+  }
+  a {
+    grid-area: 2 / 1 /3 /2;
+  }
 `;
 const OpacityWrapper = styled.div`
   opacity: 0.9;

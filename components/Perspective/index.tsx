@@ -55,13 +55,12 @@ const Wrapper = styled.div`
   perspective: 1000px;
   mix-blend-mode: inherit;
   transform-style: preserve-3d;
-  min-height: 100vh;
+  min-height: calc(100vh - 2rem);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   z-index: 2;
-  padding: 1rem 1rem 4rem;
 `;
 
 const Content = styled(motion.div)`

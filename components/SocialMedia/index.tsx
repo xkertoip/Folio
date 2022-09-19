@@ -4,8 +4,9 @@ import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/router';
 import { useTheme } from 'next-themes';
-const facebook = require('/images/facebook.svg');
-const linkedIn = require('/images/linkedin.svg');
+const facebook = require('/images/fb.svg');
+const insta = require('/images/insta.svg');
+const linkedIn = require('/images/linkedIn.svg');
 const github = require('/images/github.svg');
 const flagPl = require('/images/poland.svg');
 const flagUK = require('/images/uk.svg');
@@ -28,14 +29,19 @@ export default function SocialMedia() {
           <Image
             src={linkedIn}
             alt="linkedIn"
-            layout="fill"
-            objectFit="contain"
+            objectFit={'cover'}
+            layout={'responsive'}
           />
         </ImageContainer>
       </Link>
       <Link href="https://www.github.com/xkertoip" target="_blank">
         <ImageContainer variants={item}>
-          <Image src={github} alt="github" layout="fill" objectFit="contain" />
+          <Image
+            src={insta}
+            alt="insta"
+            objectFit={'cover'}
+            layout={'responsive'}
+          />
         </ImageContainer>
       </Link>
       <Link href="https://www.facebook.com/piotrek.szczypka/" target="_blank">
@@ -43,8 +49,18 @@ export default function SocialMedia() {
           <Image
             src={facebook}
             alt="facebook"
-            layout="fill"
-            objectFit="contain"
+            objectFit={'contain'}
+            layout={'responsive'}
+          />
+        </ImageContainer>
+      </Link>
+      <Link href="https://www.github.com/xkertoip" target="_blank">
+        <ImageContainer variants={item}>
+          <Image
+            src={github}
+            alt="github"
+            objectFit={'cover'}
+            layout={'responsive'}
           />
         </ImageContainer>
       </Link>
@@ -52,8 +68,8 @@ export default function SocialMedia() {
         <ImageContainer variants={item}>
           <Image
             src={router.locale === 'en' ? flagPl : flagUK}
-            layout="fill"
-            objectFit="contain"
+            objectFit={'cover'}
+            layout={'responsive'}
             alt="Poland flag"
           />
         </ImageContainer>
@@ -64,8 +80,8 @@ export default function SocialMedia() {
       >
         <Image
           src={theme === 'dark' ? light : dark}
-          width={26}
-          height={26}
+          objectFit={'cover'}
+          layout={'responsive'}
           alt="light"
         />
       </ImageContainer>{' '}
@@ -75,8 +91,8 @@ export default function SocialMedia() {
 
 const ImageContainer = styled(motion.a)`
   color: var(--main);
-  height: 26px;
-  width: 26px;
+  height: 32px;
+  width: 32px;
   text-align: right;
   overflow: hidden;
   position: relative;

@@ -146,8 +146,8 @@ const Wrapper = styled(motion.div)`
     position: relative;
     width: 100%;
     height: 100%;
-    max-width: 80vw;
-    min-height: 80vw;
+    max-width: 400px;
+    max-height: 400px;
     border-radius: 50%;
     border-color: var(--mainColor);
     border-width: 1px;
@@ -200,7 +200,7 @@ const CircleOutline = styled(motion.div)`
   bottom: 0;
   border-radius: 50%;
   will-change: transform;
-  background-color: var(--background);
+  background-color: var(--main);
   z-index: -1;
 
   box-shadow: 0 2px 4px -1px rgb(0 0 0 / 20%), 0 4px 5px 0 rgb(0 0 0 / 14%),

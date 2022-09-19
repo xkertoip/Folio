@@ -15,22 +15,19 @@ const Background = () => {
 
   const transform = useTransform(
     scrollY,
-    [0, element.elementWidth - window.innerHeight],
-    [
-      -element.elementWidth + window.innerHeight,
-      element.elementWidth - window.innerHeight + 100,
-    ]
+    [0, element.elementWidth],
+    [-element.elementWidth + window.innerHeight, 0]
   );
   const physics = { damping: 100, mass: 1, stiffness: 200 };
   const spring = useSpring(transform, physics);
   return (
-    <Wrapper
-      style={{
-        y: spring,
-      }}
-    >
-      <Title ref={wrapperRef}>
-        <h1>CREATIVE DEVELOPER</h1>
+    <Wrapper>
+      <Title
+        style={{
+          y: spring,
+        }}
+      >
+        <motion.h1 ref={wrapperRef}>CREATIVE DEVELOPER</motion.h1>
       </Title>
     </Wrapper>
   );
@@ -38,26 +35,48 @@ const Background = () => {
 
 export default Background;
 
-const Wrapper = styled(motion.div)`
-  position: absolute;
+const Wrapper = styled.div`
+  position: fixed;
   top: 0;
-  right: 0;
-  padding: 1rem;
+  left: 0;
   z-index: -1;
+  width: 100%;
+  height: 100%;
+  :before,
+  :after {
+    content: '';
+    width: 0.5px;
+    min-height: 100%;
+    background-color: var(--secondary);
+    position: fixed;
+    top: 0;
+    z-index: -1;
+  }
+  :before {
+    right: 15%;
+  }
+  :after {
+    right: 45%;
+  }
 `;
-const Title = styled.div`
-  transform-origin: top right;
+const Title = styled(motion.div)`
+  position: absolute;
   top: 0;
   right: 0;
-  transform: rotate(-90deg) translateY(-100%);
-  white-space: nowrap;
-  position: absolute;
-  padding-bottom: 1rem;
+  z-index: 0;
+
   h1 {
     font-size: 37vw;
     margin: 0;
     line-height: 0.8;
     color: var(--specialColor);
+    transform-origin: top right;
+    top: 0;
+    right: 0;
+    transform: rotate(-90deg) translateY(-100%);
+    white-space: nowrap;
+    position: absolute;
+    padding-bottom: 1rem;
   }
   span {
     z-index: -1;

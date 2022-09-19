@@ -1,11 +1,6 @@
-import {
-  AppContext,
-  AppInitialProps,
-  AppLayoutProps,
-  AppProps,
-} from 'next/app';
-import type { NextComponentType, NextPage } from 'next';
-import { Component, ReactElement, ReactNode } from 'react';
+import { AppProps } from 'next/app';
+import type { NextPage } from 'next';
+import React, { Component, ReactElement, ReactNode } from 'react';
 import '../styles/globals.css';
 import GlobalStyles from '../styles/globalStyles';
 import { ThemeProvider } from 'next-themes';
@@ -15,8 +10,9 @@ import Header from '../components/Header';
 import { AnimatePresence } from 'framer-motion';
 import CustomCursor from '../components/CustomCursor';
 import HeaderManager from '../components/Header/HeaderManager';
-import Background from '../components/Background';
 import dynamic from 'next/dynamic';
+import { motion } from 'framer-motion';
+import { useRouter } from 'next/router';
 
 export type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -30,9 +26,44 @@ const BackgroundWithoutSSR = dynamic(() => import('../components/Background'), {
   ssr: false,
 });
 
+const SmoothScrollWithoutSSR = dynamic(
+  () => import('../components/SmoothScroll'),
+  {
+    ssr: false,
+  }
+);
+
+const variants = {
+  in: {
+    opacity: 0,
+    y: 100,
+    transition: {
+      delay: 0.5,
+      ease: 'easeInOut',
+    },
+  },
+  inactive: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 1,
+      ease: 'easeInOut',
+    },
+  },
+  out: {
+    opacity: 0,
+    y: -100,
+    transition: {
+      duration: 1,
+      ease: 'easeInOut',
+    },
+  },
+};
+
 const MyApp = ({ Component, pageProps, router }: AppPropsWithLayout) => {
   const getLayout = Component.getLayout ?? ((page: ReactNode) => page);
   const url = `https://piotr.szczypka.com${router.route}`;
+  const { asPath } = useRouter();
 
   return (
     <>
@@ -52,16 +83,24 @@ const MyApp = ({ Component, pageProps, router }: AppPropsWithLayout) => {
         <HeaderManager>
           <CustomCursor />
           <Header />
-          <main>
-            <AnimatePresence
-              exitBeforeEnter
-              onExitComplete={() => window.scrollTo(0, 0)}
-            >
-              {getLayout(
-                <Component {...pageProps} cannonical={url} key={url} />
-              )}
+
+          <BackgroundWithoutSSR />
+          <SmoothScrollWithoutSSR>
+            <AnimatePresence initial={false} exitBeforeEnter>
+              <motion.div
+                key={asPath}
+                variants={variants}
+                animate="inactive"
+                initial="in"
+                exit="out"
+                transition={{ type: 'linear' }}
+              >
+                {getLayout(
+                  <Component {...pageProps} cannonical={url} key={url} />
+                )}
+              </motion.div>
             </AnimatePresence>
-          </main>
+          </SmoothScrollWithoutSSR>
         </HeaderManager>
       </ThemeProvider>
     </>

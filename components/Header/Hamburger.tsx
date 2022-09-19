@@ -88,7 +88,7 @@ export const Button = styled(motion.button)`
 
 export const Stick = styled(motion.span)`
   width: 100%;
-  height: 1px;
-  background-color: var(--main);
+  height: 2px;
+  background-color: var(--secondary);
   position: absolute;
 `;

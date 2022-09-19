@@ -4,6 +4,10 @@ import { motion } from 'framer-motion';
 import styled from 'styled-components';
 import dynamic from 'next/dynamic';
 import Background from '../Background';
+import Footer from '../Footer';
+import SmoothScroll from '../SmoothScroll';
+import { useRouter } from 'next/router';
+
 type Props = {
   children: ReactNode;
   title: string;
@@ -11,23 +15,31 @@ type Props = {
 };
 
 const variants = {
-  hidden: {
+  in: {
     opacity: 0,
+    y: 100,
     transition: {
-      staggerChildren: 0.15,
+      delay: 0.5,
+      ease: 'easeInOut',
     },
   },
-  enter: {
+  inactive: {
     opacity: 1,
+    y: 0,
     transition: {
-      staggerChildren: 0.15,
+      duration: 1,
+      ease: 'easeInOut',
+    },
+  },
+  out: {
+    opacity: 0,
+    y: -100,
+    transition: {
+      duration: 1,
+      ease: 'easeInOut',
     },
   },
 };
-
-const SmoothScrollWithoutSSR = dynamic(() => import('../SmoothScroll'), {
-  ssr: false,
-});
 
 function DefaultLayout({ children, title, description }: Props) {
   return (
@@ -37,18 +49,15 @@ function DefaultLayout({ children, title, description }: Props) {
         description={description}
         openGraph={{ title, description }}
       />
-      <SmoothScrollWithoutSSR>
-        <Wrapper
-          variants={variants}
-          initial="hidden"
-          animate="enter"
-          exit="hidden"
-          transition={{ type: 'linear' }}
-        >
-          <Background />
-          {children}
-        </Wrapper>
-      </SmoothScrollWithoutSSR>
+      {/*      <Wrapper
+        key={asPath}
+        variants={variants}
+        animate="inactive"
+        initial="in"
+        exit="out"
+        transition={{ type: 'linear' }}
+      >*/}
+      {children}
     </>
   );
 }
@@ -57,20 +66,4 @@ export default DefaultLayout;
 
 const Wrapper = styled(motion.div)`
   position: relative;
-  :before,
-  :after {
-    content: '';
-    width: 0.5px;
-    min-height: 100%;
-    background-color: var(--secondary);
-    position: fixed;
-    top: 0;
-    z-index: -1;
-  }
-  :before {
-    right: 15%;
-  }
-  :after {
-    right: 45%;
-  }
 `;
