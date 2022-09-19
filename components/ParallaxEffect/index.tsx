@@ -29,7 +29,7 @@ const ParallaxEffect = ({ array, reverse }: Props) => {
     [-element.elementWidth + window.innerWidth, -75]
   );
   const x = useSpring(reverse ? xRangeReverse : xRange, {
-    stiffness: 75,
+    stiffness: 50,
     mass: 1,
     damping: 30,
   });
@@ -59,6 +59,7 @@ const Content = styled(motion.div)`
   border-style: solid;
   border-color: var(--secondary);
   background-color: var(--background);
+  will-change: transform;
   h2 {
     color: var(--secondary);
   }

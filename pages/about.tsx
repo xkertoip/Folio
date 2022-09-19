@@ -5,6 +5,8 @@ import { device } from '../styles/mediaQuery';
 import DefaultLayout from '../components/Layout';
 import { NextPageWithLayout } from './_app';
 import { motion } from 'framer-motion';
+import Image from 'next/image';
+const mainView3 = require('/images/mainView4.jpg');
 
 const title = 'About';
 const subtitle = 'Creative, stubborn, inquisitive - It`s me ';
@@ -24,41 +26,13 @@ const About: NextPageWithLayout = () => {
     return Math.abs(offset) * velocity;
   };
   return (
-    <motion.div
-      style={{ display: 'inline-flex' }}
-      drag="x"
-      dragConstraints={{ left: 0, right: 0 }}
-      dragElastic={1}
-      onDragEnd={(e, { offset, velocity }) => {
-        const swipe = swipePower(offset.x, velocity.x);
-        if (swipe < -swipeConfidenceThreshold) {
-          if (div1.current) {
-            console.log('tutu lewo', swipe);
-            div1.current.scrollIntoView({
-              behavior: 'smooth',
-              inline: 'start',
-            });
-          }
-        } else if (swipe > swipeConfidenceThreshold) {
-          if (div2.current) {
-            console.log('tutu dugie lewo', swipe);
-            div2.current.scrollIntoView({
-              behavior: 'smooth',
-              inline: 'start',
-            });
-          }
-        }
-      }}
-    >
-      <div ref={div1} style={{ minWidth: '100vw', height: '100vh' }}>
-        {' '}
-        siema
-      </div>
-      <div ref={div2} style={{ minWidth: '100vw', height: '100vh' }}>
-        {' '}
-        siema2
-      </div>
-    </motion.div>
+    <div>
+      <OpacityWrapper as={Shadow}>
+        <motion.figure layoutId={'image'}>
+          <Image src={mainView3} alt={'logo'} />
+        </motion.figure>
+      </OpacityWrapper>
+    </div>
   );
 };
 
@@ -70,6 +44,18 @@ About.getLayout = function getLayout(page: ReactElement) {
   );
 };
 export default About;
+
+const OpacityWrapper = styled.div`
+  opacity: 0.9;
+`;
+const Shadow = styled.div`
+  margin-bottom: 1rem;
+
+  span {
+    box-shadow: 0 2px 4px -1px rgb(0 0 0 / 20%), 0 4px 5px 0 rgb(0 0 0 / 14%),
+      0 1px 10px 0 rgb(0 0 0 / 12%);
+  }
+`;
 
 const View = styled.div`
   position: absolute;

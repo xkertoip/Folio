@@ -7,7 +7,7 @@ import { ThemeProvider } from 'next-themes';
 import { appWithTranslation } from 'next-i18next';
 import { DefaultSeo } from 'next-seo';
 import Header from '../components/Header';
-import { AnimatePresence } from 'framer-motion';
+import { AnimateSharedLayout } from 'framer-motion';
 import CustomCursor from '../components/CustomCursor';
 import HeaderManager from '../components/Header/HeaderManager';
 import dynamic from 'next/dynamic';
@@ -86,20 +86,9 @@ const MyApp = ({ Component, pageProps, router }: AppPropsWithLayout) => {
 
           <BackgroundWithoutSSR />
           <SmoothScrollWithoutSSR>
-            <AnimatePresence initial={false} exitBeforeEnter>
-              <motion.div
-                key={asPath}
-                variants={variants}
-                animate="inactive"
-                initial="in"
-                exit="out"
-                transition={{ type: 'linear' }}
-              >
-                {getLayout(
-                  <Component {...pageProps} cannonical={url} key={url} />
-                )}
-              </motion.div>
-            </AnimatePresence>
+            <AnimateSharedLayout>
+              <Component {...pageProps} cannonical={url} key={url} />
+            </AnimateSharedLayout>
           </SmoothScrollWithoutSSR>
         </HeaderManager>
       </ThemeProvider>

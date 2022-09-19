@@ -4,7 +4,7 @@ import { request } from '../lib/datocms';
 
 import React, { ReactNode } from 'react';
 import { GetStaticProps } from 'next';
-import ProjectsLayout from '../components/Layout/projects';
+import ProjectsLayout from '../components/Layout/project';
 import { NextPageWithLayout } from './_app';
 import useWindowDimensions from '../utils/useWindowDimensions';
 import FullPage from '../components/Slider/fullPage';
@@ -71,13 +71,13 @@ const Projects: NextPageWithLayout = ({ subscription }: any) => {
   );
 };
 
-Projects.getLayout = function getLayout(page: ReactNode) {
+/*Projects.getLayout = function getLayout(page: ReactNode) {
   return (
     <ProjectsLayout title={title} description={subtitle}>
       {page}
     </ProjectsLayout>
   );
-};
+};*/
 export default Projects;
 
 const Wrapper = styled.div`

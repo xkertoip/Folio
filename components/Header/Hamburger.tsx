@@ -45,7 +45,6 @@ const Hamburger = () => {
         data-open={JSON.stringify(openMenu)}
         onClick={setOpenMenu}
         animate={openMenu ? 'open' : 'close'}
-        initial="close"
       >
         <Stick variants={variantsStickFirst} />
         <Stick variants={variantsStickMiddle} />

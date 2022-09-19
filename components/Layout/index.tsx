@@ -2,43 +2,13 @@ import React, { ReactNode } from 'react';
 import { NextSeo } from 'next-seo';
 import { motion } from 'framer-motion';
 import styled from 'styled-components';
-import dynamic from 'next/dynamic';
-import Background from '../Background';
-import Footer from '../Footer';
-import SmoothScroll from '../SmoothScroll';
-import { useRouter } from 'next/router';
+import Image from 'next/image';
+const mainView3 = require('/images/mainView4.jpg');
 
 type Props = {
   children: ReactNode;
   title: string;
   description: string;
-};
-
-const variants = {
-  in: {
-    opacity: 0,
-    y: 100,
-    transition: {
-      delay: 0.5,
-      ease: 'easeInOut',
-    },
-  },
-  inactive: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 1,
-      ease: 'easeInOut',
-    },
-  },
-  out: {
-    opacity: 0,
-    y: -100,
-    transition: {
-      duration: 1,
-      ease: 'easeInOut',
-    },
-  },
 };
 
 function DefaultLayout({ children, title, description }: Props) {
@@ -57,7 +27,7 @@ function DefaultLayout({ children, title, description }: Props) {
         exit="out"
         transition={{ type: 'linear' }}
       >*/}
-      {children}
+      <Wrapper>{children}</Wrapper>
     </>
   );
 }
@@ -66,4 +36,16 @@ export default DefaultLayout;
 
 const Wrapper = styled(motion.div)`
   position: relative;
+`;
+
+const OpacityWrapper = styled.div`
+  opacity: 0.9;
+`;
+const Shadow = styled.div`
+  margin-bottom: 1rem;
+
+  span {
+    box-shadow: 0 2px 4px -1px rgb(0 0 0 / 20%), 0 4px 5px 0 rgb(0 0 0 / 14%),
+      0 1px 10px 0 rgb(0 0 0 / 12%);
+  }
 `;

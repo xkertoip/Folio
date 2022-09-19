@@ -34,6 +34,7 @@ const variantsBackground = {
     transition: {
       duration: 0.3,
       when: 'afterChildren',
+      type: 'linear',
     },
   },
   show: {
@@ -41,6 +42,7 @@ const variantsBackground = {
     transition: {
       duration: 0.3,
       when: 'beforeChildren',
+      type: 'linear',
     },
   },
 };
