@@ -49,6 +49,16 @@ const item = {
   hidden: { opacity: 0, translateY: '100%' },
   show: { opacity: 1, translateY: 0 },
 };
+const header = {
+  header: {
+    opacity: 0,
+    translateX: -100,
+  },
+  show: {
+    opacity: 1,
+    translateX: 0,
+  },
+};
 
 function Menu() {
   const { openMenu } = useContext(MenuContext);
@@ -67,7 +77,7 @@ function Menu() {
             height: windowSize?.windowHeight,
           }}
         >
-          <Header>N&#176;0 Menu</Header>
+          <Header variants={item}>N&#176;0 Menu</Header>
           <Content>
             <nav>
               <List />
@@ -126,7 +136,7 @@ const Content = styled.div`
   overflow: hidden;
   border-bottom: 1px solid var(--main);
 `;
-const Header = styled.header`
+const Header = styled(motion.header)`
   font-family: CaudexItalic, sans-serif;
   color: var(--secondary);
   font-size: 1.5rem;

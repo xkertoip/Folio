@@ -6,6 +6,7 @@ import dynamic from 'next/dynamic';
 import Background from '../Background';
 import Footer from '../Footer';
 import SmoothScroll from '../SmoothScroll';
+import { useRouter } from 'next/router';
 
 type Props = {
   children: ReactNode;
@@ -14,19 +15,31 @@ type Props = {
 };
 
 const variants = {
-  hidden: {
+  in: {
     opacity: 0,
     y: 100,
+    transition: {
+      delay: 0.5,
+      ease: 'easeInOut',
+    },
   },
-  enter: {
+  inactive: {
     opacity: 1,
     y: 0,
+    transition: {
+      duration: 1,
+      ease: 'easeInOut',
+    },
+  },
+  out: {
+    opacity: 0,
+    y: -100,
+    transition: {
+      duration: 1,
+      ease: 'easeInOut',
+    },
   },
 };
-
-const SmoothScrollWithoutSSR = dynamic(() => import('../SmoothScroll'), {
-  ssr: false,
-});
 
 function DefaultLayout({ children, title, description }: Props) {
   return (
@@ -36,15 +49,15 @@ function DefaultLayout({ children, title, description }: Props) {
         description={description}
         openGraph={{ title, description }}
       />
-      <Wrapper
+      {/*      <Wrapper
+        key={asPath}
         variants={variants}
-        initial="hidden"
-        animate="enter"
-        exit="hidden"
+        animate="inactive"
+        initial="in"
+        exit="out"
         transition={{ type: 'linear' }}
-      >
-        <SmoothScroll>{children}</SmoothScroll>
-      </Wrapper>
+      >*/}
+      {children}
     </>
   );
 }
