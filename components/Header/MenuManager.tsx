@@ -17,10 +17,15 @@ type Props = {
 };
 
 export default function MenuManager({ children }: Props) {
-  const [openMenu, setOpenMenu] = useCycle(false, true);
+  const [openMenu, setOpenMenu] = useState(false);
   const handleOpen = () => {
-    setOpenMenu();
+    setOpenMenu(!openMenu);
   };
+  useEffect(() => {
+    return () => {
+      console.log(openMenu);
+    };
+  }, [openMenu]);
 
   return (
     <MenuContext.Provider

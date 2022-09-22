@@ -18,7 +18,11 @@ const variants = {
 
 function Hero() {
   return (
-    <div className={'relative px-4'}>
+    <div
+      className={
+        'relative px-4 h-[calc(100vh-4rem)] flex flex-cols justify-between'
+      }
+    >
       <Indicator>N&#176;1 Hello</Indicator>
       <h1
         className={
@@ -27,31 +31,28 @@ function Hero() {
       >
         Piotr <br /> Szczypka
       </h1>
-      <Link href={'/about'}>
-        <a>
-          <h2
-            className={`text-basic text-right py-8 relative before:content-['About me']`}
-          >
-            About me
-          </h2>
-        </a>
-      </Link>
-      <div
-        className={
-          'w-[200px] bg-secondary h-[200px] relative rounded-full overflow-hidden '
-        }
-      >
+
+      <div className={'w-[200px] bg-secondary h-[200px] relative '}>
         <ShadowImageWrapper src={mainView2} alt={'piotrek'} />
+      </div>
+      <div className={'py-8  text-right'}>
+        <h2 className={'text-base'}>Currently status for a job:</h2>
+        <h2 className={'text-2xl font-CaudexItalic text-primary'}>Avilable </h2>
+      </div>
+      <div className={'flex justify-between underline'}>
+        <p>Hire me</p>
+        <p>About me</p>
+        <p>Learn more</p>
+      </div>
+      <div>
+        <p>scroll down</p>
       </div>
 
       <div
         className={
-          'w-full absolute top-[30%] h-[400px] left-0 bg-active -skew-y-12 text-[15vw] opacity-30 animate-pulse flex justify-center items-center'
+          'w-full absolute top-[30%] h-[400px] left-0 bg-active -skew-y-12 text-[15vw] opacity-30 animate-pulse flex justify-center items-center -z-[1]'
         }
-      ></div>
-      <div>
-        <p>scroll down</p>
-      </div>
+      />
 
       {/*   <div className={'max-w-[200px] top-[-30px] relative'}>
         <ShadowImageWrapper src={mainView1} alt={'piotrek'} />

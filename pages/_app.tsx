@@ -1,13 +1,13 @@
 import { AppProps } from 'next/app';
-import React, { Component } from 'react';
+import React, { Component, useContext } from 'react';
 import '../styles/globals.css';
 import { ThemeProvider } from 'next-themes';
 import { appWithTranslation } from 'next-i18next';
 import { DefaultSeo } from 'next-seo';
 import dynamic from 'next/dynamic';
 import SmoothScroll from '../components/SmoothScroll';
-import MenuManager from '../components/Header/MenuManager';
-import { AnimatePresence } from 'framer-motion';
+import MenuManager, { MenuContext } from '../components/Header/MenuManager';
+import { AnimatePresence, motion } from 'framer-motion';
 import CustomCursor from '../components/CustomCursor';
 import Header from '../components/Header';
 import Background from '../components/Background';
@@ -68,7 +68,7 @@ const MyApp = ({ Component, pageProps, router }: AppProps) => {
               <Header />
               <SmoothScroll>
                 <div className={'pr-[50px] md:pr-[80px]'}>
-                  <AnimatePresence exitBeforeEnter>
+                  <AnimatePresence>
                     <Component {...pageProps} key={router.route} />
                   </AnimatePresence>
                 </div>

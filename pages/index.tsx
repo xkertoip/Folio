@@ -20,6 +20,8 @@ import Link from 'next/link';
 import { CursorContext } from '../components/CustomCursor/CursorManager';
 import Indicator from '../components/Headings/Indicator';
 import ShadowImageWrapper from '../components/atoms/ShadowImageWrapper';
+import { MenuContext } from '../components/Header/MenuManager';
+import DefaultLayout from '../components/Layout';
 const downloadImage = require('/images/download.svg');
 const mainView1 = require('/images/mainView1.jpeg');
 const mainView2 = require('/images/mainView2.jpg');
@@ -59,9 +61,9 @@ const Home: NextPage = ({ subscription }: any) => {
   const { t } = useTranslation('common');
   const parallaxArray = ['JavaScript', 'React', 'Next', 'Gatsby', 'Wordpress'];
   const { theme } = useTheme();
-
+  const { openMenu } = useContext(MenuContext);
   return (
-    <div className={''}>
+    <DefaultLayout title={title} description={subtitle}>
       <Hero />
 
       {/*        <div className={'px-4 '}>
@@ -199,7 +201,7 @@ const Home: NextPage = ({ subscription }: any) => {
         </Container>
       </Section>
       <Footer />*/}
-    </div>
+    </DefaultLayout>
   );
 };
 
