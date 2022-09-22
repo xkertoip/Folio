@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
-import styled from 'styled-components';
+
 import useDeviceDetect from '../../utils/useDeviceDetect';
 
 type Props = {
@@ -28,8 +28,8 @@ export default function Perspective({ children }: Props) {
 
   if (!isMobile) {
     return (
-      <Wrapper onMouseMove={handlePosition} onMouseLeave={handleLeave}>
-        <Content
+      <motion.div onMouseMove={handlePosition} onMouseLeave={handleLeave}>
+        <motion.div
           style={{
             rotateX: rotateX,
             rotateY: rotateY,
@@ -38,17 +38,18 @@ export default function Perspective({ children }: Props) {
           }}
         >
           {children}
-        </Content>
-      </Wrapper>
+        </motion.div>
+      </motion.div>
     );
   }
   return (
-    <Wrapper>
-      <Content>{children}</Content>
-    </Wrapper>
+    <div>
+      <div>{children}</div>
+    </div>
   );
 }
 
+/*
 const Wrapper = styled.div`
   will-change: transform;
   position: relative;
@@ -67,3 +68,4 @@ const Content = styled(motion.div)`
   transform-style: preserve-3d;
   will-change: transform;
 `;
+*/

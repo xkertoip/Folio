@@ -2,12 +2,11 @@ import styled from 'styled-components';
 
 const title = "Hello, I'm Piotr 👋";
 const subtitle = "I'm a frontend developer from Poland";
-import { GetStaticPaths, GetStaticProps } from 'next';
+import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { request } from '../../lib/datocms';
 import React, { ReactElement } from 'react';
 import { useQuerySubscription } from 'react-datocms';
 import { Project } from '../../lib/types';
-import { NextPageWithLayout } from '../_app';
 import Image from 'next/image';
 import ProjectLayout from '../../components/Layout/project';
 import { motion } from 'framer-motion';
@@ -72,7 +71,7 @@ query ProjectBySlug($slug: String) {
   };
 };
 
-const ProjectPage: NextPageWithLayout = ({ subscription }: any) => {
+const ProjectPage: NextPage = ({ subscription }: any) => {
   const {
     data: { project },
   } = useQuerySubscription(subscription);

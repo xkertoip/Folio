@@ -1,35 +1,33 @@
-import styled from 'styled-components';
 import Hamburger from './Hamburger';
 import Menu from './Menu';
-import { useContext } from 'react';
-import { MenuContext } from './HeaderManager';
+import { motion } from 'framer-motion';
+
+const variants = {
+  init: {
+    y: '100%',
+  },
+  animate: {
+    y: 0,
+  },
+};
 
 function Header() {
   return (
     <>
-      <Hamburger />
+      <motion.div
+        className={
+          'fixed bottom-0 z-50 w-full flex justify-center h-16 items-center'
+        }
+        initial={'init'}
+        animate={'animate'}
+        variants={variants}
+      >
+        <Hamburger />
+      </motion.div>
+
       <Menu />
     </>
   );
 }
 
 export default Header;
-
-export const Wrapper = styled.header`
-  position: fixed;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  justify-content: space-between;
-  height: 4rem;
-  transition: 0.3s;
-  z-index: 100;
-  padding: 1rem;
-`;
-
-export const Brand = styled.div`
-  z-index: 100;
-  padding: 0 1rem;
-  width: 150px;
-  position: relative;
-`;

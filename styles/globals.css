@@ -1,3 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer base {
+  :root {
+
+    /* ... */
+    --background: theme('colors.primary');
+    --secondary: theme('colors.secondary');
+    --neutral: theme('colors.neutral');
+  }
+  [data-theme='dark'] {
+    --background: theme('colors.secondary');
+    --secondary: theme('colors.neutral');
+    --neutral: theme('colors.primary');
+
+  }
+}
+
+
 @font-face {
   font-family: "NothingYouCouldDo";
   src: local('NothingYouCouldDo'), url("../fonts/NothingYouCouldDo.ttf") format('truetype');

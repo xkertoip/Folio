@@ -1,7 +1,6 @@
-import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useContext } from 'react';
-import { MenuContext } from './HeaderManager';
+import { MenuContext } from './MenuManager';
 
 const variantsStickFirst = {
   open: {
@@ -38,56 +37,33 @@ const variantsStickMiddle = {
 };
 
 const Hamburger = () => {
-  const { openMenu, setOpenMenu } = useContext(MenuContext);
+  const { openMenu, handleOpen } = useContext(MenuContext);
   return (
-    <Wrapper>
-      <Button
-        data-open={JSON.stringify(openMenu)}
-        onClick={setOpenMenu}
-        animate={openMenu ? 'open' : 'close'}
-      >
-        <Stick variants={variantsStickFirst} />
-        <Stick variants={variantsStickMiddle} />
-        <Stick variants={variantsStickLast} />
-      </Button>
-    </Wrapper>
+    <motion.button
+      onClick={handleOpen}
+      animate={openMenu ? 'open' : 'close'}
+      className={'w-9 h-5 flex relative'}
+    >
+      <motion.span
+        variants={variantsStickFirst}
+        className={
+          'top-0 w-full absolute h-0.5 left-0 bg-secondary dark:bg-neutral'
+        }
+      />
+      <motion.span
+        variants={variantsStickLast}
+        className={
+          'bottom-0 w-full absolute h-0.5 left-0 bg-secondary dark:bg-neutral '
+        }
+      />
+      <motion.span
+        variants={variantsStickMiddle}
+        className={
+          'top-1/2 w-full translate-y-[-50%] absolute h-0.5 left-0 bg-secondary dark:bg-neutral'
+        }
+      />
+    </motion.button>
   );
 };
 
 export default Hamburger;
-
-export const Wrapper = styled.div`
-  position: fixed;
-  bottom: 0;
-  margin-bottom: 1rem;
-  left: 50%;
-  background: transparent;
-  transform: translateX(-50%);
-  z-index: 300;
-`;
-
-export const Button = styled(motion.button)`
-  width: 36px;
-  height: 18px;
-  position: relative;
-  span:first-child {
-    top: 0;
-    left: 0;
-  }
-  span:nth-child(2) {
-    top: 50%;
-    left: 0;
-    transform: translateY(-50%);
-  }
-  span:last-child {
-    bottom: 0;
-    left: 0;
-  }
-`;
-
-export const Stick = styled(motion.span)`
-  width: 100%;
-  height: 2px;
-  background-color: var(--secondary);
-  position: absolute;
-`;

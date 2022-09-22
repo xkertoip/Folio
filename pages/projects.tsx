@@ -3,9 +3,8 @@ import { useQuerySubscription } from 'react-datocms';
 import { request } from '../lib/datocms';
 
 import React, { ReactNode } from 'react';
-import { GetStaticProps } from 'next';
+import { GetStaticProps, NextPage } from 'next';
 import ProjectsLayout from '../components/Layout/project';
-import { NextPageWithLayout } from './_app';
 import useWindowDimensions from '../utils/useWindowDimensions';
 import FullPage from '../components/Slider/fullPage';
 import { device } from '../styles/mediaQuery';
@@ -51,7 +50,7 @@ export const getStaticProps: GetStaticProps = async ({ locale, preview }) => {
   };
 };
 
-const Projects: NextPageWithLayout = ({ subscription }: any) => {
+const Projects: NextPage = ({ subscription }: any) => {
   const {
     data: { allProjects },
   } = useQuerySubscription(subscription);

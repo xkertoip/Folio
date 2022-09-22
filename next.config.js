@@ -10,6 +10,7 @@ const nextConfig = {
   images: {
     domains: ['www.datocms-assets.com'],
   },
+
   webpack: (config) => {
     config.module.rules.push({
       test: /\.pdf$/,

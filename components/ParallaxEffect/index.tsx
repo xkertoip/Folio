@@ -1,4 +1,3 @@
-import styled from 'styled-components';
 import { motion, useScroll, useSpring, useTransform } from 'framer-motion';
 import { useEffect, useRef } from 'react';
 import useElementProperties from '../../utils/useElementProperties';
@@ -35,17 +34,18 @@ const ParallaxEffect = ({ array, reverse }: Props) => {
   });
 
   return (
-    <Wrapper>
-      <Content style={{ x }} ref={wrapperRef}>
+    <motion.div>
+      <motion.div style={{ x }} ref={wrapperRef}>
         {array.map((element, i) => {
           return <h2 key={i}> &nbsp;-&nbsp;{element}</h2>;
         })}
-      </Content>
-    </Wrapper>
+      </motion.div>
+    </motion.div>
   );
 };
 
 export default ParallaxEffect;
+/*
 
 const Wrapper = styled.div`
   position: relative;
@@ -64,3 +64,4 @@ const Content = styled(motion.div)`
     color: var(--secondary);
   }
 `;
+*/
