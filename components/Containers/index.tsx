@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { device } from '../../styles/mediaQuery';
+import { motion } from 'framer-motion';
 
 export const Container = styled.div`
   padding-left: 1rem;
@@ -20,7 +21,7 @@ export const TitleContainer = styled.div`
   }
 `;
 
-export const Section = styled.section`
+export const Section = styled(motion.section)`
   padding-bottom: 1rem;
   padding-top: 1rem;
 `;

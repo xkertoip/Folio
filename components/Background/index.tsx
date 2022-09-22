@@ -1,84 +1,26 @@
-import styled from 'styled-components';
-
-import React, { useRef } from 'react';
-
-import { motion, useTransform, useScroll, useSpring } from 'framer-motion';
-import useElementProperties from '../../utils/useElementProperties';
+import React from 'react';
+import { useTypewriter, Cursor } from 'react-simple-typewriter';
 
 const Background = () => {
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  const element = useElementProperties({ wrapperRef });
-  const { scrollY } = useScroll({
-    target: wrapperRef,
-    offset: ['start start', 'end end'],
+  const [text] = useTypewriter({
+    words: ['Creative', 'React', 'Web'],
+    loop: true,
+    delaySpeed: 3000,
   });
-
-  const transform = useTransform(
-    scrollY,
-    [0, element.elementWidth],
-    [-element.elementWidth + window.innerHeight, 0]
-  );
-  const physics = { damping: 100, mass: 1, stiffness: 200 };
-  const spring = useSpring(transform, physics);
   return (
-    <Wrapper>
-      <Title
-        style={{
-          y: spring,
-        }}
+    <div className={'relative w-full h-full border-l border-neutral'}>
+      <div
+        className={
+          'absolute  translate-x-[50%] -rotate-90 origin-bottom right-0  bottom-[50%]  h-[50px] md:h-[80px] flex items-center'
+        }
       >
-        <motion.h1 ref={wrapperRef}>CREATIVE DEVELOPER</motion.h1>
-      </Title>
-    </Wrapper>
+        <h1 className={' whitespace-nowrap text-4xl text-gray-500'}>
+          <span className={'font-Candal'}>{text}</span>
+          <Cursor />
+          <span className={'font-CaudexItalic'}> Developer</span>
+        </h1>
+      </div>
+    </div>
   );
 };
-
 export default Background;
-
-const Wrapper = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: -1;
-  width: 100%;
-  height: 100%;
-  :before,
-  :after {
-    content: '';
-    width: 0.5px;
-    min-height: 100%;
-    background-color: var(--secondary);
-    position: fixed;
-    top: 0;
-    z-index: -1;
-  }
-  :before {
-    right: 15%;
-  }
-  :after {
-    right: 45%;
-  }
-`;
-const Title = styled(motion.div)`
-  position: absolute;
-  top: 0;
-  right: 0;
-  z-index: 0;
-
-  h1 {
-    font-size: 37vw;
-    margin: 0;
-    line-height: 0.8;
-    color: var(--specialColor);
-    transform-origin: top right;
-    top: 0;
-    right: 0;
-    transform: rotate(-90deg) translateY(-100%);
-    white-space: nowrap;
-    position: absolute;
-    padding-bottom: 1rem;
-  }
-  span {
-    z-index: -1;
-  }
-`;

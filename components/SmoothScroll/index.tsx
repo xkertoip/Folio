@@ -1,13 +1,5 @@
 import React, { useRef, ReactNode, useState, useEffect } from 'react';
-import {
-  useViewportScroll,
-  useTransform,
-  useSpring,
-  motion,
-  useScroll,
-} from 'framer-motion';
-import styled from 'styled-components';
-import useElementProperties from '../../utils/useElementProperties';
+import { useTransform, useSpring, motion, useScroll } from 'framer-motion';
 
 type Props = {
   children: ReactNode;
@@ -40,21 +32,16 @@ const SmoothScroll = ({ children }: Props) => {
 
   return (
     <>
-      <Wrapper ref={wrapperRef} style={{ y: spring }}>
+      <motion.div
+        ref={wrapperRef}
+        style={{ y: spring }}
+        className={'fixed top-0 left-0 w-full overflow-hidden'}
+      >
         {children}
-      </Wrapper>
+      </motion.div>
       <div style={{ height: height }} />
     </>
   );
 };
 
 export default SmoothScroll;
-
-const Wrapper = styled(motion.div)`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  overflow: hidden;
-  will-change: transform;
-`;

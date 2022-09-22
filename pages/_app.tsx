@@ -1,37 +1,20 @@
 import { AppProps } from 'next/app';
-import type { NextPage } from 'next';
-import React, { Component, ReactElement, ReactNode } from 'react';
+import React, { Component, useContext } from 'react';
 import '../styles/globals.css';
-import GlobalStyles from '../styles/globalStyles';
 import { ThemeProvider } from 'next-themes';
 import { appWithTranslation } from 'next-i18next';
 import { DefaultSeo } from 'next-seo';
-import Header from '../components/Header';
-import { AnimateSharedLayout } from 'framer-motion';
-import CustomCursor from '../components/CustomCursor';
-import HeaderManager from '../components/Header/HeaderManager';
 import dynamic from 'next/dynamic';
-import { motion } from 'framer-motion';
-import { useRouter } from 'next/router';
-
-export type NextPageWithLayout = NextPage & {
-  getLayout?: (page: ReactElement) => ReactNode;
-};
-
-type AppPropsWithLayout = AppProps & {
-  Component: NextPageWithLayout;
-};
+import SmoothScroll from '../components/SmoothScroll';
+import MenuManager, { MenuContext } from '../components/Header/MenuManager';
+import { AnimatePresence, motion } from 'framer-motion';
+import CustomCursor from '../components/CustomCursor';
+import Header from '../components/Header';
+import Background from '../components/Background';
 
 const BackgroundWithoutSSR = dynamic(() => import('../components/Background'), {
   ssr: false,
 });
-
-const SmoothScrollWithoutSSR = dynamic(
-  () => import('../components/SmoothScroll'),
-  {
-    ssr: false,
-  }
-);
 
 const variants = {
   in: {
@@ -60,10 +43,8 @@ const variants = {
   },
 };
 
-const MyApp = ({ Component, pageProps, router }: AppPropsWithLayout) => {
-  const getLayout = Component.getLayout ?? ((page: ReactNode) => page);
+const MyApp = ({ Component, pageProps, router }: AppProps) => {
   const url = `https://piotr.szczypka.com${router.route}`;
-  const { asPath } = useRouter();
 
   return (
     <>
@@ -78,19 +59,28 @@ const MyApp = ({ Component, pageProps, router }: AppPropsWithLayout) => {
         }}
         canonical={url}
       />
-      <ThemeProvider>
-        <GlobalStyles />
-        <HeaderManager>
+      <ThemeProvider enableSystem={true} attribute={'class'}>
+        <MenuManager>
           <CustomCursor />
-          <Header />
 
-          <BackgroundWithoutSSR />
-          <SmoothScrollWithoutSSR>
-            <AnimateSharedLayout>
-              <Component {...pageProps} cannonical={url} key={url} />
-            </AnimateSharedLayout>
-          </SmoothScrollWithoutSSR>
-        </HeaderManager>
+          <div className={'bg-primary  dark:bg-secondary h-full'}>
+            <div className={'pr-[50px] md:pr-[80px]'}>
+              <Header />
+              <SmoothScroll>
+                <div className={'pr-[50px] md:pr-[80px]'}>
+                  <AnimatePresence>
+                    <Component {...pageProps} key={router.route} />
+                  </AnimatePresence>
+                </div>
+              </SmoothScroll>
+            </div>
+            <aside
+              className={'fixed w-[50px] md:w-[80px] h-screen top-0 right-0'}
+            >
+              <Background />
+            </aside>
+          </div>
+        </MenuManager>
       </ThemeProvider>
     </>
   );

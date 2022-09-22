@@ -1,29 +1,27 @@
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import { GetStaticProps } from 'next';
-import styled from 'styled-components';
-import React, { ReactElement } from 'react';
+import { GetStaticProps, NextPage } from 'next';
+
+import React, { useContext, useState } from 'react';
+import Hero from '../components/Hero';
 import Image from 'next/image';
-import CircleButton from '../components/CircleButton';
-import Perspective from '../components/Perspective';
-import Title from '../components/AnimatedSection/Title';
 import { useTranslation } from 'next-i18next';
 import DownloadButton from '../components/DownloadButton';
 import mailImage from '/images/mail.svg';
-import { Container, Section, TitleContainer } from '../components/Containers';
+import { Container, Section } from '../components/Containers';
 import Footer from '../components/Footer';
 import { request } from '../lib/datocms';
 import { useQuerySubscription } from 'react-datocms';
-import NewSlider from '../components/Slider/newSlider';
-import DefaultLayout from '../components/Layout';
-import { NextPageWithLayout } from './_app';
-import ParallaxEffect from '../components/ParallaxEffect';
 import { Project } from '../lib/types';
 import dynamic from 'next/dynamic';
-import { Indicator, SectionTitle } from '../components/Headings';
+import { SectionTitle } from '../components/Headings';
 import { useTheme } from 'next-themes';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-
+import { CursorContext } from '../components/CustomCursor/CursorManager';
+import Indicator from '../components/Headings/Indicator';
+import ShadowImageWrapper from '../components/atoms/ShadowImageWrapper';
+import { MenuContext } from '../components/Header/MenuManager';
+import DefaultLayout from '../components/Layout';
 const downloadImage = require('/images/download.svg');
 const mainView1 = require('/images/mainView1.jpeg');
 const mainView2 = require('/images/mainView2.jpg');
@@ -56,16 +54,30 @@ const variants = {
   },
 };
 
-const Home: NextPageWithLayout = ({ subscription }: any) => {
+const Home: NextPage = ({ subscription }: any) => {
   const {
     data: { allProjects },
   } = useQuerySubscription(subscription);
   const { t } = useTranslation('common');
   const parallaxArray = ['JavaScript', 'React', 'Next', 'Gatsby', 'Wordpress'];
   const { theme } = useTheme();
+  const { openMenu } = useContext(MenuContext);
   return (
-    <>
-      <Section>
+    <DefaultLayout title={title} description={subtitle}>
+      <Hero />
+
+      {/*        <div className={'px-4 '}>
+          <div>
+            <h2 className={'text-6xl font-Candal text-secondary'}>
+              Hi!, Piotrek here
+            </h2>
+          </div>
+          <div className={'z-[-1] top-[-50px] relative'}>
+            <ShadowImageWrapper src={mainView1} alt={'main Image'} />
+          </div>
+        </div>*/}
+
+      {/*     <Section>
         <Grid as={Container}>
           <div>
             <SectionTitle
@@ -78,9 +90,7 @@ const Home: NextPageWithLayout = ({ subscription }: any) => {
           </div>
 
           <OpacityWrapper as={Shadow}>
-            <motion.figure layoutId={'image'}>
-              <Image src={mainView3} alt={'logo'} />
-            </motion.figure>
+            <Image src={mainView3} alt={'logo'} />
           </OpacityWrapper>
           <div>
             <OpacityWrapper as={Shadow}>
@@ -100,13 +110,17 @@ const Home: NextPageWithLayout = ({ subscription }: any) => {
           </div>
 
           <OpacityWrapper as={Shadow}>
-            <Image src={mainView2} alt={'logo'} />
+            <motion.figure layoutId={'image'}>
+              <Image src={mainView2} alt={'logo'} />
+            </motion.figure>
           </OpacityWrapper>
 
           <div>
             <p>{t(`introduce`)}</p>
             <p>{t(`cvText`)}</p>
-
+            <Link href={'/about'}>
+              If you are intrested more about me, hold here
+            </Link>
             <DownloadButton
               text={t(`download`)}
               download={'CV_Piotr_Szczypka.pdf'}
@@ -132,25 +146,27 @@ const Home: NextPageWithLayout = ({ subscription }: any) => {
           </SectionTitle>
           <ProjectWrapper>
             {allProjects.map((project: Project) => (
-              <Link href={'/projects/' + project.slug} key={project.id}>
-                <ProjectContainer>
-                  <ProjectImageWrapper>
-                    <motion.figure layoutId={`image-${project.id}`}>
-                      <Image
-                        alt="project"
-                        src={project.image.responsiveImage.src}
-                        layout="responsive"
-                        objectFit="contain"
-                        objectPosition="top center"
-                        width={400}
-                        height={280}
-                      />
-                    </motion.figure>
-                  </ProjectImageWrapper>
-                  <h3>{project.title}</h3>
-                  <h4>{project.adds}</h4>
-                </ProjectContainer>
-              </Link>
+              <ProjectContainer key={project.id}>
+                <Link href={'/projects/' + project.slug}>
+                  <a>
+                    <ProjectImageWrapper>
+                      <motion.figure layoutId={`image-${project.id}`}>
+                        <Image
+                          alt="project"
+                          src={project.image.responsiveImage.src}
+                          layout="responsive"
+                          objectFit="contain"
+                          objectPosition="top center"
+                          width={400}
+                          height={280}
+                        />
+                      </motion.figure>
+                    </ProjectImageWrapper>
+                    <h3>{project.title}</h3>
+                    <h4>{project.adds}</h4>
+                  </a>
+                </Link>
+              </ProjectContainer>
             ))}
           </ProjectWrapper>
         </ThirdView>
@@ -168,7 +184,7 @@ const Home: NextPageWithLayout = ({ subscription }: any) => {
       </Section>
       <Section>
         <Container>
-          <Perspective>
+          <PerspectiveWithoutSSR>
             <ContactWrapper>
               <h1>Have I intrested you ? </h1>
               <DownloadButton text={'Contact!'} href={'/contact'}>
@@ -181,81 +197,20 @@ const Home: NextPageWithLayout = ({ subscription }: any) => {
                 />
               </DownloadButton>
             </ContactWrapper>
-          </Perspective>
+          </PerspectiveWithoutSSR>
         </Container>
       </Section>
-      <Footer />
-    </>
-  );
-};
-
-Home.getLayout = function getLayout(page: ReactElement) {
-  return (
-    <DefaultLayout title={title} description={subtitle}>
-      {page}
+      <Footer />*/}
     </DefaultLayout>
   );
 };
+
 export default Home;
 
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: auto;
-  min-height: calc(100vh - 2rem);
-  div:first-child {
-    grid-area: 1/1/2/3;
-    position: relative;
-    z-index: 2;
-  }
-  div:nth-child(2) {
-    grid-area: 1/2/3/4;
-  }
-  div:last-child {
-    grid-area: 2/1/4/3;
-    position: relative;
-    z-index: 2;
-  }
-`;
-
-const ThirdView = styled.div`
-  position: relative;
-  overflow: hidden;
-  z-index: 2;
-`;
-const ProjectWrapper = styled.div`
-  padding-top: 1rem;
-`;
-
-const ProjectContainer = styled.a`
-  margin-bottom: 2rem;
-  span {
-    color: var(--main);
-  }
-  h3 {
-    color: var(--secondary);
-  }
-`;
-const ContactWrapper = styled.div``;
-const OpacityWrapper = styled.div`
-  opacity: 0.9;
-`;
-const Shadow = styled.div`
-  margin-bottom: 1rem;
-
-  span {
-    box-shadow: 0 2px 4px -1px rgb(0 0 0 / 20%), 0 4px 5px 0 rgb(0 0 0 / 14%),
-      0 1px 10px 0 rgb(0 0 0 / 12%);
-  }
-`;
-const ProjectImageWrapper = styled.div`
-  position: relative;
-  margin-bottom: 1rem;
-  box-shadow: 0 2px 4px -1px rgb(0 0 0 / 20%), 0 4px 5px 0 rgb(0 0 0 / 14%),
-    0 1px 10px 0 rgb(0 0 0 / 12%);
-`;
-export const getStaticProps: GetStaticProps = async ({ locale, preview }) => {
-  const formattedLocale = locale?.split('-')[0];
+export const getStaticProps: GetStaticProps = async (context) => {
+  const formattedLocale = context.locale?.split('-')[0];
+  const preview = context.preview;
+  console.log(context.locale);
   const graphqlRequest = {
     query: `
     {
@@ -279,7 +234,10 @@ export const getStaticProps: GetStaticProps = async ({ locale, preview }) => {
 
   return {
     props: {
-      ...(await serverSideTranslations(locale as string, ['common', 'home'])),
+      ...(await serverSideTranslations(context.locale as string, [
+        'common',
+        'home',
+      ])),
       subscription: preview
         ? {
             ...graphqlRequest,

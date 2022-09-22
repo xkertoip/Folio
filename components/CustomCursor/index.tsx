@@ -1,108 +1,68 @@
-import React, { useEffect, useRef } from 'react';
-import styled from 'styled-components';
 import useDeviceDetect from '../../utils/useDeviceDetect';
+import { motion } from 'framer-motion';
+import { useEffect, useState, useRef } from 'react';
 
-function lerp(start: number, end: number, amt: number) {
-  return (1 - amt) * start + amt * end;
-}
-const CustomCursor = ({ speed = 0.1 }) => {
+export default function CustomCursor() {
   const { isMobile } = useDeviceDetect();
-  const mainCursor = useRef<HTMLDivElement>(null);
 
-  const positionRef = useRef({
-    mouseX: 0,
-    mouseY: 0,
-    destinationX: 0,
-    destinationY: 0,
-    distanceX: 0,
-    distanceY: 0,
-    key: -1,
+  const ref = useRef<HTMLDivElement>(null);
+  const [position, setPosition] = useState({
+    x: 0,
+    y: 0,
   });
+  const [isHover, setIsHover] = useState(false);
 
   useEffect(() => {
-    const handlePosition = (e: MouseEvent) => {
-      const { clientX, clientY } = e;
-      if (positionRef.current && mainCursor.current) {
-        const mouseX = clientX;
-        const mouseY = clientY;
-        positionRef.current.mouseX =
-          mouseX - mainCursor.current.clientWidth / 2;
-        positionRef.current.mouseY =
-          mouseY - mainCursor.current.clientHeight / 2;
-        if (
-          e.target instanceof HTMLAnchorElement ||
-          e.target instanceof HTMLImageElement ||
-          e.target instanceof HTMLButtonElement
-        ) {
-          /* mainCursor.current.style.transform = `translate3d(${positionRef.current.mouseX}px, ${positionRef.current.mouseY}px, 0)`;*/
-          mainCursor.current.style.transform = `translate3d(${positionRef.current.mouseX}px, ${positionRef.current.mouseY}px, 0) scale(1.5)`;
-        } else {
-          mainCursor.current.style.transform = `translate3d(${positionRef.current.mouseX}px, ${positionRef.current.mouseY}px, 0) scale(1)`;
-        }
-      }
-    };
-    document.addEventListener('mousemove', handlePosition);
-
-    return () => {
-      document.removeEventListener('mousemove', handlePosition);
-    };
+    const element = ref.current;
+    if (element) {
+      const handlePosition = (e: MouseEvent) => {
+        setPosition({
+          x: e.clientX - element.clientWidth / 2,
+          y: e.clientY - element.clientHeight / 2,
+        });
+      };
+      window.addEventListener('mousemove', handlePosition);
+      return () => {
+        window.removeEventListener('mousemove', handlePosition);
+      };
+    }
   }, []);
 
   useEffect(() => {
-    const followMouse = () => {
-      positionRef.current.key = requestAnimationFrame(followMouse);
-      const {
-        mouseX,
-        mouseY,
-        destinationX,
-        destinationY,
-        distanceX,
-        distanceY,
-      } = positionRef.current;
-      if (!destinationX || !destinationY) {
-        positionRef.current.destinationX = lerp(0, mouseX, 0.4);
-        positionRef.current.destinationY = lerp(0, mouseY, 0.4);
+    const handleTarget = (e: MouseEvent) => {
+      if (
+        e.target instanceof HTMLAnchorElement ||
+        e.target instanceof HTMLImageElement ||
+        e.target instanceof HTMLButtonElement ||
+        e.target instanceof HTMLHeadingElement
+      ) {
+        setIsHover(true);
       } else {
-        positionRef.current.distanceX = lerp(destinationX, mouseX, 0.4);
-        positionRef.current.distanceY = lerp(destinationY, mouseY, 0.4);
-        if (
-          Math.abs(positionRef.current.distanceX) +
-            Math.abs(positionRef.current.distanceY) <
-          0.1
-        ) {
-          positionRef.current.destinationX = mouseX;
-          positionRef.current.destinationY = mouseY;
-        } else {
-          positionRef.current.destinationX = distanceX;
-          positionRef.current.destinationY = distanceY;
-        }
+        setIsHover(false);
       }
     };
-    followMouse();
-  }, [speed]);
+    window.addEventListener('mousemove', handleTarget);
+    return () => {
+      window.removeEventListener('mousemove', handleTarget);
+    };
+  }, [isHover]);
 
   return (
     <>
       {!isMobile && (
-        <div>
-          <MainCursor ref={mainCursor} />
-        </div>
+        <motion.div
+          ref={ref}
+          animate={{
+            x: position.x,
+            y: position.y,
+            scaleX: isHover ? 1.5 : 1,
+            scaleY: isHover ? 1.5 : 1,
+          }}
+          className={
+            'fixed left-0 top-0 w-12 h-12 rounded-full 700 z-50 pointer-events-none border-2 border-active'
+          }
+        />
       )}
     </>
   );
-};
-
-export default CustomCursor;
-
-export const MainCursor = styled.div`
-  position: fixed;
-  pointer-events: none;
-  left: 0;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  mix-blend-mode: difference;
-  background-color: white;
-  transition: 0.1s linear;
-  z-index: 9000;
-`;
+}

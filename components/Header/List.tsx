@@ -1,11 +1,9 @@
 import Link from 'next/link';
-import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
-import { MenuContext } from './HeaderManager';
+import { MenuContext } from './MenuManager';
 import { useTranslation } from 'next-i18next';
-import { device } from '../../styles/mediaQuery';
 
 const menu = [
   { title: 'Home', path: '/' },
@@ -13,53 +11,40 @@ const menu = [
   { title: 'Projects', path: '/projects' },
   { title: 'Contact', path: '/contact' },
 ];
-
-const variants = {
-  hidden: { opacity: 0, translateY: '100%' },
-  show: { opacity: 1, translateY: 0 },
+type Props = {
+  variants: {};
 };
 
-function List() {
-  const { setOpenMenu } = useContext(MenuContext);
+function List({ variants }: Props) {
+  const { handleOpen } = useContext(MenuContext);
   const router = useRouter();
   const { t } = useTranslation('common');
   return (
-    <menu>
+    <menu className={'overflow-hidden'}>
       {menu.map(({ path, title }, index) => (
-        <Wrapper key={index} onClick={setOpenMenu}>
+        <li
+          key={index}
+          onClick={handleOpen}
+          className={'overflow-hidden py-2 flex'}
+        >
           <Link href={path}>
-            <Container
-              variants={variants}
-              style={{
-                color: `var(${
-                  router.pathname === path ? '--secondary' : '--main'
-                })`,
-              }}
-            >
-              {t(`${title}`)}
-            </Container>
+            <a>
+              <motion.h1
+                className={`text-3xl md:text-6xl font-RedHatText hover:text-active hover:dark:text-active ease-in-out duration-300 ${
+                  router.asPath === path
+                    ? 'text-secondary dark:text-primary'
+                    : 'text-neutral dark:text-neutral'
+                } `}
+                variants={variants}
+              >
+                {t(`${title}`)}
+              </motion.h1>
+            </a>
           </Link>
-        </Wrapper>
+        </li>
       ))}
     </menu>
   );
 }
 
 export default List;
-
-const Wrapper = styled.li`
-  overflow: hidden;
-`;
-const Container = styled(motion.a)`
-  font-size: 2rem;
-  padding: 0;
-  display: block;
-  position: relative;
-  font-family: CaudexItalic, serif;
-  :hover {
-    color: var(--secondary);
-  }
-  @media only screen and ${device.tablet} {
-    font-size: 4rem;
-  }
-`;
