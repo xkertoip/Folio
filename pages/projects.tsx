@@ -1,14 +1,12 @@
-import styled from 'styled-components';
 import { useQuerySubscription } from 'react-datocms';
 import { request } from '../lib/datocms';
 
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { GetStaticProps, NextPage } from 'next';
-import ProjectsLayout from '../components/Layout/project';
 import useWindowDimensions from '../utils/useWindowDimensions';
 import FullPage from '../components/Slider/fullPage';
-import { device } from '../styles/mediaQuery';
-const title = "Hello, I'm Piotr 👋";
+
+const title = "Greetings, I'm Piotr 👋";
 const subtitle = "I'm a frontend developer from Poland";
 
 export const getStaticProps: GetStaticProps = async ({ locale, preview }) => {
@@ -59,13 +57,14 @@ const Projects: NextPage = ({ subscription }: any) => {
 
   return (
     <>
-      <Wrapper
+      <div
         style={{
           height: windowHeight,
         }}
       >
+        {/* Magiczny slider awesomnosci*/}
         <FullPage array={allProjects} />
-      </Wrapper>
+      </div>
     </>
   );
 };
@@ -79,6 +78,7 @@ const Projects: NextPage = ({ subscription }: any) => {
 };*/
 export default Projects;
 
+/*
 const Wrapper = styled.div`
   overflow-y: hidden;
   width: 100%;
@@ -87,3 +87,4 @@ const Wrapper = styled.div`
     min-height: 100vh;
   }
 `;
+*/

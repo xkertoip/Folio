@@ -1,13 +1,11 @@
-import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { Project } from '../../lib/types';
 import React, { useState } from 'react';
-import { device } from '../../styles/mediaQuery';
 import Image from 'next/image';
 const next = require('/images/next.svg');
 const prev = require('/images/prev.svg');
-import useWindowDimensions from '../../utils/useWindowDimensions';
 import { useTranslation } from 'next-i18next';
+import ShadowImageWrapper from '../ShadowImageWrapper';
 
 const variantsButton = {
   hidden: {
@@ -122,7 +120,7 @@ export default function FullPage({ array }: Props) {
 
   return (
     <>
-      <Wrapper>
+      <div className={'flex flex-col overflow-hidden'}>
         {array?.map(
           ({
             id,
@@ -133,25 +131,24 @@ export default function FullPage({ array }: Props) {
             order,
             description,
           }: Project) => (
-            <Item
+            <motion.div
+              className={' overflow-hidden p-4 flex flex-col'}
               animate={current === order - 1 ? 'visible' : 'hidden'}
               key={id}
               variants={variantContent}
             >
-              <Background variants={variantsText} custom={direction}>
-                <Image
+              <motion.div
+                className={'flex justify-end w-full h-full'}
+                variants={variantsText}
+                custom={direction}
+              >
+                <ShadowImageWrapper
                   src={image.responsiveImage.src}
                   alt="pictureProject"
-                  layout="fill"
-                  objectFit="contain"
-                  objectPosition={open ? 'top left' : 'top right'}
-                  style={{
-                    transitionDuration: '1s',
-                  }}
                 />
-              </Background>
-              <Aside animate={open ? 'open' : 'close'}>
-                <Mask>
+              </motion.div>
+              <motion.aside animate={open ? 'open' : 'close'}>
+                <div className={'relative overflow-hidden'}>
                   <motion.h1
                     variants={variantsText}
                     custom={direction}
@@ -159,190 +156,62 @@ export default function FullPage({ array }: Props) {
                   >
                     {order}
                   </motion.h1>
-                </Mask>
-                <BackButton
+                </div>
+                <motion.button
+                  className={'flex items-center m-8 relative'}
                   onClick={() => handleOpen()}
                   variants={variantsView}
                 >
                   {t(`back`)}
-                </BackButton>
-              </Aside>
-              <View>
-                <MainView
+                </motion.button>
+              </motion.aside>
+              <div className={'relative'}>
+                <motion.div
                   variants={variantsView}
                   animate={open ? 'close' : 'open'}
                 >
                   <motion.div>
-                    <ReadMore onClick={() => handleOpen()}>
+                    <div
+                      className={'whitespace-nowrap underline tracking-[1px]'}
+                      onClick={() => handleOpen()}
+                    >
                       {t(`readMore`)}
-                    </ReadMore>
+                    </div>
                   </motion.div>
-                </MainView>
-                <SecondView
+                </motion.div>
+                <motion.div
                   variants={variantsView}
                   animate={open ? 'open' : 'close'}
+                  className={'absolute top-0 left-0 w-full flex flex-col'}
                 >
                   {description}
-                </SecondView>
-              </View>
-            </Item>
+                </motion.div>
+              </div>
+            </motion.div>
           )
         )}
-      </Wrapper>
-      <ButtonContainer>
-        <Button
+      </div>
+      <div
+        className={'absolute bottom-8 right-8 flex justify-between gap-8 z-[2]'}
+      >
+        <motion.button
           variants={variantsButton}
           animate={current > 0 ? 'show' : 'hidden'}
           onClick={() => handleDecrease()}
         >
-          <Image src={prev} alt="prev" />
-        </Button>
-        <Button
+          <ShadowImageWrapper src={prev} alt="prev" />
+        </motion.button>
+        <motion.button
           variants={variantsButton}
           animate={current < array.length - 1 ? 'show' : 'hidden'}
           onClick={() => handleIncrease()}
         >
-          <Image src={next} alt="next" />
-        </Button>
-      </ButtonContainer>
+          <ShadowImageWrapper src={next} alt="next" />
+        </motion.button>
+      </div>
     </>
   );
 }
-
-const Wrapper = styled(motion.div)`
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-`;
-
-const Technology = styled(motion.h2)`
-  position: relative;
-  display: flex;
-  align-items: center;
-  :before {
-    content: '';
-    width: 62px;
-    height: 1px;
-    margin-right: 1rem;
-    background-color: var(--mainColor);
-  }
-`;
-const MainView = styled(motion.div)``;
-const View = styled(motion.div)`
-  position: relative;
-`;
-const ReadMore = styled.span`
-  white-space: nowrap;
-  text-decoration: underline;
-  letter-spacing: 1px;
-`;
-const Background = styled(motion.div)`
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: flex;
-  justify-content: flex-end;
-  will-change: transform;
-`;
-const Aside = styled(motion.div)`
-  @media only screen and ${device.tablet} {
-    width: 20%;
-  }
-`;
-const Introduction = styled(motion.div)`
-  transition-duration: 1s;
-`;
-const Mask = styled(motion.div)`
-  position: relative;
-  overflow: hidden;
-`;
-const Title = styled(motion.h1)`
-  text-align: right;
-  @media only screen and ${device.tablet} {
-    text-align: left;
-  }
-`;
-
-const Item = styled(motion.div)`
-  position: absolute;
-  overflow: hidden;
-  top: 0;
-  height: 100%;
-  width: 100%;
-  padding: 4rem 1rem 0;
-  display: flex;
-  flex-direction: column;
-  @media only screen and ${device.tablet} {
-    flex-direction: row;
-  }
-`;
-const Text = styled(motion.div)`
-  transition-duration: 1s;
-  position: relative;
-  @media only screen and ${device.tablet} {
-    margin-left: 50%;
-  }
-`;
-const BackButton = styled(motion.button)`
-  display: flex;
-  align-items: center;
-  transition-duration: 1s;
-  position: relative;
-  margin: 2rem 0;
-  :before {
-    content: '';
-    width: 62px;
-    margin-right: 1rem;
-    height: 1px;
-    background-color: var(--mainColor);
-  }
-`;
-const SecondView = styled(motion.div)`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  @media only screen and ${device.tablet} {
-    flex-direction: row;
-  }
-`;
-
-const ButtonContainer = styled.div`
-  position: absolute;
-  bottom: 2rem;
-  right: 2rem;
-  display: flex;
-  justify-content: space-between;
-  gap: 2rem;
-  z-index: 2;
-`;
-const Button = styled(motion.button)`
-  width: 65px;
-  height: 65px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: transparent;
-  box-shadow: 0 2px 4px -1px rgb(0 0 0 / 20%), 0 4px 5px 0 rgb(0 0 0 / 14%),
-    0 1px 10px 0 rgb(0 0 0 / 12%);
-  border-radius: 50%;
-  border: 2px solid var(--mainColor);
-  @media only screen and ${device.tablet} {
-    width: 65px;
-    height: 65px;
-  }
-`;
-export const ImageContainer = styled(motion.div)`
-  width: 100%;
-  height: 40vh;
-  position: relative;
-  @media only screen and ${device.tablet} {
-  }
-`;
 
 /* <Mask>
                   <Mask

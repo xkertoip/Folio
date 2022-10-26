@@ -4,19 +4,8 @@
 
 
 @layer base {
-  :root {
 
-    /* ... */
-    --background: theme('colors.primary');
-    --secondary: theme('colors.secondary');
-    --neutral: theme('colors.neutral');
-  }
-  [data-theme='dark'] {
-    --background: theme('colors.secondary');
-    --secondary: theme('colors.neutral');
-    --neutral: theme('colors.primary');
 
-  }
 }
 
 

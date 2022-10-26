@@ -1,4 +1,10 @@
-import React, { ReactNode } from 'react';
+import React, {
+  ReactNode,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
 
 import useDeviceDetect from '../../utils/useDeviceDetect';
@@ -7,65 +13,63 @@ type Props = {
   children?: ReactNode;
 };
 
-export default function Perspective({ children }: Props) {
+const Perspective = ({ children }: Props) => {
   const { isMobile } = useDeviceDetect();
-  const x = useMotionValue(window.innerWidth / 2);
-  const y = useMotionValue(window.innerHeight / 2);
+  const elementRef = useRef<HTMLDivElement>(null);
+  const [[widthCont, heightCont], setContainer] = useState([200, 200]);
+  const x = useMotionValue(widthCont / 2);
+  const y = useMotionValue(heightCont / 2);
+  const rotateX = useTransform(y, [0, heightCont], [10, -10]);
+  const rotateY = useTransform(x, [0, widthCont], [-10, 10]);
 
-  const rotateX = useTransform(y, [0, window.innerHeight], [20, -20]);
-  const rotateY = useTransform(x, [0, window.innerWidth], [20, -20]);
+  const setupElement = useCallback(() => {
+    if (!elementRef?.current) return;
+    const { width, height } = elementRef.current.getBoundingClientRect();
 
-  const handlePosition = (e: React.MouseEvent<HTMLDivElement>) => {
-    window.requestAnimationFrame(() => handlePosition);
-    const rect = e.currentTarget.getBoundingClientRect();
-    x.set(e.clientX - rect.left);
-    y.set(e.clientY - rect.top);
-  };
-  const handleLeave = (): void => {
-    x.set(window.innerWidth / 2);
-    y.set(window.innerHeight / 2);
-  };
+    setContainer([width, height]);
+  }, []);
+  useEffect(() => setupElement(), [setupElement]);
+
+  const handlePosition = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      window.requestAnimationFrame(() => handlePosition);
+      const { clientY, clientX } = e;
+      const { left, top } = e.currentTarget.getBoundingClientRect();
+      x.set(clientX - left);
+      y.set(clientY - top);
+    },
+    [x, y]
+  );
+
+  const handleLeave = useCallback(() => {
+    x.set(widthCont / 2);
+    y.set(heightCont / 2);
+  }, [x, y]);
 
   if (!isMobile) {
     return (
-      <motion.div onMouseMove={handlePosition} onMouseLeave={handleLeave}>
+      <motion.div
+        onMouseMove={handlePosition}
+        onMouseLeave={handleLeave}
+        className={'perspective-3d'}
+      >
         <motion.div
+          ref={elementRef}
           style={{
-            rotateX: rotateX,
-            rotateY: rotateY,
-            transitionDuration: '0.8s',
-            transitionTimingFunction: 'linear',
+            rotateX,
+            rotateY,
           }}
+          whileHover={{
+            scale: 1.05,
+            transition: { duration: 0.3 },
+          }}
+          className={'transform-preserve w-full duration-500 ease-linear'}
         >
           {children}
         </motion.div>
       </motion.div>
     );
   }
-  return (
-    <div>
-      <div>{children}</div>
-    </div>
-  );
-}
-
-/*
-const Wrapper = styled.div`
-  will-change: transform;
-  position: relative;
-  perspective: 1000px;
-  mix-blend-mode: inherit;
-  transform-style: preserve-3d;
-  min-height: calc(100vh - 2rem);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  z-index: 2;
-`;
-
-const Content = styled(motion.div)`
-  transform-style: preserve-3d;
-  will-change: transform;
-`;
-*/
+  return <div>{children}</div>;
+};
+export default Perspective;

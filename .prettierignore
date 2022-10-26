@@ -4,4 +4,6 @@ coverage
 .cache
 package.json
 package-lock.json
-public
+public/graphql
+lib/generated
+

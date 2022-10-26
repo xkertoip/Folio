@@ -1,17 +1,22 @@
 {
   "Home": "Home",
   "meta": "Portfolio - Piotr Szczypka, frontend developer.",
-  "About": "O mnie",
-  "Projects": "Projekty",
-  "download": "Cv",
-  "Contact": "Kontakt",
+  "about": "O mnie",
+  "projects": "Projekty",
+  "menu": "menu",
+
+
+  "hire": "Zatrudnij mnie",
+
+
+  "contactInfo": "Jeśli jesteś zainteresowany, napisz!",
+  "confirm": "potwierdź",
+  "contact": "Kontakt",
   "title": "Randomowa strona",
   "mailWelcome": "Cześć !",
   "mailTitle": "Zainteresowałem Cię ?",
   "mailSubtitle": "Skontaktuj się ze mną !",
-  "cvText": "Tu znajdziesz moje CV",
   "readMore": "Czytaj więcej",
-  "back": "wróć",
-  "introduce": "Cześć, tu Piotrek! Pochodzę z Kasinki Małej, pomieszkuje w Krakowie. Kreatywny gość, z poczuciem humoru. Kładę ogromny nacisk nasamorozwój i zadowolenie klienta."
-
+  "back": "powrót",
+  "send": "Wyślij"
 }

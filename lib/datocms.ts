@@ -1,11 +1,12 @@
-import { RequestProps } from './types';
 import { GraphQLClient } from 'graphql-request';
 
-export const request = ({ query, variables }: RequestProps) => {
+export const requestData = (query: string) => {
+  const headers = {
+    'content-type': 'application/json',
+    authorization: 'Bearer ' + process.env.NEXT_DATOCMS_API_TOKEN,
+  };
   const client = new GraphQLClient(`https://graphql.datocms.com/`, {
-    headers: {
-      authorization: `Bearer ${process.env.NEXT_DATOCMS_API_TOKEN}`,
-    },
+    headers,
   });
-  return client.request(query, variables);
+  return client.request(query);
 };

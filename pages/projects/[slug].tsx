@@ -1,6 +1,4 @@
-import styled from 'styled-components';
-
-const title = "Hello, I'm Piotr 👋";
+const title = "Greetings, I'm Piotr 👋";
 const subtitle = "I'm a frontend developer from Poland";
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { request } from '../../lib/datocms';
@@ -81,7 +79,7 @@ const ProjectPage: NextPage = ({ subscription }: any) => {
       <div>{project.description}</div>
       <div>{project.adds}</div>
       <div>{project.technology}</div>
-      <OpacityWrapper as={Shadow}>
+      <div>
         <motion.figure layoutId={`image-${project.id}`}>
           <Image
             src={project.image.responsiveImage.src}
@@ -91,10 +89,11 @@ const ProjectPage: NextPage = ({ subscription }: any) => {
             height={280}
           />
         </motion.figure>
-      </OpacityWrapper>
+      </div>
     </>
   );
 };
+/*
 const OpacityWrapper = styled.div`
   opacity: 0.9;
   position: relative;
@@ -107,6 +106,7 @@ const Shadow = styled.div`
       0 1px 10px 0 rgb(0 0 0 / 12%);
   }
 `;
+*/
 
 /*ProjectPage.getLayout = function getLayout(page: ReactElement) {
   return (

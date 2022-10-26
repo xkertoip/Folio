@@ -1,17 +1,38 @@
 export type RequestProps = {
   query: string;
-  variables?: any;
-  preview?: boolean;
 };
 
 export type Project = {
   title: string;
   image: any;
-  id: number;
   order: number;
-  description?: string;
-  adds: number;
-  slug: string;
-  technology: string;
+  description: string;
   introduction: string;
+  specific: string;
+  slug: string;
+  seo: string;
+  technology: [];
 };
+export type Workplace = {
+  id?: number;
+  job: string;
+  logo: any;
+  company: string;
+  description: string;
+  time: any;
+};
+
+export type Framework = {
+  id?: string;
+  number: number;
+  logo: any;
+  name: string;
+  randomNumber?: number;
+};
+
+export interface MailValues {
+  user_email: string;
+  user_message: string;
+  user_choice?: string;
+  user_budget?: number;
+}

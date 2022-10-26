@@ -1,6 +1,20 @@
 {
 
-  "description": "The personal website",
-  "webDevelopment": "Web Development",
-  "application": "Application"
+ "greetingsAvailable": "Please contact me, I will write back as soon as possible!",
+  "greetingsInaccessible": "You have come to the right place! Unfortunately, I am busy at this moment. Please, leave me a message, I will write back as soon as possible",
+
+  "view": "View",
+
+
+  "lookForMore": "Learn more",
+  "about": "About me",
+
+
+  "introduce": "Hi, I'm Piotrek! I come from Kasinka Mała, currently living in Kraków. \n I'm imaginative person with a strong sense of humor. I put huge emphasis on self-development. The lucky owner of a shaggy beast! ",
+  "cvText": "You will find my resume attached below.",
+  "download": "Resume",
+  "project": "work",
+  "contact": "Contact",
+
+  "contactButton": "Send a message!"
 }

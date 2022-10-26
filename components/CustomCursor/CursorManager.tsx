@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useState } from 'react';
-import { MenuContext } from '../Header/MenuManager';
+import { MenuContext } from '../Menu/MenuManager';
 
 export type CursorContextType = {
   isHover: boolean;
